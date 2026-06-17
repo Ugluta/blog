@@ -27,9 +27,23 @@ export default function RegisterPage() {
     if (!agreed) { setError("Kullanım şartlarını kabul etmelisiniz."); return; }
     setError("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setDone(true);
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Kayıt sırasında bir hata oluştu.");
+        return;
+      }
+      setDone(true);
+    } catch {
+      setError("Sunucuya bağlanılamadı. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const passwordStrength = (() => {

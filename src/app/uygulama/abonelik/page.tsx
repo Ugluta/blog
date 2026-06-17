@@ -1,12 +1,62 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { PACKAGES } from "@/lib/packages";
 
 export default function SubscriptionPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [yearly, setYearly] = useState(false);
-  const currentPlan = "free";
+  const [loading, setLoading] = useState<string | null>(null);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // TODO: fetch real subscription from API
+  const currentPlan: string = "free";
+
+  const handleUpgrade = async (slug: string) => {
+    if (!session) { router.push("/giris"); return; }
+    if (slug === "free" || slug === currentPlan) return;
+
+    setLoading(slug);
+    try {
+      const res = await fetch("/api/stripe/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planSlug: slug, billing: yearly ? "yearly" : "monthly" }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error ?? "Ödeme sayfası oluşturulamadı.");
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      alert("Sunucuya bağlanılamadı.");
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  const handlePortal = async () => {
+    setPortalLoading(true);
+    try {
+      const res = await fetch("/api/stripe/customer-portal", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error ?? "Abonelik yönetimi sayfası açılamadı.");
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      alert("Sunucuya bağlanılamadı.");
+    } finally {
+      setPortalLoading(false);
+    }
+  };
 
   return (
     <div className="p-4 lg:p-6 max-w-5xl space-y-6">
@@ -77,6 +127,7 @@ export default function SubscriptionPage() {
           const price = yearly && pkg.yearlyPrice ? Math.round(pkg.yearlyPrice / 12) : pkg.price;
           const isCurrent = pkg.slug === currentPlan;
           const isPopular = pkg.isFeatured;
+          const isLoading = loading === pkg.slug;
 
           return (
             <div
@@ -101,6 +152,9 @@ export default function SubscriptionPage() {
                   {price === 0 ? "₺0" : `₺${price}`}
                 </span>
                 <span className="text-slate-500 text-xs">/ay</span>
+                {yearly && pkg.yearlyPrice ? (
+                  <p className="text-[10px] text-slate-500 mt-0.5">₺{pkg.yearlyPrice} / yıl</p>
+                ) : null}
               </div>
 
               <ul className="space-y-1.5 flex-1 text-xs mb-5">
@@ -116,30 +170,41 @@ export default function SubscriptionPage() {
                 <div className="text-center text-xs text-green-400 font-semibold py-2.5 rounded-xl border border-green-500/30 bg-green-500/10">
                   Mevcut Planınız
                 </div>
+              ) : (pkg.price as number) === 0 ? (
+                <div className="text-center text-xs text-slate-500 py-2.5 rounded-xl border border-slate-700/50">
+                  Ücretsiz
+                </div>
               ) : (
-                <Link
-                  href={`/fiyatlandirma?plan=${pkg.slug}`}
-                  className={`block text-center py-2.5 rounded-xl text-sm font-semibold transition-colors
+                <button
+                  onClick={() => handleUpgrade(pkg.slug)}
+                  disabled={isLoading}
+                  className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors disabled:opacity-50
                     ${isPopular ? "bg-amber-500 hover:bg-amber-400 text-slate-900" : "bg-slate-700 hover:bg-slate-600 text-white"}`}
                 >
-                  {(pkg.price as number) > (PACKAGES.find(p => p.slug === currentPlan)?.price ?? 0) ? "Yükselt" : "Düşür"}
-                </Link>
+                  {isLoading ? "Yönlendiriliyor..." : (pkg.price as number) > (PACKAGES.find(p => p.slug === currentPlan)?.price ?? 0) ? "Yükselt" : "Düşür"}
+                </button>
               )}
             </div>
           );
         })}
       </div>
 
-      {/* Cancel */}
-      <div className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-5 flex items-center justify-between">
-        <div>
-          <p className="text-sm font-semibold text-slate-200">Aboneliği İptal Et</p>
-          <p className="text-xs text-slate-500 mt-0.5">Mevcut dönem sonunda ücretsiz plana geçilir</p>
+      {/* Manage / Cancel */}
+      {currentPlan !== "free" && (
+        <div className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-5 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-200">Aboneliği Yönet</p>
+            <p className="text-xs text-slate-500 mt-0.5">Fatura geçmişi, ödeme yöntemi, iptal</p>
+          </div>
+          <button
+            onClick={handlePortal}
+            disabled={portalLoading}
+            className="text-xs text-amber-400 hover:text-amber-300 transition-colors border border-amber-500/30 px-3 py-1.5 rounded-lg disabled:opacity-50"
+          >
+            {portalLoading ? "Yükleniyor..." : "Stripe Portalı Aç →"}
+          </button>
         </div>
-        <button className="text-xs text-red-400 hover:text-red-300 transition-colors border border-red-500/30 px-3 py-1.5 rounded-lg">
-          İptal Et
-        </button>
-      </div>
+      )}
     </div>
   );
 }
