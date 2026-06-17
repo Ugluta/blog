@@ -35,7 +35,7 @@ const footerColumns = [
     title: "Kurumsal",
     type: "links" as const,
     links: [
-      { label: "Gizlilik Politikası", href: "/gizlilik" },
+      { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
       { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
       { label: "Çerez Politikası", href: "/cerez-politikasi" },
       { label: "KVKK", href: "/kvkk" },

@@ -9,6 +9,8 @@ const navSections = [
     title: "Genel",
     items: [
       { label: "Dashboard", href: "/admin", icon: "📊" },
+      { label: "Tüm Yazılar", href: "/admin/posts", icon: "📝" },
+      { label: "Abonelikler", href: "/admin/subscriptions", icon: "💎" },
       { label: "Genel Ayarlar", href: "/admin/settings/general", icon: "⚙️" },
       { label: "Görünüm", href: "/admin/settings/appearance", icon: "🎨" },
       { label: "Tipografi", href: "/admin/settings/typography", icon: "✍️" },
@@ -38,6 +40,7 @@ const navSections = [
   {
     title: "Yayın & Reklam",
     items: [
+      { label: "Newsletter", href: "/admin/newsletter", icon: "📧" },
       { label: "Reklam Yönetimi", href: "/admin/settings/ads", icon: "📢" },
       { label: "Monetizasyon", href: "/admin/settings/monetization", icon: "💰" },
       { label: "SEO Ayarları", href: "/admin/settings/seo", icon: "🔍" },
