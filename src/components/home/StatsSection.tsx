@@ -15,13 +15,12 @@ function useCountUp(target: number, duration = 2000, start = false) {
   useEffect(() => {
     if (!start) return;
     let startTime: number | null = null;
-    const initial = 0;
 
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
-      setCount(Math.floor(initial + (target - initial) * eased));
+      setCount(Math.floor(target * eased));
       if (progress < 1) requestAnimationFrame(step);
     };
 
@@ -33,29 +32,23 @@ function useCountUp(target: number, duration = 2000, start = false) {
 
 function StatCard({
   stat,
-  delay,
   visible,
 }: {
   stat: (typeof stats)[0];
-  delay: number;
   visible: boolean;
 }) {
   const count = useCountUp(stat.value, 2000, visible);
 
   return (
-    <div
-      className="text-center px-6 py-8 rounded-xl bg-slate-800/60 border border-slate-700/50 hover:border-amber-500/30 transition-all duration-300 stat-animated"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="text-4xl mb-3">{stat.icon}</div>
+    <div className="text-center px-6 py-8">
       <div
-        className="text-4xl font-black mb-2 font-inter"
-        style={{ color: "#F59E0B" }}
+        className="text-4xl font-black mb-2"
+        style={{ color: "#F59E0B", fontFamily: "'Inter', sans-serif" }}
       >
         {visible ? formatNumber(count) : "0"}
         {stat.suffix}
       </div>
-      <div className="text-sm font-semibold uppercase tracking-wider text-slate-400 font-inter">
+      <div className="text-sm font-medium uppercase tracking-widest text-slate-400">
         {stat.label}
       </div>
     </div>
@@ -83,22 +76,23 @@ export default function StatsSection() {
   return (
     <section
       ref={ref}
-      className="my-10 rounded-2xl p-8"
-      style={{ backgroundColor: "#1E293B" }}
+      className="anim-fade-in anim-delay-200"
+      style={{ backgroundColor: "#0F172A", borderTop: "1px solid rgba(51,65,85,0.4)", borderBottom: "1px solid rgba(51,65,85,0.4)" }}
     >
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Rakamlarla KURUMSAL
-        </h2>
-        <p className="text-sm text-slate-400 font-inter">
-          15 yıllık deneyimle Türkiye'nin önde gelen haber platformu
-        </p>
-        <div className="mt-3 h-0.5 w-20 mx-auto rounded" style={{ backgroundColor: "#F59E0B" }} />
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, i) => (
-          <StatCard key={stat.id} stat={stat} delay={i * 150} visible={visible} />
-        ))}
+      <div className="max-w-screen-xl mx-auto px-4 py-10">
+        {/* Section label */}
+        <div className="text-center mb-6">
+          <p className="text-xs uppercase tracking-[0.25em] text-slate-500 font-medium">
+            RAKAMLARLA KURUMSAL
+          </p>
+        </div>
+
+        {/* Stats row with vertical dividers */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-700/40">
+          {stats.map((stat) => (
+            <StatCard key={stat.id} stat={stat} visible={visible} />
+          ))}
+        </div>
       </div>
     </section>
   );

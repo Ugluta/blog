@@ -2,85 +2,68 @@ import Image from "next/image";
 import Link from "next/link";
 import { newsCategories, categoryNewsBlocks } from "@/lib/mockData";
 
-function CategoryBlock({ categoryId }: { categoryId: string }) {
-  const cat = newsCategories.find((c) => c.id === categoryId)!;
+const SHOW_CATEGORIES = ["teknoloji", "ekonomi", "dunya", "spor"];
+
+function CategoryRow({ categoryId }: { categoryId: string }) {
+  const cat = newsCategories.find((c) => c.id === categoryId);
+  if (!cat) return null;
   const items = categoryNewsBlocks[categoryId] ?? [];
-  const [main, ...rest] = items;
 
   return (
-    <div className="bg-slate-800 rounded-xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-colors">
-      {/* Category Header */}
-      <div
-        className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50"
-        style={{ borderLeft: `4px solid ${cat.color}` }}
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{cat.icon}</span>
-          <h3
-            className="font-bold text-sm uppercase tracking-wider font-inter"
-            style={{ color: cat.color }}
-          >
+    <div className="mb-10">
+      {/* Category header */}
+      <div className="flex items-center justify-between mb-4">
+        <div
+          className="flex items-center gap-0"
+          style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}
+        >
+          <h3 className="text-sm font-bold uppercase tracking-widest text-slate-200">
             {cat.name}
           </h3>
         </div>
         <Link
           href={`/haberler/${cat.id}`}
-          className="text-xs text-slate-400 hover:text-amber-400 transition-colors font-inter flex items-center gap-1"
+          className="text-xs text-amber-400 hover:text-amber-300 transition-colors font-medium"
         >
-          Tümünü Gör
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          Tümünü Gör →
         </Link>
       </div>
 
-      {/* Main news item */}
-      {main && (
-        <Link href={`/haber/${main.id}`} className="block group px-4 pt-4 pb-3 hover:bg-slate-700/30 transition-colors">
-          <div className="flex gap-3">
-            <div className="flex-shrink-0 relative w-24 h-16 rounded-lg overflow-hidden img-zoom-container bg-slate-700">
-              <Image src={main.image} alt={main.title} fill className="object-cover" sizes="96px" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-semibold leading-snug text-slate-100 group-hover:text-amber-300 transition-colors line-clamp-2">
-                {main.title}
-              </h4>
-              <div className="flex items-center gap-2 mt-1.5">
-                <span className="text-[11px] text-slate-500 font-inter">{main.author}</span>
-                <span className="text-slate-600">·</span>
-                <span className="text-[11px] text-slate-500 font-inter">{main.time}</span>
-              </div>
-            </div>
-          </div>
-        </Link>
-      )}
-
-      {/* Divider */}
-      <div className="mx-4 h-px bg-slate-700/50" />
-
-      {/* Rest of news */}
-      <div className="px-4 pb-3 space-y-0">
-        {rest.slice(0, 3).map((item, idx) => (
-          <div key={item.id}>
-            <Link
-              href={`/haber/${item.id}`}
-              className="flex items-start gap-2.5 py-2.5 group hover:bg-slate-700/20 transition-colors rounded -mx-1 px-1"
+      {/* News cards row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+        {items.map((item) => (
+          <Link
+            key={item.id}
+            href={`/haber/${item.id}`}
+            className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3"
+            style={{ backgroundColor: "#0F172A", borderRadius: "2px" }}
+          >
+            {/* Image 80px */}
+            <div
+              className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-800"
+              style={{ width: 80, height: 64, borderRadius: "1px" }}
             >
-              <span
-                className="flex-shrink-0 w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center mt-0.5"
-                style={{ backgroundColor: `${cat.color}20`, color: cat.color }}
-              >
-                {idx + 2}
-              </span>
-              <div>
-                <h4 className="text-xs font-medium leading-snug text-slate-300 group-hover:text-amber-300 transition-colors line-clamp-2">
-                  {item.title}
-                </h4>
-                <span className="text-[10px] text-slate-500 font-inter mt-0.5 block">{item.time}</span>
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover"
+                sizes="80px"
+              />
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <h4 className="text-xs font-semibold leading-snug text-slate-200 group-hover:text-amber-300 transition-colors line-clamp-3 mb-1">
+                {item.title}
+              </h4>
+              <div className="flex items-center gap-1 text-[10px] text-slate-500">
+                <span>{item.author}</span>
+                <span className="text-slate-700">·</span>
+                <span>{item.time}</span>
               </div>
-            </Link>
-            {idx < 2 && <div className="h-px bg-slate-700/30" />}
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
@@ -89,15 +72,20 @@ function CategoryBlock({ categoryId }: { categoryId: string }) {
 
 export default function NewsCategoryBlocks() {
   return (
-    <section className="my-10">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold section-header" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Kategoriye Göre Haberler
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {Object.keys(categoryNewsBlocks).map((catId) => (
-          <CategoryBlock key={catId} categoryId={catId} />
+    <section className="py-10" style={{ backgroundColor: "#0a0f1e" }}>
+      <div className="max-w-screen-xl mx-auto px-4">
+        {/* Section title */}
+        <div className="mb-8" style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}>
+          <h2
+            className="text-xl font-bold text-white"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            Haberler
+          </h2>
+        </div>
+
+        {SHOW_CATEGORIES.map((catId) => (
+          <CategoryRow key={catId} categoryId={catId} />
         ))}
       </div>
     </section>
