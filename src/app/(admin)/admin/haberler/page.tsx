@@ -34,12 +34,13 @@ const TYPE_LABELS: Record<ContentType, string> = {
 export default async function HaberlerPage({
   searchParams,
 }: {
-  searchParams: { sayfa?: string; tur?: string; durum?: string };
+  searchParams: Promise<{ sayfa?: string; tur?: string; durum?: string }>;
 }) {
-  const page = Number(searchParams.sayfa) || 1;
+  const { sayfa, tur, durum } = await searchParams;
+  const page = Number(sayfa) || 1;
   const perPage = 25;
-  const type = searchParams.tur as ContentType;
-  const status = searchParams.durum as ContentStatus;
+  const type = tur as ContentType;
+  const status = durum as ContentStatus;
 
   const where = {
     ...(type && { type }),
@@ -64,7 +65,7 @@ export default async function HaberlerPage({
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <Newspaper className="w-5 h-5" /> Haberler & İçerik
           </h1>
-          <p className="text-gray-500 text-sm">{total.toLocaleString()} içerik</p>
+          <p className="text-gray-500 text-sm">{total.toLocaleString('tr-TR')} içerik</p>
         </div>
         <div className="flex gap-2">
           <Link href="/admin/scraper" className="flex items-center gap-2 px-3 py-2 bg-purple-50 text-purple-700 rounded-lg text-sm font-medium hover:bg-purple-100">
@@ -76,9 +77,8 @@ export default async function HaberlerPage({
         </div>
       </div>
 
-      {/* Filters */}
       <div className="flex gap-2 bg-white rounded-xl border border-gray-100 p-3">
-        {(['', 'NEWS', 'ANNOUNCEMENT', 'LEGISLATION', 'BLOG'] as (ContentType | ''  )[]).map((t) => (
+        {(['', 'NEWS', 'ANNOUNCEMENT', 'LEGISLATION', 'BLOG'] as (ContentType | '')[]).map((t) => (
           <Link
             key={t || 'all'}
             href={t ? `/admin/haberler?tur=${t}` : '/admin/haberler'}
@@ -123,13 +123,27 @@ export default async function HaberlerPage({
                 </TableCell>
                 <TableCell className="text-gray-500">{formatDate(item.createdAt)}</TableCell>
                 <TableCell className="text-right">
-                  <Link href={`/admin/haberler/${item.id}`}
-                    className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded-lg">Düzenle</Link>
+                  <div className="flex items-center justify-end gap-2">
+                    <Link href={`/haberler/${item.slug}`} target="_blank"
+                      className="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200" title="Önizle">
+                      <Eye className="w-3.5 h-3.5" />
+                    </Link>
+                    <Link href={`/admin/haberler/${item.id}/duzenle`}
+                      className="px-3 py-1.5 text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg font-medium">
+                      Düzenle
+                    </Link>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        {news.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <Newspaper className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p className="text-sm">Henüz içerik yok</p>
+          </div>
+        )}
       </div>
     </div>
   );

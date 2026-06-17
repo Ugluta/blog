@@ -2,8 +2,9 @@ import { db } from '@/lib/db';
 import { formatDate, formatBytes } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
+import { DosyaAksiyonlari } from '@/components/admin/DosyaAksiyonlari';
 import Link from 'next/link';
-import { FolderOpen, Upload, Check, X, Eye } from 'lucide-react';
+import { FolderOpen, Upload } from 'lucide-react';
 import type { Metadata } from 'next';
 import type { FileStatus } from '@prisma/client';
 
@@ -19,12 +20,13 @@ const STATUS_MAP: Record<FileStatus, { label: string; variant: 'success' | 'warn
 export default async function AdminDosyalarPage({
   searchParams,
 }: {
-  searchParams: { sayfa?: string; durum?: string; ara?: string };
+  searchParams: Promise<{ sayfa?: string; durum?: string; ara?: string }>;
 }) {
-  const page = Number(searchParams.sayfa) || 1;
+  const { sayfa, durum, ara } = await searchParams;
+  const page = Number(sayfa) || 1;
   const perPage = 25;
-  const status = searchParams.durum as FileStatus | undefined;
-  const search = searchParams.ara;
+  const status = durum as FileStatus | undefined;
+  const search = ara;
 
   const where = {
     ...(status && { status }),
@@ -36,7 +38,7 @@ export default async function AdminDosyalarPage({
     }),
   };
 
-  const [files, total] = await Promise.all([
+  const [files, total, pendingCount] = await Promise.all([
     db.file.findMany({
       where,
       include: {
@@ -49,9 +51,8 @@ export default async function AdminDosyalarPage({
       take: perPage,
     }),
     db.file.count({ where }),
+    db.file.count({ where: { status: 'PENDING' } }),
   ]);
-
-  const pendingCount = await db.file.count({ where: { status: 'PENDING' } });
 
   return (
     <div className="space-y-5">
@@ -60,7 +61,7 @@ export default async function AdminDosyalarPage({
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <FolderOpen className="w-5 h-5" /> Dosya Yönetimi
           </h1>
-          <p className="text-gray-500 text-sm">{total.toLocaleString()} dosya</p>
+          <p className="text-gray-500 text-sm">{total.toLocaleString('tr-TR')} dosya</p>
         </div>
         <Link href="/admin/dosyalar/yukle"
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
@@ -68,7 +69,6 @@ export default async function AdminDosyalarPage({
         </Link>
       </div>
 
-      {/* Status Filter Tabs */}
       <div className="flex gap-2 flex-wrap">
         {[
           { label: 'Tümü', value: '' },
@@ -126,33 +126,18 @@ export default async function AdminDosyalarPage({
                 <TableCell className="text-gray-500 text-sm">{file.author.name}</TableCell>
                 <TableCell className="text-gray-500 text-sm">{formatDate(file.createdAt)}</TableCell>
                 <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-1">
-                    {file.status === 'PENDING' && (
-                      <>
-                        <form action={`/api/dosyalar/${file.id}`} method="PATCH">
-                          <button
-                            type="button"
-                            className="p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100"
-                            title="Onayla"
-                          >
-                            <Check className="w-4 h-4" />
-                          </button>
-                        </form>
-                        <button className="p-1.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100" title="Reddet">
-                          <X className="w-4 h-4" />
-                        </button>
-                      </>
-                    )}
-                    <Link href={`/admin/dosyalar/${file.id}`}
-                      className="p-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
-                      <Eye className="w-4 h-4" />
-                    </Link>
-                  </div>
+                  <DosyaAksiyonlari fileId={file.id} currentStatus={file.status} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        {files.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            <FolderOpen className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p className="text-sm">Dosya bulunamadı</p>
+          </div>
+        )}
       </div>
     </div>
   );
