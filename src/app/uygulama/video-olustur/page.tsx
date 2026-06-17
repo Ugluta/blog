@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type AspectRatio = "9:16" | "1:1" | "16:9" | "4:5";
 type Scene = { id: string; imageUrl: string; text: string; duration: number };
@@ -37,6 +37,10 @@ export default function VideoCreatorPage() {
   const [scheduleMode, setScheduleMode] = useState<"now" | "later">("now");
   const [scheduledAt, setScheduledAt] = useState("");
   const [rendering, setRendering] = useState(false);
+  const [renderError, setRenderError] = useState("");
+  const [outputUrl, setOutputUrl] = useState("");
+  const [renderProgress, setRenderProgress] = useState("");
+  const projectIdRef = useRef(`tmp_${Date.now()}`);
 
   const addScene = () => {
     sceneCounter++;
@@ -54,9 +58,38 @@ export default function VideoCreatorPage() {
     );
   };
 
-  const startRender = () => {
+  const startRender = async () => {
     setRendering(true);
-    setTimeout(() => { setRendering(false); setStep(4); }, 3000);
+    setRenderError("");
+    setRenderProgress("Sahneler hazırlanıyor...");
+
+    try {
+      const res = await fetch("/api/video/render", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectIdRef.current,
+          scenes: scenes.map((s) => ({ imageUrl: s.imageUrl, text: s.text, duration: s.duration })),
+          aspectRatio: ratio,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setRenderError(data.error ?? "Video oluşturulamadı.");
+        setRendering(false);
+        return;
+      }
+
+      setOutputUrl(data.outputUrl ?? "");
+      setStep(4);
+    } catch {
+      setRenderError("Sunucuya bağlanılamadı.");
+    } finally {
+      setRendering(false);
+      setRenderProgress("");
+    }
   };
 
   const ratioClass: Record<AspectRatio, string> = {
@@ -321,6 +354,12 @@ export default function VideoCreatorPage() {
             )}
           </div>
 
+          {renderError && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+              {renderError}
+            </div>
+          )}
+
           <div className="flex gap-3">
             <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors">
               ← Geri
@@ -336,7 +375,7 @@ export default function VideoCreatorPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Video Hazırlanıyor...
+                  {renderProgress || "Video Hazırlanıyor..."}
                 </span>
               ) : "🎬 Videoyu Oluştur"}
             </button>
@@ -351,12 +390,15 @@ export default function VideoCreatorPage() {
           <h1 className="text-2xl font-bold text-white mb-2">Video Hazır!</h1>
           <p className="text-slate-400 mb-8">Videonuz başarıyla oluşturuldu ve yayın kuyruğuna eklendi.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              href="#"
-              className="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors flex items-center gap-2"
-            >
-              ⬇️ İndir
-            </a>
+            {outputUrl && (
+              <a
+                href={outputUrl}
+                download
+                className="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors flex items-center gap-2"
+              >
+                ⬇️ İndir
+              </a>
+            )}
             <button
               onClick={() => { setStep(1); setTitle(""); setMusicFile(null); setScenes([{ id: "s1", imageUrl: "https://picsum.photos/400/700?random=1", text: "Sahne 1", duration: 3 }]); }}
               className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition-colors"
