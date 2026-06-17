@@ -30,6 +30,7 @@ model User {
   usageStat      UsageStat?
   posts          Post[]
   galleryAlbums  GalleryAlbum[]
+  comments       Comment[]
 
   @@map("users")
 }
@@ -393,14 +394,49 @@ model Post {
   featured        Boolean    @default(false)
   metaTitle       String?
   metaDescription String?
+  commentsEnabled Boolean    @default(true)
 
   author   User      @relation(fields: [authorId], references: [id])
   category Category? @relation(fields: [categoryId], references: [id])
+  comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("posts")
+}
+
+// ─── COMMENTS ─────────────────────────────────────────────────────────────────
+
+model Comment {
+  id        String        @id @default(cuid())
+  postId    String
+  userId    String?
+  parentId  String?
+  guestName  String?
+  guestEmail String?
+  content   String        @db.Text
+  status    CommentStatus @default(PENDING)
+  likeCount Int           @default(0)
+  ipAddress String?
+
+  post     Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId, status])
+  @@map("comments")
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SPAM
 }
 
 enum PostStatus {

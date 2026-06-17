@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import MegaHeader from "@/components/layout/MegaHeader";
 import Footer from "@/components/layout/Footer";
 import Sidebar from "@/components/layout/Sidebar";
+import CommentSection from "@/components/comments/CommentSection";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -206,6 +207,9 @@ export default async function HaberDetayPage({ params }: Props) {
                   </div>
                 </div>
               )}
+
+              {/* Comments */}
+              <CommentSection slug={slug} postTitle={post.title} />
 
               {/* Related posts */}
               {related.length > 0 && (
