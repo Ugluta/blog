@@ -42,3 +42,5 @@ next-env.d.ts
 
 # claude code worktrees
 .claude/worktrees/
+
+/src/generated/prisma

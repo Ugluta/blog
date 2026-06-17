@@ -1,0 +1,346 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(VIEWER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts       Account[]
+  sessions       Session[]
+  subscription   Subscription?
+  socialAccounts SocialAccount[]
+  mediaFiles     MediaFile[]
+  videoProjects  VideoProject[]
+  publishJobs    PublishJob[]
+  usageStat      UsageStat?
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─── ROLES ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  PUBLISHER
+  VIEWER
+}
+
+// ─── PACKAGES & SUBSCRIPTIONS ─────────────────────────────────────────────────
+
+model Package {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String?
+  price       Float
+  yearlyPrice Float?
+  currency    String  @default("TRY")
+  isActive    Boolean @default(true)
+  isFeatured  Boolean @default(false)
+  sortOrder   Int     @default(0)
+  stripePriceId       String?
+  stripeYearlyPriceId String?
+
+  // Limits (-1 = unlimited)
+  videoPerMonth    Int     @default(3)
+  storageGb        Float   @default(0.5)
+  socialAccounts   Int     @default(1)
+  teamMembers      Int     @default(1)
+  maxVideoSeconds  Int     @default(60)
+  maxResolution    String  @default("720p")
+
+  // Features
+  apiAccess        Boolean @default(false)
+  watermark        Boolean @default(true)
+  prioritySupport  Boolean @default(false)
+  customBranding   Boolean @default(false)
+  analyticsAccess  Boolean @default(false)
+  scheduledPosting Boolean @default(false)
+
+  features      String[]
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("packages")
+}
+
+model Subscription {
+  id           String             @id @default(cuid())
+  userId       String             @unique
+  packageId    String
+  status       SubscriptionStatus @default(ACTIVE)
+  billingPeriod BillingPeriod     @default(MONTHLY)
+  startedAt    DateTime           @default(now())
+  expiresAt    DateTime?
+  canceledAt   DateTime?
+  autoRenew    Boolean            @default(true)
+  stripeSubscriptionId String?
+  stripeCustomerId     String?
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package Package @relation(fields: [packageId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  EXPIRED
+  PAUSED
+}
+
+enum BillingPeriod {
+  MONTHLY
+  YEARLY
+}
+
+// ─── USAGE ────────────────────────────────────────────────────────────────────
+
+model UsageStat {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  videosThisMonth Int      @default(0)
+  storageUsedGb   Float    @default(0)
+  lastResetAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("usage_stats")
+}
+
+// ─── SOCIAL ACCOUNTS ──────────────────────────────────────────────────────────
+
+model SocialAccount {
+  id             String         @id @default(cuid())
+  userId         String
+  platform       SocialPlatform
+  platformUserId String
+  displayName    String
+  username       String?
+  avatarUrl      String?
+  accessToken    String         @db.Text
+  refreshToken   String?        @db.Text
+  tokenExpiresAt DateTime?
+  scope          String?
+  isActive       Boolean        @default(true)
+  metadata       Json?
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publishJobs PublishJob[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, platform, platformUserId])
+  @@map("social_accounts")
+}
+
+enum SocialPlatform {
+  TWITTER
+  INSTAGRAM
+  FACEBOOK_PAGE
+  FACEBOOK_GROUP
+  TIKTOK
+  YOUTUBE
+  LINKEDIN
+  PINTEREST
+  REDDIT
+  MEDIUM
+}
+
+// ─── MEDIA FILES ──────────────────────────────────────────────────────────────
+
+model MediaFile {
+  id           String    @id @default(cuid())
+  userId       String
+  name         String
+  originalName String
+  type         MediaType
+  mimeType     String
+  sizeBytes    Float
+  url          String
+  storageKey   String
+  duration     Float?
+  width        Int?
+  height       Int?
+  thumbnail    String?
+  metadata     Json?
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  videoProjects VideoProject[] @relation("VideoMusic")
+  scenes        Scene[]
+
+  createdAt DateTime @default(now())
+
+  @@map("media_files")
+}
+
+enum MediaType {
+  AUDIO
+  VIDEO
+  IMAGE
+}
+
+// ─── VIDEO PROJECTS ───────────────────────────────────────────────────────────
+
+model VideoProject {
+  id          String        @id @default(cuid())
+  userId      String
+  title       String
+  description String?
+  status      ProjectStatus @default(DRAFT)
+  aspectRatio AspectRatio   @default(VERTICAL_9_16)
+  duration    Float?
+  musicId     String?
+  outputUrl   String?
+  storageKey  String?
+  thumbnail   String?
+  renderJobId String?
+  renderError String?
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  music       MediaFile?   @relation("VideoMusic", fields: [musicId], references: [id])
+  scenes      Scene[]
+  publishJobs PublishJob[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("video_projects")
+}
+
+enum ProjectStatus {
+  DRAFT
+  PROCESSING
+  READY
+  FAILED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum AspectRatio {
+  VERTICAL_9_16
+  SQUARE_1_1
+  HORIZONTAL_16_9
+  HORIZONTAL_4_5
+}
+
+model Scene {
+  id           String  @id @default(cuid())
+  projectId    String
+  order        Int
+  duration     Float   @default(3)
+  imageId      String?
+  imageUrl     String?
+  text         String?
+  textStyle    Json?
+  transition   String?
+  kenBurns     Boolean @default(false)
+  overlayColor String?
+
+  project VideoProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  image   MediaFile?   @relation(fields: [imageId], references: [id])
+
+  @@map("scenes")
+}
+
+// ─── PUBLISH JOBS ─────────────────────────────────────────────────────────────
+
+model PublishJob {
+  id              String    @id @default(cuid())
+  userId          String
+  videoProjectId  String
+  socialAccountId String
+  status          JobStatus @default(PENDING)
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  caption         String?   @db.Text
+  hashtags        String[]
+  platformPostId  String?
+  platformUrl     String?
+  error           String?   @db.Text
+  retryCount      Int       @default(0)
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  videoProject  VideoProject  @relation(fields: [videoProjectId], references: [id])
+  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("publish_jobs")
+}
+
+enum JobStatus {
+  PENDING
+  QUEUED
+  PROCESSING
+  SUCCESS
+  FAILED
+  SCHEDULED
+  CANCELED
+}
