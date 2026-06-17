@@ -1,42 +1,110 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+
+type ConnectedAccount = {
+  id: string;
+  platform: string;
+  displayName: string;
+  username?: string | null;
+  avatarUrl?: string | null;
+  createdAt: string;
+};
 
 const PLATFORMS = [
-  { id: "tiktok", name: "TikTok", icon: "🎵", color: "from-pink-500/20 to-rose-500/10", border: "border-pink-500/30", desc: "Video + Ses içerikler", authUrl: "#" },
-  { id: "instagram", name: "Instagram", icon: "📷", color: "from-purple-500/20 to-pink-500/10", border: "border-purple-500/30", desc: "Reels, Feed, Stories", authUrl: "#" },
-  { id: "youtube", name: "YouTube", icon: "▶️", color: "from-red-500/20 to-red-600/10", border: "border-red-500/30", desc: "Shorts + Uzun video", authUrl: "#" },
-  { id: "twitter", name: "Twitter / X", icon: "🐦", color: "from-sky-500/20 to-blue-500/10", border: "border-sky-500/30", desc: "Video + Tweet", authUrl: "#" },
-  { id: "facebook_page", name: "Facebook Sayfa", icon: "📘", color: "from-blue-500/20 to-indigo-500/10", border: "border-blue-500/30", desc: "Sayfa paylaşımları", authUrl: "#" },
-  { id: "facebook_group", name: "Facebook Grup", icon: "👥", color: "from-blue-500/20 to-indigo-500/10", border: "border-blue-500/30", desc: "Grup paylaşımları", authUrl: "#" },
-  { id: "linkedin", name: "LinkedIn", icon: "💼", color: "from-blue-600/20 to-cyan-500/10", border: "border-blue-600/30", desc: "Profesyonel içerik", authUrl: "#" },
-  { id: "pinterest", name: "Pinterest", icon: "📌", color: "from-red-500/20 to-rose-500/10", border: "border-red-500/30", desc: "Pin + Board", authUrl: "#" },
-  { id: "reddit", name: "Reddit", icon: "🤖", color: "from-orange-500/20 to-red-500/10", border: "border-orange-500/30", desc: "Subreddit paylaşımı", authUrl: "#" },
-  { id: "medium", name: "Medium", icon: "✍️", color: "from-slate-500/20 to-slate-600/10", border: "border-slate-500/30", desc: "Blog yazıları", authUrl: "#" },
+  { id: "tiktok",         name: "TikTok",         icon: "🎵", color: "from-pink-500/20 to-rose-500/10",    border: "border-pink-500/30",   desc: "Video + Ses içerikler",    envKey: "TIKTOK_CLIENT_KEY" },
+  { id: "instagram",      name: "Instagram",       icon: "📷", color: "from-purple-500/20 to-pink-500/10", border: "border-purple-500/30", desc: "Reels, Feed, Stories",     envKey: "META_APP_ID" },
+  { id: "youtube",        name: "YouTube",         icon: "▶️", color: "from-red-500/20 to-red-600/10",     border: "border-red-500/30",    desc: "Shorts + Uzun video",      envKey: "GOOGLE_CLIENT_ID" },
+  { id: "twitter",        name: "Twitter / X",     icon: "🐦", color: "from-sky-500/20 to-blue-500/10",   border: "border-sky-500/30",    desc: "Video + Tweet",            envKey: "TWITTER_CLIENT_ID" },
+  { id: "facebook_page",  name: "Facebook Sayfa",  icon: "📘", color: "from-blue-500/20 to-indigo-500/10", border: "border-blue-500/30",  desc: "Sayfa paylaşımları",       envKey: "META_APP_ID" },
+  { id: "facebook_group", name: "Facebook Grup",   icon: "👥", color: "from-blue-500/20 to-indigo-500/10", border: "border-blue-500/30",  desc: "Grup paylaşımları",        envKey: "META_APP_ID" },
+  { id: "linkedin",       name: "LinkedIn",        icon: "💼", color: "from-blue-600/20 to-cyan-500/10",  border: "border-blue-600/30",   desc: "Profesyonel içerik",       envKey: "LINKEDIN_CLIENT_ID" },
+  { id: "pinterest",      name: "Pinterest",       icon: "📌", color: "from-red-500/20 to-rose-500/10",   border: "border-red-500/30",    desc: "Pin + Board",              envKey: "PINTEREST_APP_ID" },
+  { id: "reddit",         name: "Reddit",          icon: "🤖", color: "from-orange-500/20 to-red-500/10", border: "border-orange-500/30", desc: "Subreddit paylaşımı",      envKey: "REDDIT_CLIENT_ID" },
+  { id: "medium",         name: "Medium",          icon: "✍️", color: "from-slate-500/20 to-slate-600/10", border: "border-slate-500/30", desc: "Blog yazıları",            envKey: "MEDIUM_CLIENT_ID" },
 ];
 
+const PLATFORM_LABEL: Record<string, string> = {
+  TIKTOK: "TikTok",
+  INSTAGRAM: "Instagram",
+  YOUTUBE: "YouTube",
+  TWITTER: "Twitter / X",
+  FACEBOOK_PAGE: "Facebook Sayfa",
+  FACEBOOK_GROUP: "Facebook Grup",
+  LINKEDIN: "LinkedIn",
+  PINTEREST: "Pinterest",
+  REDDIT: "Reddit",
+  MEDIUM: "Medium",
+};
+
+const PLATFORM_ICON: Record<string, string> = {
+  TIKTOK: "🎵", INSTAGRAM: "📷", YOUTUBE: "▶️", TWITTER: "🐦",
+  FACEBOOK_PAGE: "📘", FACEBOOK_GROUP: "👥", LINKEDIN: "💼",
+  PINTEREST: "📌", REDDIT: "🤖", MEDIUM: "✍️",
+};
+
+const MAX_FREE_ACCOUNTS = 1;
+
 export default function SocialAccountsPage() {
-  const [connected, setConnected] = useState<string[]>([]);
-  const [connecting, setConnecting] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const [accounts, setAccounts] = useState<ConnectedAccount[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [disconnecting, setDisconnecting] = useState<string | null>(null);
 
-  const connect = (id: string) => {
-    setConnecting(id);
-    setTimeout(() => {
-      setConnected((prev) => [...prev, id]);
-      setConnecting(null);
-    }, 1500);
+  const showToast = (type: "success" | "error", text: string) => {
+    setToast({ type, text });
+    setTimeout(() => setToast(null), 3500);
   };
 
-  const disconnect = (id: string) => {
-    setConnected((prev) => prev.filter((p) => p !== id));
+  useEffect(() => {
+    const connected = searchParams.get("connected");
+    const error = searchParams.get("error");
+    if (connected) showToast("success", `${PLATFORM_LABEL[connected.toUpperCase()] ?? connected} başarıyla bağlandı!`);
+    if (error) showToast("error", `Bağlantı başarısız: ${error}`);
+  }, [searchParams]);
+
+  useEffect(() => {
+    fetch("/api/social/accounts")
+      .then((r) => r.json())
+      .then((d) => setAccounts(d.accounts ?? []))
+      .catch(() => setAccounts([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const disconnect = async (id: string) => {
+    setDisconnecting(id);
+    await fetch("/api/social/accounts", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    setAccounts((prev) => prev.filter((a) => a.id !== id));
+    setDisconnecting(null);
+    showToast("success", "Hesap bağlantısı kesildi");
   };
+
+  const connectedPlatformIds = new Set(accounts.map((a) => a.platform.toLowerCase().replace("_", "_")));
+  const atLimit = accounts.length >= MAX_FREE_ACCOUNTS;
+
+  const availablePlatforms = PLATFORMS.filter(
+    (p) => !connectedPlatformIds.has(p.id.toUpperCase()) && !accounts.some((a) => a.platform === p.id.toUpperCase())
+  );
 
   return (
     <div className="p-4 lg:p-6 max-w-4xl space-y-6">
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-lg transition-all ${toast.type === "success" ? "bg-green-500/20 border border-green-500/40 text-green-300" : "bg-red-500/20 border border-red-500/40 text-red-300"}`}>
+          {toast.type === "success" ? "✓ " : "✕ "}{toast.text}
+        </div>
+      )}
+
       <div>
         <h1 className="text-2xl font-bold text-white">Sosyal Hesaplar</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Platformları bağlayın ve videolarınızı otomatik paylaşın.
+          Platformları bağlayın ve içeriklerinizi otomatik paylaşın.
           <span className="text-amber-400 ml-1">Ücretsiz planda 1 hesap</span>
         </p>
       </div>
@@ -44,40 +112,56 @@ export default function SocialAccountsPage() {
       {/* Limit bar */}
       <div className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-4 flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-white">Bağlı Hesap: {connected.length} / 1</p>
+          <p className="text-sm font-semibold text-white">
+            Bağlı Hesap: {loading ? "…" : accounts.length} / {MAX_FREE_ACCOUNTS}
+          </p>
           <p className="text-xs text-slate-500 mt-0.5">Daha fazla hesap için Başlangıç planına geçin</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
-            <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${(connected.length / 1) * 100}%` }} />
+            <div
+              className="h-full bg-amber-500 rounded-full transition-all"
+              style={{ width: `${Math.min((accounts.length / MAX_FREE_ACCOUNTS) * 100, 100)}%` }}
+            />
           </div>
-          <a href="/fiyatlandirma" className="text-xs text-amber-400 hover:text-amber-300 whitespace-nowrap">Yükselt →</a>
+          <a href="/fiyatlandirma" className="text-xs text-amber-400 hover:text-amber-300 whitespace-nowrap">
+            Yükselt →
+          </a>
         </div>
       </div>
 
       {/* Connected accounts */}
-      {connected.length > 0 && (
+      {accounts.length > 0 && (
         <div>
           <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Bağlı Hesaplar</h2>
           <div className="space-y-2">
-            {connected.map((id) => {
-              const p = PLATFORMS.find((pl) => pl.id === id)!;
+            {accounts.map((account) => {
+              const p = PLATFORMS.find((pl) => pl.id === account.platform.toLowerCase()) ??
+                { color: "from-slate-500/20 to-slate-600/10", border: "border-slate-500/30" };
+              const icon = PLATFORM_ICON[account.platform] ?? "📋";
+              const label = PLATFORM_LABEL[account.platform] ?? account.platform;
               return (
-                <div key={id} className={`flex items-center justify-between p-4 rounded-xl border bg-gradient-to-r ${p.color} ${p.border}`}>
+                <div
+                  key={account.id}
+                  className={`flex items-center justify-between p-4 rounded-xl border bg-gradient-to-r ${p.color} ${p.border}`}
+                >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{p.icon}</span>
+                    <span className="text-2xl">{icon}</span>
                     <div>
-                      <p className="text-sm font-semibold text-white">{p.name}</p>
-                      <p className="text-xs text-slate-400">@kullanici_adi · Bağlandı</p>
+                      <p className="text-sm font-semibold text-white">{label}</p>
+                      <p className="text-xs text-slate-400">
+                        {account.username ? `@${account.username}` : account.displayName} · Bağlandı
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">✓ Aktif</span>
                     <button
-                      onClick={() => disconnect(id)}
-                      className="text-xs text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded"
+                      onClick={() => disconnect(account.id)}
+                      disabled={disconnecting === account.id}
+                      className="text-xs text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded disabled:opacity-50"
                     >
-                      Bağlantıyı Kes
+                      {disconnecting === account.id ? "…" : "Bağlantıyı Kes"}
                     </button>
                   </div>
                 </div>
@@ -87,15 +171,21 @@ export default function SocialAccountsPage() {
         </div>
       )}
 
-      {/* Available platforms */}
-      <div>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Kullanılabilir Platformlar</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {PLATFORMS.filter((p) => !connected.includes(p.id)).map((platform) => {
-            const isConnecting = connecting === platform.id;
-            const atLimit = connected.length >= 1;
+      {/* Skeleton while loading */}
+      {loading && (
+        <div className="space-y-2">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-16 rounded-xl bg-slate-800/40 animate-pulse" />
+          ))}
+        </div>
+      )}
 
-            return (
+      {/* Available platforms */}
+      {!loading && (
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Kullanılabilir Platformlar</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {availablePlatforms.map((platform) => (
               <div
                 key={platform.id}
                 className={`flex items-center justify-between p-4 rounded-xl border bg-[#1E293B] ${platform.border} hover:bg-slate-700/30 transition-colors`}
@@ -108,31 +198,29 @@ export default function SocialAccountsPage() {
                   </div>
                 </div>
                 {atLimit ? (
-                  <a href="/fiyatlandirma" className="text-xs text-amber-400 hover:text-amber-300 transition-colors whitespace-nowrap px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10">
+                  <a
+                    href="/fiyatlandirma"
+                    className="text-xs text-amber-400 hover:text-amber-300 transition-colors whitespace-nowrap px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10"
+                  >
                     Yükselt
                   </a>
                 ) : (
-                  <button
-                    onClick={() => connect(platform.id)}
-                    disabled={isConnecting}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white disabled:opacity-50 transition-colors whitespace-nowrap"
+                  <a
+                    href={`/api/social/connect/${platform.id}`}
+                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white transition-colors whitespace-nowrap"
                   >
-                    {isConnecting ? (
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                        </svg>
-                        Bağlanıyor
-                      </span>
-                    ) : "Bağla"}
-                  </button>
+                    Bağla
+                  </a>
                 )}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      <p className="text-xs text-slate-600">
+        OAuth 2.0 ile güvenli bağlantı. Şifreniz hiçbir zaman saklanmaz. Her platformun geliştirici hesabı ve API anahtarı gereklidir.
+      </p>
     </div>
   );
 }
