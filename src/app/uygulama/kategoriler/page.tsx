@@ -474,7 +474,7 @@ export default function KategorilerPage() {
                         onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
                         placeholder="Emoji veya harf"
                         maxLength={4}
-                        className="w-24 bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2 text-sm text-center focus:outline-none focus:border-amber-500 transition-colors"
+                        className="w-24 bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-3 py-2 text-sm text-center focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                       />
                       <div className="flex flex-wrap gap-1">
                         {PRESET_ICONS.slice(0, 12).map((emoji) => (
@@ -482,7 +482,7 @@ export default function KategorilerPage() {
                             key={emoji}
                             type="button"
                             onClick={() => setForm((f) => ({ ...f, icon: emoji }))}
-                            className={`w-7 h-7 rounded-lg text-base hover:bg-slate-600 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
+                            className={`w-7 h-7 rounded-lg text-base hover:bg-slate-700/50 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
                           >
                             {emoji}
                           </button>
@@ -496,7 +496,7 @@ export default function KategorilerPage() {
                           key={emoji}
                           type="button"
                           onClick={() => setForm((f) => ({ ...f, icon: emoji }))}
-                          className={`w-7 h-7 rounded-lg text-base hover:bg-slate-600 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
+                          className={`w-7 h-7 rounded-lg text-base hover:bg-slate-700/50 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
                         >
                           {emoji}
                         </button>
@@ -512,7 +512,7 @@ export default function KategorilerPage() {
                         type="color"
                         value={form.color}
                         onChange={(e) => setForm((f) => ({ ...f, color: e.target.value }))}
-                        className="w-8 h-8 rounded-lg border border-slate-600 bg-slate-800 cursor-pointer p-0.5"
+                        className="w-8 h-8 rounded-lg border border-slate-700/50 bg-slate-900/50 cursor-pointer p-0.5"
                       />
                       <div className="flex gap-1.5 flex-wrap">
                         {PRESET_COLORS.map((c) => (
@@ -520,7 +520,7 @@ export default function KategorilerPage() {
                             key={c}
                             type="button"
                             onClick={() => setForm((f) => ({ ...f, color: c }))}
-                            className={`w-5 h-5 rounded-full transition-transform hover:scale-125 ${form.color === c ? "ring-2 ring-offset-1 ring-offset-slate-800 ring-white" : ""}`}
+                            className={`w-5 h-5 rounded-full transition-transform hover:scale-125 ${form.color === c ? "ring-2 ring-offset-1 ring-offset-slate-900 ring-white" : ""}`}
                             style={{ backgroundColor: c }}
                           />
                         ))}
@@ -539,7 +539,7 @@ export default function KategorilerPage() {
                   onChange={(e) => updateName(e.target.value)}
                   placeholder="örn. Yapay Zeka"
                   autoFocus
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-colors"
+                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                 />
               </div>
 
@@ -547,7 +547,7 @@ export default function KategorilerPage() {
               <div>
                 <label className="block text-xs font-medium text-slate-400 mb-1.5">
                   URL Slug
-                  <span className="ml-1 text-slate-600 font-normal">(otomatik oluşturulur)</span>
+                  <span className="ml-1 text-slate-500 font-normal">(otomatik oluşturulur)</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm select-none">/</span>
@@ -556,7 +556,7 @@ export default function KategorilerPage() {
                     value={form.slug}
                     onChange={(e) => setForm((f) => ({ ...f, slug: slugify(e.target.value), slugLocked: true }))}
                     placeholder="kategori-slug"
-                    className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl pl-6 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-colors"
+                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl pl-6 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                   />
                   <button
                     type="button"
@@ -589,7 +589,7 @@ export default function KategorilerPage() {
                   onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Bu kategorinin içeriğini kısaca açıklayın..."
                   rows={3}
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-colors resize-none"
+                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors resize-none"
                 />
               </div>
 
@@ -601,14 +601,14 @@ export default function KategorilerPage() {
                   value={form.image}
                   onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
                   placeholder="https://..."
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-colors"
+                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                 />
                 {form.image && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={form.image}
                     alt="Önizleme"
-                    className="mt-2 w-full h-28 object-cover rounded-xl border border-slate-700"
+                    className="mt-2 w-full h-28 object-cover rounded-xl border border-slate-700/50"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                   />
                 )}
@@ -621,7 +621,7 @@ export default function KategorilerPage() {
                   <select
                     value={form.parentId}
                     onChange={(e) => setForm((f) => ({ ...f, parentId: e.target.value }))}
-                    className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                   >
                     <option value="">— Kök —</option>
                     {flat
@@ -640,7 +640,7 @@ export default function KategorilerPage() {
                     min="0"
                     value={form.order}
                     onChange={(e) => setForm((f) => ({ ...f, order: e.target.value }))}
-                    className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
                   />
                 </div>
               </div>
@@ -661,7 +661,7 @@ export default function KategorilerPage() {
             <div className="flex gap-3 p-5 border-t border-slate-700/50 flex-shrink-0">
               <button
                 onClick={closeModal}
-                className="flex-1 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors text-sm"
               >
                 İptal
               </button>
@@ -706,7 +706,7 @@ export default function KategorilerPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors text-sm"
               >
                 İptal
               </button>
@@ -717,7 +717,7 @@ export default function KategorilerPage() {
                   deleteConfirm._count.children > 0 ||
                   deleteConfirm._count.posts + deleteConfirm._count.contentItems > 0
                 }
-                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-400 disabled:opacity-40 text-white font-semibold transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600/30 disabled:opacity-40 font-semibold transition-colors text-sm"
               >
                 {deleteLoading ? "Siliniyor..." : "Evet, Sil"}
               </button>

@@ -171,7 +171,7 @@ export default function IceriklerPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 statusFilter === s
                   ? "bg-amber-500 text-slate-900"
-                  : "text-slate-400 hover:text-white"
+                  : "text-slate-400 hover:text-white border border-slate-700/50"
               }`}
             >
               {labels[s]}
@@ -190,13 +190,13 @@ export default function IceriklerPage() {
             type="text" value={q}
             onChange={(e) => { setQ(e.target.value); setPage(1); }}
             placeholder="Başlıkta ara..."
-            className="w-full bg-[#1E293B] border border-slate-700 text-slate-200 placeholder-slate-500 rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+            className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl pl-9 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-amber-500/50 focus:outline-none transition-colors"
           />
         </div>
         <select
           value={catFilter}
           onChange={(e) => { setCatFilter(e.target.value); setPage(1); }}
-          className="bg-[#1E293B] border border-slate-700 text-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+          className="bg-slate-900/50 border border-slate-700/50 text-slate-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500/50 focus:outline-none"
         >
           <option value="">Tüm Kategoriler</option>
           {categories.map((c) => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
@@ -204,7 +204,7 @@ export default function IceriklerPage() {
         <select
           value={sourceFilter}
           onChange={(e) => { setSourceFilter(e.target.value); setPage(1); }}
-          className="bg-[#1E293B] border border-slate-700 text-slate-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+          className="bg-slate-900/50 border border-slate-700/50 text-slate-300 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-amber-500/50 focus:outline-none"
         >
           <option value="">Tüm Kaynaklar</option>
           {sources.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -293,7 +293,7 @@ export default function IceriklerPage() {
               return (
                 <div
                   key={item.id}
-                  className="grid grid-cols-[auto_auto_1fr_auto_auto_auto] items-center gap-4 px-4 py-3 hover:bg-slate-700/20 transition-colors group"
+                  className="grid grid-cols-[auto_auto_1fr_auto_auto_auto] items-center gap-4 px-4 py-3 hover:bg-slate-700/30 transition-colors group"
                 >
                   <input
                     type="checkbox"
@@ -356,7 +356,7 @@ export default function IceriklerPage() {
                         {item.category.icon} {item.category.name}
                       </span>
                     ) : (
-                      <span className="text-xs text-slate-600">—</span>
+                      <span className="text-xs text-slate-500">—</span>
                     )}
                   </div>
 
@@ -456,11 +456,11 @@ export default function IceriklerPage() {
             <span className="text-xs text-slate-500">Sayfa {page} / {totalPages} • {total} içerik</span>
             <div className="flex gap-2">
               <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-                className="px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:border-amber-500/50 hover:text-amber-400 disabled:opacity-40 transition-colors text-xs">
+                className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-400 disabled:opacity-40 transition-colors text-xs">
                 ← Önceki
               </button>
               <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                className="px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:border-amber-500/50 hover:text-amber-400 disabled:opacity-40 transition-colors text-xs">
+                className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-400 disabled:opacity-40 transition-colors text-xs">
                 Sonraki →
               </button>
             </div>
