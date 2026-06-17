@@ -54,6 +54,7 @@ const navSections = [
   {
     title: "Sistem",
     items: [
+      { label: "Kullanıcılar", href: "/admin/users", icon: "👥" },
       { label: "Performans", href: "/admin/settings/performance", icon: "⚡" },
       { label: "Güvenlik", href: "/admin/settings/security", icon: "🔒" },
       { label: "API Ayarları", href: "/admin/settings/api", icon: "🔑" },

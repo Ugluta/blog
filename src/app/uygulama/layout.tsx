@@ -32,6 +32,7 @@ const NAV = [
   {
     section: "Sistem",
     items: [
+      { href: "/uygulama/analitik", label: "Analitik", icon: "📊" },
       { href: "/uygulama/medya", label: "Medya Kütüphanesi", icon: "🎵" },
       { href: "/uygulama/abonelik", label: "Abonelik", icon: "💎" },
       { href: "/uygulama/ayarlar", label: "Ayarlar", icon: "⚙️" },
