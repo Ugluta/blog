@@ -29,6 +29,7 @@ model User {
   publishJobs    PublishJob[]
   usageStat      UsageStat?
   posts          Post[]
+  galleryAlbums  GalleryAlbum[]
 
   @@map("users")
 }
@@ -366,6 +367,7 @@ model Category {
   posts          Post[]
   contentItems   ContentItem[]
   scraperSources ScraperSource[]
+  galleryAlbums  GalleryAlbum[]  @relation("GalleryCategory")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -455,6 +457,47 @@ model SiteSetting {
   updatedAt DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+// ─── GALLERY ─────────────────────────────────────────────────────────────────
+
+model GalleryAlbum {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?  @db.Text
+  coverImage  String?
+  categoryId  String?
+  isPublic    Boolean  @default(true)
+  order       Int      @default(0)
+  userId      String
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category?     @relation("GalleryCategory", fields: [categoryId], references: [id])
+  images   GalleryImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("gallery_albums")
+}
+
+model GalleryImage {
+  id           String  @id @default(cuid())
+  albumId      String
+  title        String?
+  description  String? @db.Text
+  url          String
+  thumbnailUrl String?
+  width        Int?
+  height       Int?
+  order        Int     @default(0)
+
+  album GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("gallery_images")
 }
 
 // ─── CONTENT ITEMS (scraped drafts) ───────────────────────────────────────────

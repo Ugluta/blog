@@ -26,6 +26,7 @@ const navItems = [
   { label: "Blog", href: "/blog" },
   { label: "Ürünler & Hizmetler", href: "/urunler" },
   { label: "Kod Örnekleri", href: "/kod-ornekleri" },
+  { label: "Galeri", href: "/galeri" },
   { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "İletişim", href: "/iletisim" },
 ];

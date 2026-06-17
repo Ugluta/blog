@@ -1,0 +1,148 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+
+type GalleryImage = {
+  id: string; url: string; thumbnailUrl?: string | null;
+  title?: string | null; order: number;
+};
+
+type Album = { id: string; title: string; slug: string };
+
+export default function UserAlbumPage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  const [album, setAlbum] = useState<Album | null>(null);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
+  const [showUrl, setShowUrl] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
+
+  useEffect(() => {
+    fetch(`/api/gallery/albums/${id}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.album) { setAlbum(d.album); setImages(d.album.images ?? []); }
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const uploadFile = async (file: File) => {
+    setUploading(true);
+    try {
+      const fd = new FormData(); fd.append("file", file);
+      const res = await fetch("/api/media/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error();
+      const { url } = await res.json();
+      await addImage(url);
+    } catch { showToast("Yükleme başarısız"); } finally { setUploading(false); }
+  };
+
+  const addImage = async (url: string) => {
+    const res = await fetch(`/api/gallery/albums/${id}/images`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, order: images.length }),
+    });
+    if (res.ok) { const d = await res.json(); setImages(p => [...p, d.image]); showToast("Fotoğraf eklendi"); }
+  };
+
+  const deleteImage = async (imgId: string) => {
+    await fetch(`/api/gallery/images/${imgId}`, { method: "DELETE" });
+    setImages(p => p.filter(i => i.id !== imgId));
+    showToast("Silindi");
+  };
+
+  return (
+    <div className="p-4 lg:p-6 max-w-4xl space-y-6">
+      {toast && (
+        <div className="fixed top-4 right-4 z-50 bg-slate-800 border border-amber-500/40 text-amber-400 px-4 py-2.5 rounded-xl text-sm shadow-xl">
+          {toast}
+        </div>
+      )}
+
+      <div className="flex items-center gap-4">
+        <Link href="/uygulama/galeri" className="text-slate-400 hover:text-amber-400 text-sm">← Geri</Link>
+        {album && (
+          <div className="flex-1 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-white">{album.title}</h1>
+              <p className="text-xs text-slate-500">{images.length} fotoğraf</p>
+            </div>
+            <Link href={`/galeri/${album.slug}`} target="_blank" className="text-xs text-amber-400 hover:text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg transition-colors">
+              Önizle ↗
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {/* Upload zone */}
+      <div
+        onDragOver={e => e.preventDefault()}
+        onDrop={e => { e.preventDefault(); Array.from(e.dataTransfer.files).forEach(uploadFile); }}
+        className="border-2 border-dashed border-slate-700/50 hover:border-slate-600 rounded-2xl p-8 text-center transition-colors"
+      >
+        {uploading ? (
+          <div className="flex items-center justify-center gap-3 text-amber-400">
+            <div className="w-5 h-5 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+            <span className="text-sm">Yükleniyor…</span>
+          </div>
+        ) : (
+          <>
+            <p className="text-2xl mb-2">📷</p>
+            <p className="text-slate-400 text-sm">Sürükle bırak veya</p>
+            <div className="flex items-center justify-center gap-3 mt-3">
+              <button onClick={() => fileRef.current?.click()} className="px-4 py-2 text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition-colors">
+                Dosya Seç
+              </button>
+              <button onClick={() => setShowUrl(!showUrl)} className="px-4 py-2 text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors">
+                URL Ekle
+              </button>
+            </div>
+            {showUrl && (
+              <div className="flex gap-2 mt-3 max-w-sm mx-auto">
+                <input value={urlInput} onChange={e => setUrlInput(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") { addImage(urlInput); setUrlInput(""); setShowUrl(false); } }}
+                  placeholder="https://example.com/image.jpg"
+                  className="flex-1 bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-amber-500" />
+                <button onClick={() => { addImage(urlInput); setUrlInput(""); setShowUrl(false); }}
+                  className="px-3 py-2 text-xs bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg font-semibold">Ekle</button>
+              </div>
+            )}
+          </>
+        )}
+        <input ref={fileRef} type="file" multiple accept="image/*" className="hidden" onChange={e => Array.from(e.target.files ?? []).forEach(uploadFile)} />
+      </div>
+
+      {/* Images */}
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {[1,2,3,4,5,6].map(i => <div key={i} className="aspect-square rounded-xl bg-slate-800/40 animate-pulse" />)}
+        </div>
+      ) : images.length === 0 ? (
+        <p className="text-center text-slate-500 py-8">Henüz fotoğraf yok</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {images.map(img => (
+            <div key={img.id} className="group relative aspect-square rounded-xl overflow-hidden bg-slate-800">
+              <img src={img.thumbnailUrl ?? img.url} alt={img.title ?? ""} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button onClick={() => deleteImage(img.id)} className="px-3 py-1.5 text-xs bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-colors">
+                  Sil
+                </button>
+              </div>
+              {img.title && <p className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] px-2 py-1 truncate">{img.title}</p>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

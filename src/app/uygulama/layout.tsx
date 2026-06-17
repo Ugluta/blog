@@ -11,6 +11,7 @@ const NAV = [
       { href: "/uygulama/yazilar", label: "Yazılar", icon: "📝" },
       { href: "/uygulama/kategoriler", label: "Kategoriler", icon: "🗂️" },
       { href: "/uygulama/icerikler", label: "İçerik Havuzu", icon: "📥" },
+      { href: "/uygulama/galeri", label: "Galeri", icon: "🖼️" },
       { href: "/uygulama/scraper", label: "Scraper", icon: "🤖" },
     ],
   },

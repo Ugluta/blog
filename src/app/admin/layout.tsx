@@ -31,6 +31,7 @@ const navSections = [
       { label: "Footer Menü", href: "/admin/menus/footer", icon: "≡" },
       { label: "Ana Sayfa Bölümleri", href: "/admin/settings/homepage", icon: "🏠" },
       { label: "Sidebar Widget", href: "/admin/settings/sidebar", icon: "▦" },
+      { label: "Galeri Yönetimi", href: "/admin/gallery", icon: "🖼️" },
     ],
   },
   {
