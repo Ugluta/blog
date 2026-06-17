@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-type Params = { params: Promise<{ slug: string }> };
+type Params = { params: Promise<{ id: string }> };
 
 export async function GET(req: NextRequest, { params }: Params) {
-  const { slug } = await params;
+  const { id: slug } = await params;
   const page = Math.max(1, parseInt(req.nextUrl.searchParams.get("page") ?? "1"));
   const limit = 20;
 
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 export async function POST(req: NextRequest, { params }: Params) {
-  const { slug } = await params;
+  const { id: slug } = await params;
   const session = await auth();
   const body = await req.json();
   const { content, parentId, guestName, guestEmail } = body;
