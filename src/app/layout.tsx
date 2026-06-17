@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
+import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,9 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" className="h-full">
-      <body className="min-h-full bg-slate-900 text-slate-100 antialiased">
+      <head>
+        <ThemeProvider />
+      </head>
+      <body className="min-h-full text-slate-100 antialiased">
         <Providers>
-          <div className="min-h-screen bg-[#0F172A]">
+          <div className="min-h-screen">
             {children}
           </div>
         </Providers>
