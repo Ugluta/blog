@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
@@ -22,6 +22,8 @@ export default function UserAlbumPage() {
   const [urlInput, setUrlInput] = useState("");
   const [showUrl, setShowUrl] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [overId, setOverId] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
@@ -58,6 +60,30 @@ export default function UserAlbumPage() {
     await fetch(`/api/gallery/images/${imgId}`, { method: "DELETE" });
     setImages(p => p.filter(i => i.id !== imgId));
     showToast("Silindi");
+  };
+
+  const saveOrder = useCallback(async (ordered: GalleryImage[]) => {
+    await fetch(`/api/gallery/albums/${id}/reorder`, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: ordered.map((img, idx) => ({ id: img.id, order: idx })) }),
+    });
+  }, [id]);
+
+  const handleDragStart = (imgId: string) => setDragId(imgId);
+  const handleDragEnter = (imgId: string) => setOverId(imgId);
+  const handleDragEnd = () => {
+    if (dragId && overId && dragId !== overId) {
+      setImages(prev => {
+        const arr = [...prev];
+        const fromIdx = arr.findIndex(i => i.id === dragId);
+        const toIdx = arr.findIndex(i => i.id === overId);
+        const [moved] = arr.splice(fromIdx, 1);
+        arr.splice(toIdx, 0, moved);
+        saveOrder(arr);
+        return arr;
+      });
+    }
+    setDragId(null); setOverId(null);
   };
 
   return (
@@ -121,7 +147,7 @@ export default function UserAlbumPage() {
         <input ref={fileRef} type="file" multiple accept="image/*" className="hidden" onChange={e => Array.from(e.target.files ?? []).forEach(uploadFile)} />
       </div>
 
-      {/* Images */}
+      {/* Images with drag-to-reorder */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[1,2,3,4,5,6].map(i => <div key={i} className="aspect-square rounded-xl bg-slate-800/40 animate-pulse" />)}
@@ -129,19 +155,39 @@ export default function UserAlbumPage() {
       ) : images.length === 0 ? (
         <p className="text-center text-slate-500 py-8">Henüz fotoğraf yok</p>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {images.map(img => (
-            <div key={img.id} className="group relative aspect-square rounded-xl overflow-hidden bg-slate-800">
-              <img src={img.thumbnailUrl ?? img.url} alt={img.title ?? ""} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <button onClick={() => deleteImage(img.id)} className="px-3 py-1.5 text-xs bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-colors">
-                  Sil
-                </button>
+        <>
+          <p className="text-xs text-slate-600">Sıralamak için sürükleyin</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {images.map(img => (
+              <div
+                key={img.id}
+                draggable
+                onDragStart={() => handleDragStart(img.id)}
+                onDragEnter={() => handleDragEnter(img.id)}
+                onDragEnd={handleDragEnd}
+                onDragOver={e => e.preventDefault()}
+                className={`group relative aspect-square rounded-xl overflow-hidden bg-slate-800 cursor-grab active:cursor-grabbing transition-all ${
+                  overId === img.id && dragId !== img.id ? "ring-2 ring-amber-500 scale-95" : ""
+                } ${dragId === img.id ? "opacity-40" : ""}`}
+              >
+                <img src={img.thumbnailUrl ?? img.url} alt={img.title ?? ""} className="w-full h-full object-cover pointer-events-none" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <button onClick={() => deleteImage(img.id)} className="px-3 py-1.5 text-xs bg-red-500/80 hover:bg-red-500 text-white rounded-lg transition-colors">
+                    Sil
+                  </button>
+                </div>
+                <div className="absolute top-1.5 left-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="w-5 h-5 bg-black/50 rounded flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 6a2 2 0 100-4 2 2 0 000 4zm0 8a2 2 0 100-4 2 2 0 000 4zm0 8a2 2 0 100-4 2 2 0 000 4zm8-16a2 2 0 100-4 2 2 0 000 4zm0 8a2 2 0 100-4 2 2 0 000 4zm0 8a2 2 0 100-4 2 2 0 000 4z"/>
+                    </svg>
+                  </div>
+                </div>
+                {img.title && <p className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] px-2 py-1 truncate">{img.title}</p>}
               </div>
-              {img.title && <p className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] px-2 py-1 truncate">{img.title}</p>}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

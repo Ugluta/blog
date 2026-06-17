@@ -62,10 +62,16 @@ function formatTime(iso: string | null) {
   });
 }
 
+type SocialAccount = { id: string; platform: string; displayName: string; username?: string | null };
+
 export default function YayinlarPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
+  const [showSchedule, setShowSchedule] = useState(false);
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [scheduleForm, setScheduleForm] = useState({ accountId: "", caption: "", hashtags: "", scheduledAt: "" });
+  const [scheduling, setScheduling] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -80,6 +86,32 @@ export default function YayinlarPage() {
   }, [statusFilter]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    fetch("/api/social/accounts")
+      .then(r => r.json())
+      .then(d => setAccounts(d.accounts ?? []))
+      .catch(() => {});
+  }, []);
+
+  const schedulePost = async () => {
+    if (!scheduleForm.accountId || !scheduleForm.caption || !scheduleForm.scheduledAt) return;
+    setScheduling(true);
+    try {
+      const res = await fetch("/api/publisher/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          socialAccountId: scheduleForm.accountId,
+          caption: scheduleForm.caption,
+          hashtags: scheduleForm.hashtags.split(/[\s,]+/).filter(Boolean),
+          scheduledAt: new Date(scheduleForm.scheduledAt).toISOString(),
+          status: "SCHEDULED",
+        }),
+      });
+      if (res.ok) { setShowSchedule(false); load(); setScheduleForm({ accountId: "", caption: "", hashtags: "", scheduledAt: "" }); }
+    } finally { setScheduling(false); }
+  };
 
   const retry = async (id: string) => {
     await fetch(`/api/publisher/jobs/${id}`, {
@@ -114,6 +146,10 @@ export default function YayinlarPage() {
           <h1 className="text-2xl font-bold text-white">Yayınlar</h1>
           <p className="text-sm text-slate-400 mt-1">Sosyal medya yayın geçmişi ve zamanlanmış paylaşımlar</p>
         </div>
+        <button onClick={() => setShowSchedule(true)}
+          className="px-4 py-2 text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition-colors flex items-center gap-1.5">
+          ⏰ Zamanla
+        </button>
       </div>
 
       {/* Stats */}
@@ -230,6 +266,58 @@ export default function YayinlarPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Schedule modal */}
+      {showSchedule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowSchedule(false)} />
+          <div className="relative bg-[#0F172A] border border-slate-700/50 rounded-2xl w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
+              <h3 className="font-bold text-white">Paylaşım Zamanla</h3>
+              <button onClick={() => setShowSchedule(false)} className="text-slate-400 hover:text-white text-xl">×</button>
+            </div>
+            <div className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Hesap *</label>
+                <select value={scheduleForm.accountId} onChange={e => setScheduleForm(p => ({ ...p, accountId: e.target.value }))}
+                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                  <option value="">Hesap seçin</option>
+                  {accounts.map(a => (
+                    <option key={a.id} value={a.id}>
+                      {PLATFORM_ICONS[a.platform] ?? "📤"} {a.displayName}{a.username ? ` (@${a.username})` : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Açıklama *</label>
+                <textarea value={scheduleForm.caption} onChange={e => setScheduleForm(p => ({ ...p, caption: e.target.value }))}
+                  rows={3} placeholder="Paylaşım metni…"
+                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500 resize-none" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Hashtagler</label>
+                <input value={scheduleForm.hashtags} onChange={e => setScheduleForm(p => ({ ...p, hashtags: e.target.value }))}
+                  placeholder="#teknoloji #haber …"
+                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Tarih & Saat *</label>
+                <input type="datetime-local" value={scheduleForm.scheduledAt} onChange={e => setScheduleForm(p => ({ ...p, scheduledAt: e.target.value }))}
+                  min={new Date().toISOString().slice(0, 16)}
+                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500" />
+              </div>
+            </div>
+            <div className="px-5 pb-5">
+              <button onClick={schedulePost}
+                disabled={scheduling || !scheduleForm.accountId || !scheduleForm.caption || !scheduleForm.scheduledAt}
+                className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-bold text-sm transition-colors">
+                {scheduling ? "Zamanlanıyor…" : "Zamanla"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
