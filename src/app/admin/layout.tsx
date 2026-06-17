@@ -27,6 +27,7 @@ const navSections = [
     title: "Yayın & Reklam",
     items: [
       { label: "Reklam Yönetimi", href: "/admin/settings/ads", icon: "📢" },
+      { label: "Monetizasyon", href: "/admin/settings/monetization", icon: "💰" },
       { label: "SEO Ayarları", href: "/admin/settings/seo", icon: "🔍" },
       { label: "Sosyal Medya", href: "/admin/settings/social", icon: "🌐" },
     ],
