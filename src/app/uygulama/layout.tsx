@@ -34,6 +34,7 @@ const NAV = [
       { href: "/uygulama/medya", label: "Medya Kütüphanesi", icon: "🎵" },
       { href: "/uygulama/abonelik", label: "Abonelik", icon: "💎" },
       { href: "/uygulama/ayarlar", label: "Ayarlar", icon: "⚙️" },
+      { href: "/uygulama/tema-ayarlari", label: "Tema Ayarları", icon: "🎨" },
     ],
   },
 ];
