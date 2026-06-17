@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { name, url, type, interval, aiProvider, aiTask, autoPublish, targetCategory, selectors } = body;
+  const { name, url, type, interval, aiProvider, aiTask, autoPublish, categoryId, selectors } = body;
 
   if (!name || !url || !type) {
     return NextResponse.json({ error: "Ad, URL ve tip zorunludur." }, { status: 400 });
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       aiProvider: aiProvider ?? "Claude",
       aiTask: aiTask ?? "rewrite",
       autoPublish: autoPublish ?? false,
-      targetCategory: targetCategory ?? "Genel",
+      categoryId: categoryId ?? null,
       selectors: selectors ? JSON.stringify(selectors) : null,
       status: "active",
     },

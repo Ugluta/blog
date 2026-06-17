@@ -49,7 +49,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
           publishedAt: article.publishedAt,
           sourceId: source.id,
           status: source.autoPublish ? "published" : "draft",
-          category: source.targetCategory,
+          categoryId: source.categoryId ?? null,
         },
       }).catch(() => null);
     }

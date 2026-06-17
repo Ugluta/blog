@@ -107,6 +107,44 @@ async function main() {
   }
   console.log(`✓ ${packages.length} packages seeded`);
 
+  // ── Default Categories ─────────────────────────────────────────────────────
+  const rootCategories = [
+    { name: "Teknoloji", slug: "teknoloji", order: 0 },
+    { name: "Ekonomi",   slug: "ekonomi",   order: 1 },
+    { name: "Spor",      slug: "spor",       order: 2 },
+    { name: "Sağlık",    slug: "saglik",     order: 3 },
+    { name: "Kültür & Sanat", slug: "kultur-sanat", order: 4 },
+    { name: "Dünya",     slug: "dunya",      order: 5 },
+    { name: "Gündem",    slug: "gundem",     order: 6 },
+  ];
+
+  for (const cat of rootCategories) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: { name: cat.name, order: cat.order },
+      create: cat,
+    });
+  }
+
+  // Sub-categories for Teknoloji
+  const teknolojiCat = await prisma.category.findUnique({ where: { slug: "teknoloji" } });
+  if (teknolojiCat) {
+    const subCats = [
+      { name: "Yapay Zeka", slug: "yapay-zeka", order: 0 },
+      { name: "Mobil",      slug: "mobil",      order: 1 },
+      { name: "Siber Güvenlik", slug: "siber-guvenlik", order: 2 },
+      { name: "Girişim",    slug: "girisim",    order: 3 },
+    ];
+    for (const sub of subCats) {
+      await prisma.category.upsert({
+        where: { slug: sub.slug },
+        update: { name: sub.name, order: sub.order, parentId: teknolojiCat.id },
+        create: { ...sub, parentId: teknolojiCat.id },
+      });
+    }
+  }
+  console.log("✓ Default categories seeded");
+
   // ── Super Admin User ───────────────────────────────────────────────────────
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@kurumsal.com";
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "Admin123!";
@@ -142,7 +180,10 @@ async function main() {
   }
 
   // ── Demo Scraper Source ────────────────────────────────────────────────────
-  const demoSource = await prisma.scraperSource.findFirst({ where: { url: "https://feeds.feedburner.com/TechCrunch" } });
+  const teknolojiForSeed = await prisma.category.findUnique({ where: { slug: "teknoloji" } });
+  const demoSource = await prisma.scraperSource.findFirst({
+    where: { url: "https://feeds.feedburner.com/TechCrunch" },
+  });
   if (!demoSource) {
     await prisma.scraperSource.create({
       data: {
@@ -154,7 +195,7 @@ async function main() {
         aiProvider: "Claude",
         aiTask: "rewrite",
         autoPublish: false,
-        targetCategory: "Teknoloji",
+        categoryId: teknolojiForSeed?.id ?? null,
       },
     });
     console.log("✓ Demo scraper source created");
