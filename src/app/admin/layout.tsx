@@ -15,6 +15,16 @@ const navSections = [
     ],
   },
   {
+    title: "Kategoriler",
+    items: [
+      { label: "Haber Kategorileri", href: "/admin/categories/haber", icon: "📰" },
+      { label: "Blog Kategorileri", href: "/admin/categories/blog", icon: "✍️" },
+      { label: "Kod Örnekleri", href: "/admin/categories/kod-ornekleri", icon: "💻" },
+      { label: "Ürün & Hizmetler", href: "/admin/categories/urunler", icon: "🛍️" },
+      { label: "Galeri", href: "/admin/categories/galeri", icon: "🖼️" },
+    ],
+  },
+  {
     title: "İçerik & Navigasyon",
     items: [
       { label: "Header Menü", href: "/admin/menus/header", icon: "☰" },
@@ -45,6 +55,8 @@ const navSections = [
     items: [
       { label: "Performans", href: "/admin/settings/performance", icon: "⚡" },
       { label: "Güvenlik", href: "/admin/settings/security", icon: "🔒" },
+      { label: "API Ayarları", href: "/admin/settings/api", icon: "🔑" },
+      { label: "Kod Enjeksiyonu", href: "/admin/settings/code", icon: "⌨️" },
       { label: "Loglar", href: "/admin/logs", icon: "📋" },
     ],
   },
