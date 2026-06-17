@@ -30,6 +30,12 @@ const NAV = [
     ],
   },
   {
+    section: "Ekip",
+    items: [
+      { href: "/uygulama/ekip", label: "Ekip Yönetimi", icon: "👥" },
+    ],
+  },
+  {
     section: "Sistem",
     items: [
       { href: "/uygulama/analitik", label: "Analitik", icon: "📊" },

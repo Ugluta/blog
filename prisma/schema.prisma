@@ -31,6 +31,7 @@ model User {
   posts          Post[]
   galleryAlbums  GalleryAlbum[]
   comments       Comment[]
+  teamInvites    TeamInvite[]
 
   @@map("users")
 }
@@ -313,23 +314,24 @@ model Scene {
 // ─── PUBLISH JOBS ─────────────────────────────────────────────────────────────
 
 model PublishJob {
-  id              String    @id @default(cuid())
+  id              String         @id @default(cuid())
   userId          String
-  videoProjectId  String
+  videoProjectId  String?
   socialAccountId String
-  status          JobStatus @default(PENDING)
+  platform        SocialPlatform?
+  status          JobStatus      @default(PENDING)
   scheduledAt     DateTime?
   publishedAt     DateTime?
-  caption         String?   @db.Text
+  caption         String?        @db.Text
   hashtags        String[]
   platformPostId  String?
   platformUrl     String?
-  error           String?   @db.Text
-  retryCount      Int       @default(0)
+  error           String?        @db.Text
+  retryCount      Int            @default(0)
 
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  videoProject  VideoProject  @relation(fields: [videoProjectId], references: [id])
-  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id])
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  videoProject  VideoProject?  @relation(fields: [videoProjectId], references: [id])
+  socialAccount SocialAccount  @relation(fields: [socialAccountId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -341,7 +343,7 @@ enum JobStatus {
   PENDING
   QUEUED
   PROCESSING
-  SUCCESS
+  PUBLISHED
   FAILED
   SCHEDULED
   CANCELED
@@ -581,6 +583,24 @@ model GalleryImage {
   createdAt DateTime @default(now())
 
   @@map("gallery_images")
+}
+
+// ─── TEAM INVITES ────────────────────────────────────────────────────────────
+
+model TeamInvite {
+  id          String    @id @default(cuid())
+  email       String
+  role        UserRole  @default(EDITOR)
+  token       String    @unique @default(cuid())
+  invitedById String
+  usedAt      DateTime?
+  expiresAt   DateTime
+
+  invitedBy   User      @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime  @default(now())
+
+  @@map("team_invites")
 }
 
 // ─── CONTENT ITEMS (scraped drafts) ───────────────────────────────────────────

@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     orderBy: { createdAt: "desc" },
     take: 100,
     include: {
-      socialAccount: { select: { platform: true, handle: true } },
+      socialAccount: { select: { platform: true, displayName: true, username: true } },
     },
   }).catch(() => []);
 
