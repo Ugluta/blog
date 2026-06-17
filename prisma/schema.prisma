@@ -344,3 +344,46 @@ enum JobStatus {
   SCHEDULED
   CANCELED
 }
+
+// ─── SCRAPER SOURCES ──────────────────────────────────────────────────────────
+
+model ScraperSource {
+  id             String  @id @default(cuid())
+  name           String
+  url            String
+  type           String  // rss | news_site | blog | twitter | youtube
+  status         String  @default("active") // active | paused | error
+  interval       Int     @default(60)       // minutes
+  aiProvider     String  @default("Claude")
+  aiTask         String  @default("rewrite") // rewrite | translate | summarize
+  autoPublish    Boolean @default(false)
+  targetCategory String  @default("Genel")
+  selectors      String? @db.Text           // JSON string of CSS selectors
+  lastRunAt      DateTime?
+  articlesFound  Int     @default(0)
+  errorMessage   String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("scraper_sources")
+}
+
+// ─── CONTENT ITEMS (scraped drafts) ───────────────────────────────────────────
+
+model ContentItem {
+  id          String    @id @default(cuid())
+  title       String
+  content     String    @db.Text
+  sourceUrl   String?
+  image       String?
+  publishedAt DateTime?
+  sourceId    String?
+  status      String    @default("draft") // draft | published | rejected
+  category    String    @default("Genel")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("content_items")
+}
