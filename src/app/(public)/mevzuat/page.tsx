@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
+import { Pagination } from '@/components/ui/Pagination';
 import { Scale, Calendar, ExternalLink } from 'lucide-react';
 import type { Metadata } from 'next';
 
@@ -10,12 +11,21 @@ export const metadata: Metadata = {
   description: 'Eğitim ile ilgili kanun, yönetmelik ve genelgeler.',
 };
 
-export default async function MevzuatPage() {
-  const legislations = await db.news.findMany({
-    where: { status: 'PUBLISHED', type: 'LEGISLATION' },
-    orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
-    take: 50,
-  });
+export default async function MevzuatPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const params = await searchParams;
+  const page = Number(params.sayfa) || 1;
+  const perPage = 20;
+
+  const where = { status: 'PUBLISHED' as const, type: 'LEGISLATION' as const };
+  const [legislations, total] = await Promise.all([
+    db.news.findMany({
+      where,
+      orderBy: [{ isPinned: 'desc' }, { publishedAt: 'desc' }],
+      skip: (page - 1) * perPage,
+      take: perPage,
+    }),
+    db.news.count({ where }),
+  ]);
 
   return (
     <>
@@ -27,7 +37,7 @@ export default async function MevzuatPage() {
               <Scale className="w-6 h-6 text-blue-600" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Mevzuat</h1>
-                <p className="text-gray-500 text-sm">Kanun, yönetmelik, genelge ve tebliğler</p>
+                <p className="text-gray-500 text-sm">{total.toLocaleString('tr-TR')} belge</p>
               </div>
             </div>
           </div>
@@ -51,7 +61,11 @@ export default async function MevzuatPage() {
                 </div>
               </div>
             ))}
+            {legislations.length === 0 && (
+              <div className="text-center py-16 text-gray-400">Henüz mevzuat eklenmemiş</div>
+            )}
           </div>
+          <Pagination currentPage={page} totalPages={Math.ceil(total / perPage)} baseUrl="/mevzuat" />
         </div>
       </main>
       <Footer />
