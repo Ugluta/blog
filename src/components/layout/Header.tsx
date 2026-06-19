@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
-  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, Settings,
+  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText,
 } from 'lucide-react';
 
 const navItems = [
@@ -32,6 +32,14 @@ const navItems = [
   },
   { label: 'Soru Bankası', href: '/sorular', icon: HelpCircle },
   { label: 'Arşiv', href: '/arsiv', icon: Archive },
+  {
+    label: 'Araçlar',
+    href: '/ocr',
+    icon: ScanText,
+    children: [
+      { label: 'OCR — Görüntüden Metin', href: '/ocr' },
+    ],
+  },
 ];
 
 export function Header() {
@@ -178,6 +186,13 @@ export function Header() {
                             {notifCount}
                           </span>
                         )}
+                      </Link>
+                      <Link
+                        href="/ocr"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <ScanText className="w-4 h-4" /> OCR Aracı
                       </Link>
                       <Link
                         href="/profil"
