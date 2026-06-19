@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
-  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles, CreditCard,
+  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles, CreditCard, Upload,
 } from 'lucide-react';
 
 const navItems = [
@@ -19,6 +19,7 @@ const navItems = [
       { label: 'Ders Planları', href: '/dosyalar?kategori=ders-planlari' },
       { label: 'Sınav Soruları', href: '/dosyalar?kategori=sinav-sorulari' },
       { label: 'Çalışma Kağıtları', href: '/dosyalar?kategori=calisma-kagitlari' },
+      { label: 'Dosya Yükle', href: '/dosyalar/yukle' },
     ],
   },
   {
@@ -148,6 +149,12 @@ export function Header() {
             {status === 'authenticated' && session?.user ? (
               <>
                 <Link
+                  href="/dosyalar/yukle"
+                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                >
+                  <Upload className="w-4 h-4" /> Yükle
+                </Link>
+                <Link
                   href="/bildirimler"
                   className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                   onClick={() => setNotifCount(0)}
@@ -178,6 +185,13 @@ export function Header() {
                         </p>
                         <p className="text-xs text-gray-400 truncate">{session.user.email}</p>
                       </div>
+                      <Link
+                        href="/dosyalar/yukle"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 font-medium"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <Upload className="w-4 h-4" /> Dosya Yükle
+                      </Link>
                       <Link
                         href="/favorilerim"
                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600"
@@ -307,11 +321,11 @@ export function Header() {
             {status === 'authenticated' ? (
               <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
                 <Link
-                  href="/favorilerim"
-                  className="flex-1 py-2.5 text-center text-sm font-medium text-gray-700 border border-gray-200 rounded-lg flex items-center justify-center gap-2"
+                  href="/dosyalar/yukle"
+                  className="flex-1 py-2.5 text-center text-sm font-medium text-white bg-blue-600 rounded-lg flex items-center justify-center gap-2"
                   onClick={() => setMobileOpen(false)}
                 >
-                  <Heart className="w-4 h-4" /> Favorilerim
+                  <Upload className="w-4 h-4" /> Dosya Yükle
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
