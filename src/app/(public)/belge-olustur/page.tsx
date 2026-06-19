@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Sparkles, Copy, Download, Check, Loader2 } from 'lucide-react'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 
 type DocType = {
   key: string
@@ -64,7 +66,7 @@ const DOC_TYPES: DocType[] = [
   },
   {
     key: 'ogrenci-degerlendirme',
-    label: 'Öğrenci Değlendirme',
+    label: 'Öğrenci Değerlendirme',
     fields: [
       { key: 'sinif', label: 'Sınıf/Seviye', placeholder: '4. Sınıf' },
       { key: 'ogrenci', label: 'Öğrenci Adı (isteğe bağlı)', placeholder: 'Ahmet (veya boş bırakın)' },
@@ -137,126 +139,134 @@ export default function BelgeOlusturPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+        <Footer />
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Sparkles className="w-7 h-7 text-purple-600" />
-            AI Belge Oluştur
-          </h1>
-          <p className="text-gray-500 mt-1 text-sm">
-            Yapay zeka ile saniyeler içinde profesyonel eğitim belgesi hazırlayın
-          </p>
-        </div>
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <Sparkles className="w-7 h-7 text-purple-600" />
+              AI Belge Oluştur
+            </h1>
+            <p className="text-gray-500 mt-1 text-sm">
+              Yapay zeka ile saniyeler içinde profesyonel eğitim belgesi hazırlayın
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Sol: Form */}
-          <div className="space-y-4">
-            <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <p className="text-sm font-medium text-gray-700 mb-3">Belge Türü</p>
-              <div className="grid grid-cols-2 gap-2">
-                {DOC_TYPES.map((dt) => (
-                  <button
-                    key={dt.key}
-                    onClick={() => setSelectedType(dt)}
-                    className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors ${
-                      selectedType.key === dt.key
-                        ? 'bg-purple-600 text-white'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    {dt.label}
-                  </button>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Sol: Form */}
+            <div className="space-y-4">
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <p className="text-sm font-medium text-gray-700 mb-3">Belge Türü</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {DOC_TYPES.map((dt) => (
+                    <button
+                      key={dt.key}
+                      onClick={() => setSelectedType(dt)}
+                      className={`py-2 px-3 rounded-lg text-sm font-medium text-left transition-colors ${
+                        selectedType.key === dt.key
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {dt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-4">
+                <p className="text-sm font-medium text-gray-700">{selectedType.label} Bilgileri</p>
+                {selectedType.fields.map((field) => (
+                  <div key={field.key}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
+                    {field.type === 'textarea' ? (
+                      <textarea
+                        value={fields[field.key] || ''}
+                        onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
+                        placeholder={field.placeholder}
+                        rows={3}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={fields[field.key] || ''}
+                        onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
+                        placeholder={field.placeholder}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      />
+                    )}
+                  </div>
                 ))}
               </div>
+
+              <button
+                onClick={handleGenerate}
+                disabled={loading}
+                className="w-full py-3 bg-purple-600 text-white rounded-xl font-semibold text-sm hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Oluşturuluyor...</>
+                ) : (
+                  <><Sparkles className="w-4 h-4" /> Belge Oluştur</>
+                )}
+              </button>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-4">
-              <p className="text-sm font-medium text-gray-700">{selectedType.label} Bilgileri</p>
-              {selectedType.fields.map((field) => (
-                <div key={field.key}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
-                  {field.type === 'textarea' ? (
-                    <textarea
-                      value={fields[field.key] || ''}
-                      onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
-                      placeholder={field.placeholder}
-                      rows={3}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      value={fields[field.key] || ''}
-                      onChange={(e) => setFields((f) => ({ ...f, [field.key]: e.target.value }))}
-                      placeholder={field.placeholder}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    />
-                  )}
-                </div>
-              ))}
+            {/* Sağ: Sonuç */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold text-gray-700">Oluşturulan Belge</h2>
+                {result && (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleCopy}
+                      className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center gap-1"
+                    >
+                      {copied ? (
+                        <Check className="w-3.5 h-3.5 text-green-600" />
+                      ) : (
+                        <Copy className="w-3.5 h-3.5" />
+                      )}
+                      {copied ? 'Kopyalandı' : 'Kopyala'}
+                    </button>
+                    <button
+                      onClick={handleDownload}
+                      className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center gap-1"
+                    >
+                      <Download className="w-3.5 h-3.5" /> .txt İndir
+                    </button>
+                  </div>
+                )}
+              </div>
+              <textarea
+                value={result}
+                onChange={(e) => setResult(e.target.value)}
+                placeholder={
+                  loading
+                    ? 'AI belgesi oluşturuluyor...'
+                    : 'Belge burada görünecek. Oluşturduktan sonra düzenleyebilirsiniz.'
+                }
+                rows={28}
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none bg-white"
+              />
             </div>
-
-            <button
-              onClick={handleGenerate}
-              disabled={loading}
-              className="w-full py-3 bg-purple-600 text-white rounded-xl font-semibold text-sm hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Oluşturuluyor...</>
-              ) : (
-                <><Sparkles className="w-4 h-4" /> Belge Oluştur</>
-              )}
-            </button>
-          </div>
-
-          {/* Sağ: Sonuç */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-700">Oluşturulan Belge</h2>
-              {result && (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleCopy}
-                    className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center gap-1"
-                  >
-                    {copied ? (
-                      <Check className="w-3.5 h-3.5 text-green-600" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                    {copied ? 'Kopyalandı' : 'Kopyala'}
-                  </button>
-                  <button
-                    onClick={handleDownload}
-                    className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-600 flex items-center gap-1"
-                  >
-                    <Download className="w-3.5 h-3.5" /> .txt İndir
-                  </button>
-                </div>
-              )}
-            </div>
-            <textarea
-              value={result}
-              onChange={(e) => setResult(e.target.value)}
-              placeholder={
-                loading
-                  ? 'AI belgesi oluşturuluyor...'
-                  : 'Belge burada görünecek. Oluşturduktan sonra düzenliyebilirsiniz.'
-              }
-              rows={28}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none bg-white"
-            />
           </div>
         </div>
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   )
 }
