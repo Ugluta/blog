@@ -120,9 +120,13 @@ export default function DosyaYuklePage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+        <Footer />
+      </>
     )
   }
 
@@ -328,7 +332,7 @@ export default function DosyaYuklePage() {
               {submitting ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> Yükleniyor...</>
               ) : (
-                <><Upload className="w-4 h-4" /> Dosyayı Gönder</>  
+                <><Upload className="w-4 h-4" /> Dosyayı Gönder</>
               )}
             </button>
           </form>
