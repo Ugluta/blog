@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: 'Dosyalarım' }
 
 const STATUS_STYLES: Record<string, { label: string; style: string }> = {
   PENDING:  { label: 'İncelemede', style: 'bg-yellow-100 text-yellow-700' },
-  APPROVED: { label: 'Onaylanıdı',  style: 'bg-green-100 text-green-700' },
+  APPROVED: { label: 'Onaylandı',  style: 'bg-green-100 text-green-700' },
   REJECTED: { label: 'Reddedildi', style: 'bg-red-100 text-red-700' },
   DRAFT:    { label: 'Taslak',     style: 'bg-gray-100 text-gray-600' },
 }
@@ -50,7 +50,7 @@ export default async function DosyalarimPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dosyalarım</h1>
-              <p className="text-gray-500 text-sm mt-1">Yülediğiniz tüm dosyalar</p>
+              <p className="text-gray-500 text-sm mt-1">Yüklediğiniz tüm dosyalar</p>
             </div>
             <Link
               href="/dosyalar/yukle"
@@ -64,7 +64,7 @@ export default async function DosyalarimPage() {
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-5 text-center">
               <p className="text-2xl font-bold text-green-600">{approved}</p>
-              <p className="text-sm text-gray-500 mt-1">Onaylanıdı</p>
+              <p className="text-sm text-gray-500 mt-1">Onaylandı</p>
             </div>
             <div className="bg-white border border-gray-100 rounded-2xl p-5 text-center">
               <p className="text-2xl font-bold text-yellow-600">{pending}</p>
@@ -78,7 +78,7 @@ export default async function DosyalarimPage() {
 
           {files.length === 0 ? (
             <div className="bg-white border border-gray-100 rounded-2xl py-16 text-center">
-              <p className="text-gray-400 mb-4">Henüz dosya yüklediniz</p>
+              <p className="text-gray-400 mb-4">Henüz dosya yüklemediniz</p>
               <Link href="/dosyalar/yukle" className="text-blue-600 hover:underline text-sm">
                 Dosya yükle →
               </Link>

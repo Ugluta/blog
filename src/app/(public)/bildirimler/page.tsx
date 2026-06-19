@@ -15,7 +15,13 @@ interface Notification {
 }
 
 const TYPE_ICONS: Record<string, string> = {
-  info: 'ℹ️', success: '✅', warning: '⚠️', error: '❌', system: '🔔',
+  info: 'ℹ️',
+  success: '✅',
+  warning: '⚠️',
+  error: '❌',
+  system: '🔔',
+  file_approved: '✅',
+  file_rejected: '❌',
 };
 
 export default function BildirimlerPage() {
@@ -99,7 +105,7 @@ export default function BildirimlerPage() {
                     n.isRead ? 'border-gray-100' : 'border-blue-200 bg-blue-50/30'
                   }`}>
                   <div className="flex items-start gap-3">
-                    <span className="text-lg shrink-0">{TYPE_ICONS[n.type] || '🔔'}</span>
+                    <span className="text-lg shrink-0">{TYPE_ICONS[n.type] ?? '🔔'}</span>
                     <div className="flex-1 min-w-0">
                       <p className={`font-semibold text-sm ${
                         n.isRead ? 'text-gray-700' : 'text-gray-900'
