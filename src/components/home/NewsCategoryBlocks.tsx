@@ -13,19 +13,16 @@ function CategoryRow({ categoryId }: { categoryId: string }) {
     <div className="mb-10">
       {/* Category header */}
       <div className="flex items-center justify-between mb-4">
-        <div
-          className="flex items-center gap-0"
-          style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}
-        >
-          <h3 className="text-sm font-bold uppercase tracking-widest text-slate-200">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 rounded-full text-xs font-bold uppercase text-white" style={{ background: "linear-gradient(135deg, #f59e0b, #f97316)" }}>
             {cat.name}
-          </h3>
+          </span>
         </div>
         <Link
           href={`/haberler/${cat.id}`}
-          className="text-xs text-amber-400 hover:text-amber-300 transition-colors font-medium"
+          className="text-xs text-amber-400 hover:text-amber-300 transition-colors font-medium flex items-center gap-1"
         >
-          Tümünü Gör →
+          Tümünü Gör <span>→</span>
         </Link>
       </div>
 
@@ -35,13 +32,13 @@ function CategoryRow({ categoryId }: { categoryId: string }) {
           <Link
             key={item.id}
             href={`/haber/${item.id}`}
-            className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3"
-            style={{ backgroundColor: "#0F172A", borderRadius: "2px" }}
+            className="flex gap-3 group rounded-xl border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3 shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
+            style={{ backgroundColor: "#0F172A" }}
           >
             {/* Image 80px */}
             <div
-              className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-800"
-              style={{ width: 80, height: 64, borderRadius: "1px" }}
+              className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-800 rounded-lg"
+              style={{ width: 80, height: 64 }}
             >
               <Image
                 src={item.image}
@@ -72,16 +69,14 @@ function CategoryRow({ categoryId }: { categoryId: string }) {
 
 export default function NewsCategoryBlocks() {
   return (
-    <section className="py-10" style={{ backgroundColor: "#0a0f1e" }}>
+    <section className="py-12" style={{ backgroundColor: "#0a0f1e" }}>
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Section title */}
-        <div className="mb-8" style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}>
-          <h2
-            className="text-xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Haberler
-          </h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-8 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex-shrink-0" />
+            <h2 className="text-xl font-bold text-white">Haberler</h2>
+          </div>
         </div>
 
         {SHOW_CATEGORIES.map((catId) => (

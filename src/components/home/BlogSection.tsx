@@ -17,8 +17,8 @@ function BlogCard({ post }: { post: (typeof blogPosts)[0] }) {
   return (
     <Link
       href={`/blog/${post.id}`}
-      className="group block border border-slate-700/30 hover:border-amber-500/30 transition-colors overflow-hidden"
-      style={{ backgroundColor: "#0F172A", borderRadius: "2px" }}
+      className="group block rounded-xl border border-slate-700/30 hover:border-amber-500/30 transition-colors overflow-hidden shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
+      style={{ backgroundColor: "#0F172A" }}
     >
       {/* Image top 16:9 */}
       <div
@@ -35,8 +35,7 @@ function BlogCard({ post }: { post: (typeof blogPosts)[0] }) {
         {/* Category badge on image */}
         <div className="absolute top-3 left-3">
           <span
-            className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase ${catCls}`}
-            style={{ borderRadius: "1px" }}
+            className={`inline-block px-3 py-0.5 text-[10px] font-bold uppercase rounded-full ${catCls}`}
           >
             {post.category}
           </span>
@@ -61,7 +60,7 @@ function BlogCard({ post }: { post: (typeof blogPosts)[0] }) {
           style={{ borderTop: "1px solid rgba(51,65,85,0.5)" }}
         >
           <div className="flex items-center gap-2">
-            <div className="relative w-6 h-6 overflow-hidden bg-slate-700 flex-shrink-0" style={{ borderRadius: "50%" }}>
+            <div className="relative w-6 h-6 overflow-hidden bg-slate-700 flex-shrink-0 rounded-full">
               <Image
                 src={post.authorAvatar}
                 alt={post.author}
@@ -87,23 +86,19 @@ function BlogCard({ post }: { post: (typeof blogPosts)[0] }) {
 
 export default function BlogSection() {
   return (
-    <section className="py-10" style={{ backgroundColor: "#0a0f1e" }}>
+    <section className="py-12" style={{ backgroundColor: "#0a0f1e" }}>
       <div className="max-w-screen-xl mx-auto px-4">
-        {/* Section title with left amber border */}
+        {/* Section title */}
         <div className="flex items-center justify-between mb-8">
-          <div style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}>
-            <h2
-              className="text-xl font-bold text-white"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Blog
-            </h2>
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-8 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex-shrink-0" />
+            <h2 className="text-xl font-bold text-white">Blog</h2>
           </div>
           <Link
             href="/blog"
-            className="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors"
+            className="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors flex items-center gap-1"
           >
-            Tüm Yazılar →
+            Tüm Yazılar <span>→</span>
           </Link>
         </div>
 

@@ -27,7 +27,7 @@ const faqs = [
 export default function FaqSection() {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section className="py-16" style={{ backgroundColor: "#0F172A" }}>
+    <section className="py-16" style={{ background: "linear-gradient(135deg, #0F172A 0%, #131f35 100%)" }}>
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
           <div>
@@ -39,9 +39,9 @@ export default function FaqSection() {
               Platformumuza dair en sık sorulan soruları ve yanıtlarını burada bulabilirsiniz.
             </p>
           </div>
-          <div className="lg:col-span-2 space-y-2">
+          <div className="lg:col-span-2 space-y-3">
             {faqs.map((faq) => (
-              <div key={faq.id} className="border border-slate-700/50 overflow-hidden">
+              <div key={faq.id} className="rounded-xl border border-slate-700/50 overflow-hidden transition-all hover:border-amber-500/20">
                 <button
                   onClick={() => setOpen(open === faq.id ? null : faq.id)}
                   className="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-slate-700/30 transition-colors"
@@ -51,13 +51,13 @@ export default function FaqSection() {
                   </span>
                   <span className="flex-1 text-sm font-semibold text-slate-200">{faq.q}</span>
                   <svg
-                    className={`w-4 h-4 text-amber-400 flex-shrink-0 transition-transform ${open === faq.id ? "rotate-180" : ""}`}
+                    className={`w-4 h-4 text-amber-400 flex-shrink-0 transition-transform duration-300 ${open === faq.id ? "rotate-180" : ""}`}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className={`overflow-hidden transition-all duration-300 ${open === faq.id ? "max-h-48" : "max-h-0"}`}>
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${open === faq.id ? "max-h-48" : "max-h-0"}`}>
                   <p className="px-5 pb-4 text-sm text-slate-400 leading-relaxed" style={{ paddingLeft: "4.5rem" }}>
                     {faq.a}
                   </p>

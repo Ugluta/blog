@@ -201,10 +201,10 @@ export default function MegaHeader() {
                     onMouseLeave={handleMenuLeave}
                   >
                     <button
-                      className={`flex items-center gap-1 px-4 h-14 text-sm font-medium transition-colors border-b-2 ${
+                      className={`flex items-center gap-1 px-4 py-1.5 mx-0.5 text-sm font-medium transition-all rounded-full ${
                         pathname.startsWith(item.href)
-                          ? "text-amber-400 border-amber-500"
-                          : "text-slate-300 hover:text-amber-400 border-transparent hover:border-amber-500/50"
+                          ? "text-amber-400 bg-amber-500/10"
+                          : "text-slate-300 hover:text-amber-400 hover:bg-slate-700/60"
                       }`}
                     >
                       {item.label}
@@ -238,7 +238,8 @@ export default function MegaHeader() {
                           backgroundColor: "#0F172A",
                           border: "1px solid rgba(51,65,85,0.6)",
                           borderTop: "2px solid #F59E0B",
-                          borderRadius: "0 0 2px 2px",
+                          borderRadius: "0 0 16px 16px",
+                          boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
                         }}
                       >
                         <ul className="py-1">
@@ -274,10 +275,10 @@ export default function MegaHeader() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className={`px-4 h-14 flex items-center text-sm font-medium transition-colors border-b-2 ${
+                    className={`px-4 py-1.5 mx-0.5 flex items-center text-sm font-medium transition-all rounded-full ${
                       pathname === item.href
-                        ? "text-amber-400 border-amber-500"
-                        : "text-slate-300 hover:text-amber-400 border-transparent hover:border-amber-500/50"
+                        ? "text-amber-400 bg-amber-500/10"
+                        : "text-slate-300 hover:text-amber-400 hover:bg-slate-700/60"
                     }`}
                   >
                     {item.label}
@@ -298,8 +299,7 @@ export default function MegaHeader() {
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
                       placeholder="Ara..."
-                      className="w-44 bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all"
-                      style={{ borderRadius: "2px" }}
+                      className="w-44 bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all rounded-full"
                       onBlur={() => {
                         if (!searchValue) setSearchOpen(false);
                       }}
@@ -343,8 +343,8 @@ export default function MegaHeader() {
 
               <a
                 href="/abone-ol"
-                className="hidden sm:inline-flex items-center px-4 py-1.5 text-sm font-semibold text-slate-900 transition-opacity hover:opacity-90"
-                style={{ backgroundColor: "#F59E0B", borderRadius: "2px" }}
+                className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-bold text-slate-900 transition-all hover:scale-105 rounded-full shadow-lg shadow-amber-500/20"
+                style={{ background: "linear-gradient(135deg, #FBBF24, #F59E0B)" }}
               >
                 Abone Ol
               </a>
@@ -393,8 +393,7 @@ export default function MegaHeader() {
                 <input
                   type="text"
                   placeholder="Haber, blog, konu ara..."
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-4 py-2 pr-10 text-sm focus:outline-none focus:border-amber-500"
-                  style={{ borderRadius: "2px" }}
+                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-4 py-2 pr-10 text-sm focus:outline-none focus:border-amber-500 rounded-xl"
                 />
                 <button
                   type="submit"
@@ -421,7 +420,7 @@ export default function MegaHeader() {
                   <>
                     <button
                       className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors"
-                      style={{ borderRadius: "2px" }}
+                      className="rounded-xl"
                       onClick={() => setMobileNewsOpen(!mobileNewsOpen)}
                     >
                       <span>{item.label}</span>
@@ -467,12 +466,11 @@ export default function MegaHeader() {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`block px-3 py-2.5 text-sm font-medium transition-colors ${
+                    className={`block px-3 py-2.5 text-sm font-medium transition-colors rounded-xl ${
                       pathname === item.href
                         ? "text-amber-400 bg-slate-800/60"
                         : "text-slate-300 hover:text-amber-400 hover:bg-slate-800/60"
                     }`}
-                    style={{ borderRadius: "2px" }}
                     onClick={() => setMobileOpen(false)}
                   >
                     {item.label}
@@ -483,8 +481,8 @@ export default function MegaHeader() {
             <div className="pt-3">
               <a
                 href="/abone-ol"
-                className="block w-full text-center px-4 py-2.5 text-sm font-semibold text-slate-900"
-                style={{ backgroundColor: "#F59E0B", borderRadius: "2px" }}
+                className="block w-full text-center px-4 py-2.5 text-sm font-bold text-slate-900 rounded-full"
+                style={{ background: "linear-gradient(135deg, #FBBF24, #F59E0B)" }}
                 onClick={() => setMobileOpen(false)}
               >
                 Abone Ol

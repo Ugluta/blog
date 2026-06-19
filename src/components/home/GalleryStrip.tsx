@@ -40,23 +40,19 @@ export default function GalleryStrip() {
   }, []);
 
   return (
-    <section className="py-10" style={{ backgroundColor: "#0a0f1e" }}>
+    <section className="py-12" style={{ backgroundColor: "#0a0f1e" }}>
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Section header */}
-        <div className="flex items-center justify-between mb-6">
-          <div style={{ borderLeft: "3px solid #F59E0B", paddingLeft: "0.75rem" }}>
-            <h2
-              className="text-xl font-bold text-white"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Galeri
-            </h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-8 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex-shrink-0" />
+            <h2 className="text-xl font-bold text-white">Galeri</h2>
           </div>
           <Link
             href="/galeri"
-            className="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors"
+            className="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors flex items-center gap-1"
           >
-            Tümünü Gör →
+            Tümünü Gör <span>→</span>
           </Link>
         </div>
 
@@ -67,8 +63,8 @@ export default function GalleryStrip() {
               <Link
                 key={album.id}
                 href={`/galeri/${album.slug}`}
-                className="group cursor-pointer flex-shrink-0 relative overflow-hidden"
-                style={{ width: 208, height: 160, borderRadius: "2px" }}
+                className="group cursor-pointer flex-shrink-0 relative overflow-hidden rounded-xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5 transition-shadow"
+                style={{ width: 208, height: 160 }}
               >
                 {/* Cover image */}
                 {album.coverImage ? (

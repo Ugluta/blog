@@ -26,7 +26,7 @@ export default function ContactCtaSection() {
                 { label: "Adres", value: "Maslak, İstanbul", icon: "📍" },
               ].map((c) => (
                 <div key={c.label} className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-base flex-shrink-0">{c.icon}</span>
+                  <span className="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-base flex-shrink-0">{c.icon}</span>
                   <div>
                     <p className="text-[10px] text-slate-500 uppercase font-bold">{c.label}</p>
                     <p className="text-sm text-slate-200">{c.value}</p>
@@ -35,7 +35,7 @@ export default function ContactCtaSection() {
               ))}
             </div>
           </div>
-          <div className="bg-[#0a0f1e] border border-slate-700/50 p-6">
+          <div className="bg-[#0a0f1e] border border-slate-700/50 rounded-2xl p-6">
             {sent ? (
               <div className="text-center py-8">
                 <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-3">
@@ -51,22 +51,22 @@ export default function ContactCtaSection() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs text-slate-400 font-medium block mb-1">Ad Soyad</label>
-                    <input type="text" required placeholder="Adınız" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-sm" />
+                    <input type="text" required placeholder="Adınız" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-xl" />
                   </div>
                   <div>
                     <label className="text-xs text-slate-400 font-medium block mb-1">E-posta</label>
-                    <input type="email" required placeholder="email@example.com" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-sm" />
+                    <input type="email" required placeholder="email@example.com" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-xl" />
                   </div>
                 </div>
                 <div>
                   <label className="text-xs text-slate-400 font-medium block mb-1">Konu</label>
-                  <input type="text" placeholder="Proje konusu" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-sm" />
+                  <input type="text" placeholder="Proje konusu" className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-xl" />
                 </div>
                 <div>
                   <label className="text-xs text-slate-400 font-medium block mb-1">Mesaj</label>
-                  <textarea rows={4} required placeholder="Mesajınızı yazın..." className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-sm resize-none" />
+                  <textarea rows={4} required placeholder="Mesajınızı yazın..." className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors rounded-xl resize-none" />
                 </div>
-                <button type="submit" className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm transition-colors rounded-sm">
+                <button type="submit" className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-sm transition-colors rounded-xl">
                   Gönder →
                 </button>
               </form>

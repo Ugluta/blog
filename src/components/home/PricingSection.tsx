@@ -45,10 +45,10 @@ export default function PricingSection() {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative flex flex-col p-6 rounded-sm border transition-all ${
+              className={`relative flex flex-col p-6 rounded-2xl border transition-all shadow-lg shadow-slate-900/50 ${
                 plan.highlight
-                  ? "bg-slate-700/60 border-amber-500/50 shadow-lg shadow-amber-500/10"
-                  : "border-slate-700/50 hover:border-slate-600"
+                  ? "bg-slate-700/60 border-amber-500/50 shadow-amber-500/10 hover:shadow-xl hover:shadow-amber-500/10"
+                  : "border-slate-700/50 hover:border-slate-600 hover:shadow-xl hover:shadow-amber-500/5"
               }`}
               style={{ backgroundColor: plan.highlight ? "#1E293B" : "#0F172A" }}
             >
@@ -76,7 +76,7 @@ export default function PricingSection() {
               </ul>
               <Link
                 href="/iletisim"
-                className={`flex items-center justify-center gap-2 py-2.5 rounded-sm text-sm font-bold transition-colors ${
+                className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                   plan.highlight
                     ? "bg-amber-500 hover:bg-amber-400 text-slate-900"
                     : "border border-slate-600 hover:border-amber-500 text-slate-200 hover:text-amber-400"

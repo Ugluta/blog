@@ -15,8 +15,7 @@ function CategoryBadge({ category }: { category: string }) {
   const cls = categoryClass[category] ?? "bg-slate-700 text-slate-300";
   return (
     <span
-      className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${cls}`}
-      style={{ borderRadius: "1px" }}
+      className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${cls}`}
     >
       {category}
     </span>
@@ -34,8 +33,7 @@ export default function HeroSection() {
           <div className="lg:col-span-2">
             <Link href={`/haber/${main.id}`} className="block group">
               <div
-                className="relative overflow-hidden img-zoom-container bg-slate-800"
-                style={{ borderRadius: "2px" }}
+                className="relative overflow-hidden img-zoom-container bg-slate-800 rounded-2xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5 transition-shadow"
               >
                 {/* Image with 16:9 ratio */}
                 <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
@@ -83,13 +81,13 @@ export default function HeroSection() {
               <Link
                 key={item.id}
                 href={`/haber/${item.id}`}
-                className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3"
-                style={{ backgroundColor: "#0F172A", borderRadius: "2px" }}
+                className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3 rounded-xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
+                style={{ backgroundColor: "#0F172A" }}
               >
                 {/* Small image 72px */}
                 <div
-                  className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-700"
-                  style={{ width: 72, height: 72, borderRadius: "1px" }}
+                  className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-700 rounded-lg"
+                  style={{ width: 72, height: 72 }}
                 >
                   <Image
                     src={item.image}

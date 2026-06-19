@@ -139,13 +139,26 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.6), 0 4px 20px rgba(245, 158, 11, 0.15);
 }
 
-/* Category Badge Colors */
-.badge-teknoloji { background-color: #1d4ed8; color: #bfdbfe; }
-.badge-ekonomi { background-color: #065f46; color: #a7f3d0; }
-.badge-dunya { background-color: #4c1d95; color: #ddd6fe; }
-.badge-spor { background-color: #991b1b; color: #fecaca; }
-.badge-saglik { background-color: #155e75; color: #a5f3fc; }
-.badge-kultur { background-color: #78350f; color: #fde68a; }
+/* Category Badge Colors — pill style */
+.badge-teknoloji { background: linear-gradient(135deg,#1d4ed8,#3b82f6); color: #fff; border-radius: 999px; }
+.badge-ekonomi   { background: linear-gradient(135deg,#065f46,#10b981); color: #fff; border-radius: 999px; }
+.badge-dunya     { background: linear-gradient(135deg,#4c1d95,#8b5cf6); color: #fff; border-radius: 999px; }
+.badge-spor      { background: linear-gradient(135deg,#991b1b,#ef4444); color: #fff; border-radius: 999px; }
+.badge-saglik    { background: linear-gradient(135deg,#155e75,#06b6d4); color: #fff; border-radius: 999px; }
+.badge-kultur    { background: linear-gradient(135deg,#92400e,#f59e0b); color: #fff; border-radius: 999px; }
+
+/* Modern card */
+.card-modern {
+  background: #0F172A;
+  border: 1px solid rgba(51,65,85,0.5);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card-modern:hover {
+  border-color: rgba(245,158,11,0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(245,158,11,0.1);
+  transform: translateY(-2px);
+}
 
 /* Code Block */
 .code-block {
@@ -244,6 +257,20 @@ a:hover {
 .section-header {
   border-left: 4px solid var(--gold-500);
   padding-left: 0.75rem;
+}
+.section-header-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-header-pill::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #FBBF24 0%, #F59E0B 100%);
+  flex-shrink: 0;
 }
 
 /* ── Page animations ─────────────────────────────────────── */

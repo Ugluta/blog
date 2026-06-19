@@ -49,7 +49,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section className="py-16" style={{ backgroundColor: "#0F172A" }}>
+    <section className="py-16" style={{ background: "linear-gradient(135deg, #0F172A 0%, #131f35 100%)" }}>
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16 items-center">
           <div className="lg:col-span-1">
@@ -65,7 +65,7 @@ export default function ServicesSection() {
             </p>
             <Link
               href="/hizmetler"
-              className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-600 hover:border-amber-500 text-slate-200 hover:text-amber-400 text-sm font-semibold transition-colors rounded-sm"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-600 hover:border-amber-500 text-slate-200 hover:text-amber-400 text-sm font-semibold transition-colors rounded-xl"
             >
               Daha Fazla
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

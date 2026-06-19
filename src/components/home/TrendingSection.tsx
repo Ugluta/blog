@@ -14,9 +14,10 @@ const catColors: Record<string, string> = {
 function SectionHeader({ title, href }: { title: string; href: string }) {
   return (
     <div className="flex items-center justify-between mb-5 pb-3 border-b border-slate-700/50">
-      <h3 className="text-sm font-black uppercase tracking-wider text-white">
-        <span className="text-amber-400 mr-1">|</span> {title}
-      </h3>
+      <div className="flex items-center gap-2">
+        <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex-shrink-0" />
+        <h3 className="text-sm font-black uppercase tracking-wider text-white">{title}</h3>
+      </div>
       <Link href={href} className="text-[10px] text-amber-400 hover:text-amber-300 transition-colors font-medium">
         Tümü →
       </Link>
@@ -26,7 +27,7 @@ function SectionHeader({ title, href }: { title: string; href: string }) {
 
 export default function TrendingSection() {
   return (
-    <section className="py-10" style={{ backgroundColor: "#0a0f1e" }}>
+    <section className="py-12" style={{ backgroundColor: "#0a0f1e" }}>
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
@@ -35,7 +36,7 @@ export default function TrendingSection() {
               {recentPosts.slice(0, 5).map((post, i) => (
                 <Link key={post.id} href={`/haber/${post.id}`} className="group flex items-center gap-3">
                   <span className="text-2xl font-black text-slate-800 flex-shrink-0 w-7 tabular-nums">{i + 1}</span>
-                  <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800">
+                  <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800 rounded-lg">
                     <Image src={post.image} alt={post.title} fill className="object-cover" sizes="56px" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -79,7 +80,7 @@ export default function TrendingSection() {
               {recentPosts.slice(0, 5).map((post, i) => (
                 <Link key={post.id} href={`/haber/${post.id}`} className="group flex items-center gap-3">
                   <span className="text-2xl font-black text-slate-800 flex-shrink-0 w-7 tabular-nums">{i + 1}</span>
-                  <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800">
+                  <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800 rounded-lg">
                     <Image src={`https://picsum.photos/56/56?random=${post.id + 90}`} alt={post.title} fill className="object-cover" sizes="56px" />
                   </div>
                   <div className="flex-1 min-w-0">
