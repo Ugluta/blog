@@ -21,12 +21,11 @@ const ROLE_BADGE: Record<string, 'default' | 'secondary' | 'success' | 'warning'
 export default async function KullanicilarPage({
   searchParams,
 }: {
-  searchParams: { sayfa?: string; ara?: string; rol?: string };
+  searchParams: Promise<{ sayfa?: string; ara?: string; rol?: string }>;
 }) {
-  const page = Number(searchParams.sayfa) || 1;
+  const { sayfa, ara: search, rol: roleFilter } = await searchParams;
+  const page = Number(sayfa) || 1;
   const perPage = 25;
-  const search = searchParams.ara;
-  const roleFilter = searchParams.rol;
 
   const where = {
     ...(search && {
@@ -49,6 +48,8 @@ export default async function KullanicilarPage({
     db.user.count({ where }),
   ]);
 
+  const totalPages = Math.ceil(total / perPage);
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -65,22 +66,42 @@ export default async function KullanicilarPage({
       </div>
 
       {/* Filters */}
-      <div className="flex gap-3 bg-white rounded-xl border border-gray-100 p-3">
+      <form method="GET" action="/admin/kullanicilar" className="flex gap-3 bg-white rounded-xl border border-gray-100 p-3">
         <div className="flex-1 flex items-center gap-2 bg-gray-50 rounded-lg px-3">
           <Search className="w-4 h-4 text-gray-400" />
-          <input type="search" placeholder="Ad, e-posta ara..."
-            defaultValue={search}
+          <input
+            type="search"
+            name="ara"
+            placeholder="Ad, e-posta ara..."
+            defaultValue={search || ''}
             className="flex-1 py-2 text-sm bg-transparent outline-none"
           />
         </div>
-        <select defaultValue={roleFilter || ''}
-          className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white">
+        <select
+          name="rol"
+          defaultValue={roleFilter || ''}
+          className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white"
+        >
           <option value="">Tüm Roller</option>
           {Object.entries(ROLE_LABELS).map(([val, label]) => (
             <option key={val} value={val}>{label}</option>
           ))}
         </select>
-      </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700"
+        >
+          Filtrele
+        </button>
+        {(search || roleFilter) && (
+          <Link
+            href="/admin/kullanicilar"
+            className="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50"
+          >
+            Temizle
+          </Link>
+        )}
+      </form>
 
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <Table>
@@ -88,7 +109,7 @@ export default async function KullanicilarPage({
             <TableRow>
               <TableHead>Kullanıcı</TableHead>
               <TableHead>Rol</TableHead>
-              <TableHead>Üyelik Paketi</TableHead>
+              <TableHead>Üelik Paketi</TableHead>
               <TableHead>Durum</TableHead>
               <TableHead>Kayıt Tarihi</TableHead>
               <TableHead className="text-right">İşlemler</TableHead>
@@ -121,18 +142,43 @@ export default async function KullanicilarPage({
                 </TableCell>
                 <TableCell>{formatDate(user.createdAt)}</TableCell>
                 <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <Link href={`/admin/kullanicilar/${user.id}`}
-                      className="px-3 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-lg">
-                      Düzenle
-                    </Link>
-                  </div>
+                  <Link href={`/admin/kullanicilar/${user.id}`}
+                    className="px-3 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded-lg">
+                    Düzenle
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-gray-500">
+            Sayfa {page} / {totalPages} &mdash; toplam {total} kullanıcı
+          </p>
+          <div className="flex gap-2">
+            {page > 1 && (
+              <Link
+                href={`/admin/kullanicilar?sayfa=${page - 1}${search ? `&ara=${search}` : ''}${roleFilter ? `&rol=${roleFilter}` : ''}`}
+                className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50"
+              >
+                ← Önceki
+              </Link>
+            )}
+            {page < totalPages && (
+              <Link
+                href={`/admin/kullanicilar?sayfa=${page + 1}${search ? `&ara=${search}` : ''}${roleFilter ? `&rol=${roleFilter}` : ''}`}
+                className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50"
+              >
+                Sonraki →
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
