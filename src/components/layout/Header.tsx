@@ -178,7 +178,7 @@ export function Header() {
                     <ChevronDown className="w-3 h-3 text-gray-500" />
                   </button>
                   {showUserMenu && (
-                    <div className="absolute top-full right-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                    <div className="absolute top-full right-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
                       <div className="px-4 py-2 border-b border-gray-50">
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {session.user.name || session.user.email}
@@ -191,6 +191,13 @@ export function Header() {
                         onClick={() => setShowUserMenu(false)}
                       >
                         <Upload className="w-4 h-4" /> Dosya Yükle
+                      </Link>
+                      <Link
+                        href="/dosyalarim"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <FileText className="w-4 h-4" /> Dosyalarım
                       </Link>
                       <Link
                         href="/favorilerim"
@@ -319,17 +326,31 @@ export function Header() {
               </div>
             ))}
             {status === 'authenticated' ? (
-              <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
+              <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-gray-100">
                 <Link
                   href="/dosyalar/yukle"
-                  className="flex-1 py-2.5 text-center text-sm font-medium text-white bg-blue-600 rounded-lg flex items-center justify-center gap-2"
+                  className="py-2.5 text-center text-sm font-medium text-white bg-blue-600 rounded-lg flex items-center justify-center gap-2"
                   onClick={() => setMobileOpen(false)}
                 >
                   <Upload className="w-4 h-4" /> Dosya Yükle
                 </Link>
+                <Link
+                  href="/dosyalarim"
+                  className="py-2.5 text-center text-sm font-medium text-gray-700 border border-gray-200 rounded-lg flex items-center justify-center gap-2"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <FileText className="w-4 h-4" /> Dosyalarım
+                </Link>
+                <Link
+                  href="/profil"
+                  className="py-2.5 text-center text-sm font-medium text-gray-700 border border-gray-200 rounded-lg"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Profilim
+                </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="flex-1 py-2.5 text-center text-sm font-medium text-red-600 border border-red-200 rounded-lg"
+                  className="py-2.5 text-center text-sm font-medium text-red-600 border border-red-200 rounded-lg"
                 >
                   Çıkış Yap
                 </button>
