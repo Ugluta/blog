@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KURUMSAL — Mockup</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#111827;font-family:'Segoe UI',system-ui,sans-serif;color:#e2e8f0;font-size:14px}
+  .controls{position:sticky;top:0;z-index:100;background:#1f2937;border-bottom:1px solid #374151;padding:10px 20px;display:flex;align-items:center;gap:12px}
+  .tab{padding:6px 16px;border-radius:6px;border:1px solid #4b5563;color:#9ca3af;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s}
+  .tab.active{background:#f59e0b;border-color:#f59e0b;color:#111}
+  .label{font-size:11px;font-weight:700;uppercase:true;letter-spacing:.08em;color:#6b7280;margin-left:auto}
+  /* DEVICE FRAMES */
+  .frame-wrap{display:flex;justify-content:center;gap:40px;padding:30px 20px;align-items:flex-start;flex-wrap:wrap}
+  .device{display:none;flex-direction:column;align-items:center;gap:10px}
+  .device.visible{display:flex}
+  .device-label{font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.08em;text-transform:uppercase}
+  /* Desktop frame */
+  .desktop-frame{width:900px;border:2px solid #374151;border-radius:8px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  /* Mobile frame */
+  .mobile-frame{width:375px;border:8px solid #1f2937;border-radius:36px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative}
+  .mobile-notch{height:28px;background:#0F172A;display:flex;align-items:center;justify-content:center}
+  .mobile-notch-pill{width:80px;height:6px;background:#374151;border-radius:3px}
+  .mobile-screen{overflow:auto;max-height:700px}
+  /* SITE COLORS */
+  --bg:#0a0f1e; --panel:#0F172A; --amber:#F59E0B; --border:#334155;
+
+  /* ─── COMPONENTS ─── */
+  .c-topbar{background:#050d1a;border-bottom:1px solid #1e2d45;padding:5px 16px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#64748b}
+  .c-topbar-left{display:flex;gap:12px}
+  .c-topbar-currency{display:flex;gap:8px}
+  .currency-item{display:flex;gap:4px}
+  .currency-up{color:#10b981}.currency-dn{color:#ef4444}
+
+  .c-header{background:#0F172A;border-bottom:1px solid #1e2d45;padding:0 16px;display:flex;align-items:center;height:52px;gap:16px}
+  .c-logo{font-size:16px;font-weight:900;letter-spacing:.12em;color:#f59e0b;text-transform:uppercase;white-space:nowrap}
+  .c-nav{display:flex;gap:2px;flex:1;justify-content:center}
+  .nav-item{padding:6px 10px;border-radius:4px;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;white-space:nowrap}
+  .nav-item:hover,.nav-item.active{background:#1e2d45;color:#f1f5f9}
+  .c-search-btn{margin-left:auto;background:#1e2d45;border:1px solid #334155;color:#94a3b8;padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap}
+  .c-abone-btn{background:#f59e0b;color:#111;font-weight:700;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;white-space:nowrap}
+
+  .c-ticker{background:#1a2235;border-bottom:1px solid #1e2d45;padding:5px 16px;display:flex;align-items:center;gap:10px;font-size:11px;overflow:hidden}
+  .ticker-badge{background:#ef4444;color:#fff;font-weight:700;font-size:10px;padding:1px 6px;border-radius:2px;flex-shrink:0}
+  .ticker-text{color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* SECTIONS */
+  .section{padding:24px 16px;background:#0a0f1e}
+  .section.panel{background:#0F172A}
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .section-title{font-size:15px;font-weight:800;border-left:3px solid #f59e0b;padding-left:10px;color:#f1f5f9}
+  .section-link{font-size:11px;color:#f59e0b;font-weight:600}
+
+  /* Hero */
+  .hero-grid{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+  .hero-main{background:#1e2d45;border-radius:2px;position:relative;overflow:hidden;height:240px}
+  .hero-img{width:100%;height:100%;object-fit:cover;background:linear-gradient(135deg,#1e3a5f,#0f2140)}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,13,26,.9) 40%,transparent)}
+  .hero-content{position:absolute;bottom:0;left:0;right:0;padding:16px}
+  .hero-badge{display:inline-block;background:#f59e0b;color:#111;font-size:9px;font-weight:800;padding:1px 6px;border-radius:1px;text-transform:uppercase;margin-bottom:4px}
+  .hero-ttl{font-size:13px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:4px}
+  .hero-author{font-size:10px;color:#94a3b8}
+  .hero-side{display:flex;flex-direction:column;gap:6px}
+  .hero-card{display:flex;gap:8px;background:#0F172A;border:1px solid #1e2d45;border-radius:2px;padding:8px;overflow:hidden}
+  .hero-card-img{width:56px;height:52px;flex-shrink:0;background:linear-gradient(135deg,#1e3a5f,#0f2140);border-radius:1px}
+  .hero-card-txt{flex:1;min-width:0}
+  .hero-card-cat{font-size:9px;font-weight:800;color:#f59e0b;text-transform:uppercase;margin-bottom:2px}
+  .hero-card-ttl{font-size:11px;font-weight:700;color:#e2e8f0;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+  /* Stats */
+  .stats-strip{background:#0F172A;border-top:1px solid #1e2d45;border-bottom:1px solid #1e2d45;padding:14px 16px}
+  .stats-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#475569;margin-bottom:10px;text-align:center}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1e2d45}
+  .stat-item{background:#0F172A;padding:10px 8px;text-align:center}
+  .stat-val{font-size:18px;font-weight:900;color:#f59e0b;line-height:1}
+  .stat-lbl{font-size:9px;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+
+  /* Editor Pick */
+  .pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pick-card{display:flex;background:#0F172A;border:1px solid #1e2d45;border-radius:2px;overflow:hidden}
+  .pick-img{width:120px;height:90px;flex-shrink:0;object-fit:cover}
+  .pick-img-ph{width:120px;height:90px;flex-shrink:0;background:linear-gradient(135deg,#1e3a5f,#0f2140)}
+  .pick-txt{padding:8px 10px;flex:1;min-width:0}
+  .pick-cat{font-size:9px;font-weight:800;color:#f59e0b;text-transform:uppercase;margin-bottom:2px}
+  .pick-date{font-size:9px;color:#64748b;margin-bottom:4px}
+  .pick-ttl{font-size:11px;font-weight:700;color:#e2e8f0;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+
+  /* Articles Grid */
+  .articles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .art-card{background:#0F172A;border:1px solid #1e2d45;border-radius:2px;overflow:hidden}
+  .art-img{width:100%;aspect-ratio:1;object-fit:cover}
+  .art-img-ph{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#1e3a5f,#0f2140)}
+  .art-body{padding:8px}
+  .art-cat{font-size:9px;font-weight:800;color:#60a5fa;text-transform:uppercase;margin-bottom:3px}
+  .art-cat.ekonomi{color:#34d399}.art-cat.dunya{color:#a78bfa}.art-cat.spor{color:#f87171}.art-cat.kultur{color:#f59e0b}
+  .art-ttl{font-size:11px;font-weight:700;color:#e2e8f0;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .art-date{font-size:9px;color:#64748b;margin-top:4px}
+
+  /* News categories */
+  .news-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .news-col-head{font-size:11px;font-weight:800;color:#f59e0b;text-transform:uppercase;border-bottom:2px solid #f59e0b;padding-bottom:5px;margin-bottom:8px}
+  .news-item{display:flex;gap:6px;margin-bottom:7px}
+  .news-item-img{width:52px;height:44px;flex-shrink:0;background:linear-gradient(135deg,#1e3a5f,#0f2140);border-radius:1px}
+  .news-item-ttl{font-size:11px;font-weight:600;color:#cbd5e1;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .news-item-time{font-size:9px;color:#475569;margin-top:2px}
+
+  /* Services */
+  .services-wrap{display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:center}
+  .svc-left{}
+  .svc-chip{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f59e0b;margin-bottom:10px}
+  .svc-chip-dot{width:6px;height:6px;background:#f59e0b;border-radius:50%}
+  .svc-title{font-size:18px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:10px}
+  .svc-desc{font-size:11px;color:#64748b;line-height:1.6;margin-bottom:14px}
+  .svc-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid #334155;color:#94a3b8;padding:7px 14px;border-radius:2px;font-size:11px;font-weight:700;cursor:pointer}
+  .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .svc-card{}
+  .svc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:16px}
+  .svc-card-title{font-size:12px;font-weight:800;color:#e2e8f0;margin-bottom:4px}
+  .svc-card-desc{font-size:10px;color:#64748b;line-height:1.5}
+
+  /* Pricing */
+  .pricing-hd{text-align:center;margin-bottom:16px}
+  .pricing-chip{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f59e0b}
+  .pricing-title{font-size:18px;font-weight:800;color:#fff;margin-top:4px}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:600px;margin:0 auto}
+  .price-card{border:1px solid #1e2d45;border-radius:2px;padding:16px;background:#0F172A;position:relative}
+  .price-card.highlight{border-color:#f59e0b4d;background:#1e293b;box-shadow:0 0 20px rgba(245,158,11,.08)}
+  .price-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#f59e0b;color:#111;font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .price-plan{font-size:10px;color:#64748b;margin-bottom:4px}
+  .price-val{font-size:24px;font-weight:900;color:#fff;line-height:1}
+  .price-period{font-size:10px;color:#64748b}
+  .price-features{margin:10px 0;display:flex;flex-direction:column;gap:5px}
+  .price-feat{display:flex;align-items:center;gap:5px;font-size:10px;color:#cbd5e1}
+  .price-feat-icon{color:#f59e0b;flex-shrink:0;font-size:11px}
+  .price-btn{width:100%;padding:7px;text-align:center;border:1px solid #334155;border-radius:2px;font-size:11px;font-weight:700;color:#94a3b8;cursor:pointer;margin-top:8px}
+  .price-btn.hl{background:#f59e0b;border-color:#f59e0b;color:#111}
+
+  /* FAQ */
+  .faq-wrap{display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start}
+  .faq-left-chip{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f59e0b;margin-bottom:8px}
+  .faq-left-title{font-size:18px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:8px}
+  .faq-left-desc{font-size:10px;color:#64748b;line-height:1.6}
+  .faq-list{display:flex;flex-direction:column;gap:2px}
+  .faq-item{border:1px solid #1e2d45}
+  .faq-q{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+  .faq-num{font-size:18px;font-weight:900;color:#1e2d45;width:26px;flex-shrink:0}
+  .faq-q-txt{font-size:11px;font-weight:700;color:#e2e8f0;flex:1}
+  .faq-chevron{color:#f59e0b;font-size:11px}
+  .faq-ans{padding:0 12px 10px 48px;font-size:10px;color:#64748b;line-height:1.6;display:none}
+  .faq-item.open .faq-ans{display:block}
+  .faq-item.open .faq-q{background:#0F172A}
+
+  /* Trending */
+  .trending-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .trend-col{}
+  .trend-col-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #1e2d45;margin-bottom:10px}
+  .trend-col-title{font-size:11px;font-weight:800;color:#fff;text-transform:uppercase}
+  .trend-col-title::before{content:"| ";color:#f59e0b}
+  .trend-col-link{font-size:9px;color:#f59e0b;font-weight:600}
+  .trend-item{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .trend-num{font-size:18px;font-weight:900;color:#1e2d45;width:22px;flex-shrink:0}
+  .trend-thumb{width:44px;height:44px;flex-shrink:0;background:linear-gradient(135deg,#1e3a5f,#0f2140);border-radius:1px}
+  .trend-info{flex:1;min-width:0}
+  .trend-cat{font-size:9px;font-weight:800;color:#60a5fa;text-transform:uppercase;margin-bottom:2px}
+  .trend-ttl{font-size:10px;font-weight:700;color:#cbd5e1;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .trend-meta{font-size:9px;color:#475569;margin-top:2px}
+
+  /* Contact CTA */
+  .cta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  .cta-chip{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#f59e0b;margin-bottom:8px}
+  .cta-title{font-size:18px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:8px}
+  .cta-desc{font-size:10px;color:#64748b;line-height:1.6;margin-bottom:14px}
+  .cta-info{display:flex;flex-direction:column;gap:8px}
+  .cta-info-item{display:flex;align-items:center;gap:8px}
+  .cta-info-icon{width:28px;height:28px;background:rgba(245,158,11,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+  .cta-info-lbl{font-size:9px;font-weight:800;text-transform:uppercase;color:#475569}
+  .cta-info-val{font-size:11px;color:#e2e8f0}
+  .cta-form{background:#0a0f1e;border:1px solid #1e2d45;padding:14px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .form-field{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+  .form-lbl{font-size:9px;font-weight:700;color:#64748b;text-transform:uppercase}
+  .form-inp{background:#0F172A;border:1px solid #1e2d45;padding:7px 10px;font-size:11px;color:#e2e8f0;border-radius:2px}
+  .form-textarea{background:#0F172A;border:1px solid #1e2d45;padding:7px 10px;font-size:11px;color:#e2e8f0;border-radius:2px;height:56px;resize:none;width:100%}
+  .form-btn{width:100%;background:#f59e0b;color:#111;font-weight:800;padding:9px;font-size:12px;border-radius:2px;border:none;cursor:pointer;margin-top:4px}
+
+  /* Newsletter */
+  .newsletter{background:#0F172A;border-top:1px solid #1e2d45;border-bottom:1px solid #1e2d45;padding:20px 16px;text-align:center}
+  .newsletter-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px}
+  .newsletter-sub{font-size:11px;color:#64748b;margin-bottom:12px}
+  .newsletter-form{display:flex;gap:6px;max-width:400px;margin:0 auto}
+  .newsletter-input{flex:1;background:#0a0f1e;border:1px solid #1e2d45;padding:8px 12px;font-size:12px;color:#e2e8f0;border-radius:2px}
+  .newsletter-btn{background:#f59e0b;color:#111;font-weight:800;padding:8px 16px;border-radius:2px;font-size:12px;cursor:pointer;border:none;white-space:nowrap}
+
+  /* Ad Banner */
+  .ad-banner{padding:6px 16px;background:#0a0f1e}
+  .ad-inner{border:1px solid #1e2d45;background:#0F172A;display:flex;align-items:center;justify-content:center;height:60px;gap:8px}
+  .ad-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#334155;border:1px solid #334155;padding:1px 6px;border-radius:2px}
+  .ad-size{font-size:9px;color:#1e2d45;font-family:monospace}
+
+  /* Footer */
+  .footer{background:#050d1a;border-top:1px solid #1e2d45;padding:20px 16px}
+  .footer-top{display:grid;grid-template-columns:220px 1fr 1fr 1fr 200px;gap:16px;margin-bottom:16px}
+  .footer-brand-name{font-size:18px;font-weight:900;letter-spacing:.12em;color:#f59e0b;text-transform:uppercase;margin-bottom:4px}
+  .footer-brand-sub{font-size:9px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  .footer-desc{font-size:10px;color:#475569;line-height:1.6;margin-bottom:10px}
+  .footer-socials{display:flex;gap:4px}
+  .footer-social{width:26px;height:26px;background:#0F172A;border:1px solid #1e2d45;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+  .footer-col-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#e2e8f0;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1e2d45}
+  .footer-col-links{display:flex;flex-direction:column;gap:5px}
+  .footer-col-link{font-size:10px;color:#475569;display:flex;align-items:center;gap:4px}
+  .footer-col-link::before{content:"·";color:#f59e0b3d;font-size:14px}
+  .footer-nl-input{width:100%;background:#0F172A;border:1px solid #1e2d45;padding:6px 10px;font-size:10px;color:#e2e8f0;border-radius:2px;margin-bottom:5px}
+  .footer-nl-btn{width:100%;background:#f59e0b;color:#111;font-weight:800;padding:6px;font-size:10px;border-radius:2px;border:none;cursor:pointer}
+  .footer-bottom{border-top:1px solid #1e2d45;padding-top:10px;display:flex;justify-content:space-between;align-items:center}
+  .footer-copy{font-size:9px;color:#334155}
+  .footer-links{display:flex;gap:10px}
+  .footer-btm-link{font-size:9px;color:#334155}
+
+  /* MOBILE OVERRIDES */
+  .mobile .c-topbar{display:none}
+  .mobile .c-nav{display:none}
+  .mobile .c-search-btn{display:none}
+  .mobile .c-header{padding:0 12px;height:48px}
+  .mobile .hero-grid{grid-template-columns:1fr}
+  .mobile .hero-side{display:none}
+  .mobile .hero-main{height:200px}
+  .mobile .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .mobile .stat-val{font-size:16px}
+  .mobile .pick-grid{grid-template-columns:1fr}
+  .mobile .pick-img-ph{width:90px;height:80px}
+  .mobile .articles-grid{grid-template-columns:repeat(2,1fr)}
+  .mobile .news-grid{grid-template-columns:1fr}
+  .mobile .news-col+.news-col+.news-col+.news-col{display:none}
+  .mobile .services-wrap{grid-template-columns:1fr}
+  .mobile .pricing-grid{grid-template-columns:1fr;max-width:280px}
+  .mobile .faq-wrap{grid-template-columns:1fr}
+  .mobile .faq-left{margin-bottom:4px}
+  .mobile .trending-grid{grid-template-columns:1fr}
+  .mobile .trend-col+.trend-col+.trend-col{display:none}
+  .mobile .cta-wrap{grid-template-columns:1fr}
+  .mobile .newsletter-form{flex-direction:column}
+  .mobile .footer-top{grid-template-columns:1fr}
+  .mobile .footer-col+.footer-col+.footer-col{display:none}
+  .mobile .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+  .mobile .cta-form{display:none}
+  .mobile .form-row{grid-template-columns:1fr}
+  .mobile .mobile-contact-cta-btn{display:block;width:100%;background:#f59e0b;color:#111;font-weight:800;padding:12px;text-align:center;border-radius:4px;font-size:13px;margin-top:12px;border:none;cursor:pointer}
+  .mobile-contact-cta-btn{display:none}
+  .mobile .c-abone-btn{font-size:10px;padding:4px 8px}
+  .mobile .c-logo{font-size:14px}
+  /* mobile bottom nav */
+  .mobile-bottom-nav{display:none}
+  .mobile .mobile-bottom-nav{display:flex;justify-content:space-around;background:#0F172A;border-top:1px solid #1e2d45;padding:6px 0}
+  .mbn-item{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:9px;color:#64748b;padding:2px 4px}
+  .mbn-item.active{color:#f59e0b}
+  .mbn-icon{font-size:18px}
+  .mobile .articles-grid.full .art-card:nth-child(n+5){display:none}
+  .mobile .trending-grid .trend-col:nth-child(n+2){display:none}
+  .mobile .news-grid .news-col:nth-child(n+2){display:none}
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <button class="tab active" onclick="showView('both')">Her İkisi</button>
+  <button class="tab" onclick="showView('desktop')">Masaüstü</button>
+  <button class="tab" onclick="showView('mobile')">Mobil</button>
+  <span class="label">KURUMSAL — Ana Sayfa Mockup</span>
+</div>
+
+<div class="frame-wrap" id="frameWrap">
+
+  <!-- DESKTOP -->
+  <div class="device visible" id="desktopDevice">
+    <div class="device-label">Masaüstü — 1280px</div>
+    <div class="desktop-frame" id="desktopContent">
+      <!-- Topbar -->
+      <div class="c-topbar">
+        <div class="c-topbar-left">
+          <span>📅 19 Haziran 2026, Cuma</span>
+          <span>⛅ İstanbul 24°C</span>
+        </div>
+        <div class="c-topbar-currency">
+          <span class="currency-item">USD <span class="currency-up">▲ 32.68</span></span>
+          <span class="currency-item">EUR <span class="currency-dn">▼ 35.12</span></span>
+          <span class="currency-item">GBP <span class="currency-up">▲ 41.55</span></span>
+        </div>
+        <div style="display:flex;gap:8px;color:#475569">🐦 𝕏 &nbsp;💼 in &nbsp;▶️ YT &nbsp;📸 IG</div>
+      </div>
+      <!-- Header -->
+      <div class="c-header">
+        <div class="c-logo">KURUMSAL</div>
+        <div class="c-nav">
+          <div class="nav-item active">Ana Sayfa</div>
+          <div class="nav-item">Haberler ▾</div>
+          <div class="nav-item">Teknoloji ▾</div>
+          <div class="nav-item">Ekonomi ▾</div>
+          <div class="nav-item">Dünya ▾</div>
+          <div class="nav-item">Blog ▾</div>
+          <div class="nav-item">Hizmetler ▾</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="c-search-btn">🔍 Ara</div>
+          <div class="c-abone-btn">Abone Ol</div>
+        </div>
+      </div>
+      <div id="mainContent"></div>
+    </div>
+  </div>
+
+  <!-- MOBILE -->
+  <div class="device visible" id="mobileDevice">
+    <div class="device-label">Mobil — 375px</div>
+    <div class="mobile-frame">
+      <div class="mobile-notch"><div class="mobile-notch-pill"></div></div>
+      <div class="mobile-screen" id="mobileContent"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function buildSections() {
+  return `
+    <!-- Ticker -->
+    <div class="c-ticker">
+      <div class="ticker-badge">SON DAKİKA</div>
+      <div class="ticker-text">Merkez Bankası faiz kararını açıkladı • BIST 100 rekor kırdı • Türkiye-AB zirvesi başladı • Yapay zeka yasası Meclis'ten geçti</div>
+    </div>
+
+    <!-- Hero -->
+    <div class="section">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="hero-img" style="background:linear-gradient(135deg,#0d2137 0%,#0a3d62 50%,#1a5276 100%)"></div>
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="hero-badge">Teknoloji</div>
+            <div class="hero-ttl">Yapay Zeka Çağında Türk Teknoloji Firmaları Küresel Pazara Açılıyor</div>
+            <div class="hero-author">Ali Yılmaz · 2 saat önce</div>
+          </div>
+        </div>
+        <div class="hero-side">
+          ${['#1a3a5c,#0d2137','#1a4a3c,#0d2a1f','#2a1a4c,#1a0d37'].map((g,i)=>`
+          <div class="hero-card">
+            <div class="hero-card-img" style="background:linear-gradient(135deg,${g})"></div>
+            <div class="hero-card-txt">
+              <div class="hero-card-cat">${['Ekonomi','Dünya','Spor'][i]}</div>
+              <div class="hero-card-ttl">${['Borsa İstanbul güçlü kapanışla tarihi rekor kırdı','BM Zirvesi: İklim krizine acil eylem çağrısı','Galatasaray Şampiyonlar Ligi finalinde'][i]}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-strip">
+      <div class="stats-label">Rakamlarla Kurumsal</div>
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-val">48K+</div><div class="stat-lbl">Makale</div></div>
+        <div class="stat-item"><div class="stat-val">2.8M+</div><div class="stat-lbl">Okuyucu</div></div>
+        <div class="stat-item"><div class="stat-val">24</div><div class="stat-lbl">Kategori</div></div>
+        <div class="stat-item"><div class="stat-val">15+</div><div class="stat-lbl">Yıl</div></div>
+      </div>
+    </div>
+
+    <!-- Editor Pick -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Editörün Seçimi</div>
+        <div class="section-link">Tümü →</div>
+      </div>
+      <div class="pick-grid">
+        ${[['Teknoloji','#1a3a5c,#0d2137'],['Ekonomi','#0d2a1f,#1a4a3c'],['Dünya','#1a0d37,#2a1a4c'],['Sağlık','#1a3a2a,#0d2a1f']].map((c,i)=>`
+        <div class="pick-card">
+          <div class="pick-img-ph" style="background:linear-gradient(135deg,${c[1]})"></div>
+          <div class="pick-txt">
+            <div class="pick-cat">${c[0]}</div>
+            <div class="pick-date">19 Haz 2026</div>
+            <div class="pick-ttl">${['Kuantum Bilgisayarlar Siber Güvenliği Nasıl Değiştiriyor?','Merkez Bankası Enflasyonla Mücadelede Yeni Araç','İklim Zirvesinde Türkiye Kritik Anlaşma İmzaladı','Akdeniz Diyeti Alzheimer Riskini Yüzde 40 Azaltıyor'][i]}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Ad Top -->
+    <div class="ad-banner">
+      <div class="ad-inner">
+        <div class="ad-lbl">REKLAM</div>
+        <div class="ad-size">728 × 90 — Üst Reklam Alanı</div>
+      </div>
+    </div>
+
+    <!-- News Categories -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Son Haberler</div>
+        <div class="section-link">Tümü →</div>
+      </div>
+      <div class="news-grid">
+        ${[['TEKNOLOJİ','#1a3a5c,#0d2137'],['EKONOMİ','#0d2a1f,#1a4a3c'],['DÜNYA','#1a0d37,#2a1a4c'],['SPOR','#3a1a1a,#2a0d0d']].map(c=>`
+        <div class="news-col">
+          <div class="news-col-head">${c[0]}</div>
+          ${[1,2,3].map(j=>`
+          <div class="news-item">
+            <div class="news-item-img" style="background:linear-gradient(135deg,${c[1]})"></div>
+            <div><div class="news-item-ttl">Başlık ${j}: Ayrıntılı haber metni burada yer almaktadır</div><div class="news-item-time">3 saat önce</div></div>
+          </div>`).join('')}
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Makaleler</div>
+        <div class="section-link">Tümü →</div>
+      </div>
+      <div class="articles-grid full">
+        ${[['Teknoloji','tek','#1a3a5c,#0d2137'],['Ekonomi','ekonomi','#0d2a1f,#1a4a3c'],['Dünya','dunya','#1a0d37,#2a1a4c'],['Spor','spor','#3a1a1a,#2a0d0d'],
+           ['Kültür','kultur','#2a1a0d,#1a0d00'],['Sağlık','tek','#0d1a3a,#0a1020'],['Teknoloji','tek','#1a2a3c,#0d1a2c'],['Ekonomi','ekonomi','#0a1a0d,#0d2a1f']].map((c,i)=>`
+        <div class="art-card">
+          <div class="art-img-ph" style="background:linear-gradient(135deg,${c[2]})"></div>
+          <div class="art-body">
+            <div class="art-cat ${c[1]}">${c[0]}</div>
+            <div class="art-ttl">Makale başlığı ${i+1}: Kısa açıklama metni</div>
+            <div class="art-date">19 Haz 2026</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="section panel">
+      <div class="services-wrap">
+        <div class="svc-left">
+          <div class="svc-chip"><div class="svc-chip-dot"></div>NELER YAPIYORUZ</div>
+          <div class="svc-title">Şirketiniz için en iyi yaklaşım</div>
+          <div class="svc-desc">Kapsamlı çözümlerimizle işletmenizi bir üst seviyeye taşıyoruz.</div>
+          <div class="svc-btn">Daha Fazla ↗</div>
+        </div>
+        <div class="svc-grid">
+          ${[['📋','Stratejik Planlama','İşletmenizin hedeflerine uygun stratejiler','rgba(245,158,11,.15)'],
+             ['📊','Veri Analizi','Veriye dayalı içgörülerle kararlarınızı güçlendirin','rgba(59,130,246,.15)'],
+             ['🔌','Teknoloji Entegrasyonu','En yeni araç ve sistemleri entegre ediyoruz','rgba(16,185,129,.15)'],
+             ['💡','Yenilikçi Çözümler','Rekabetçi avantaj için yenilikçi yaklaşımlar','rgba(139,92,246,.15)']].map(s=>`
+          <div class="svc-card">
+            <div class="svc-icon" style="background:${s[3]}">${s[0]}</div>
+            <div class="svc-card-title">${s[1]}</div>
+            <div class="svc-card-desc">${s[2]}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="section">
+      <div class="pricing-hd">
+        <div class="pricing-chip">FİYATLANDIRMA</div>
+        <div class="pricing-title">İhtiyacınıza Uygun Plan</div>
+      </div>
+      <div class="pricing-grid">
+        ${[['Temel Plan','₺499',false,['Stratejik Planlama','Süreç Optimizasyonu','Teknoloji Analizi','Destek Saatleri']],
+           ['Standart Plan','₺999',true,['Stratejik Planlama','Süreç Optimizasyonu','Teknoloji Entegrasyonu','Üç Aylık İnceleme','Öncelikli Destek']],
+           ['Premium Plan','₺1.999',false,['Stratejik Planlama','Süreç Optimizasyonu','Teknoloji Entegrasyonu','Yenilikçi Çözümler','Özel Danışman','Sınırsız Destek']]].map(p=>`
+        <div class="price-card ${p[2]?'highlight':''}">
+          ${p[2]?'<div class="price-badge">Popüler</div>':''}
+          <div class="price-plan">${p[0]}</div>
+          <div class="price-val">${p[1]}<span class="price-period">/ay</span></div>
+          <div class="price-features">${p[3].map(f=>`<div class="price-feat"><span class="price-feat-icon">✓</span>${f}</div>`).join('')}</div>
+          <div class="price-btn ${p[2]?'hl':''}">Satın Al ↗</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section panel">
+      <div class="faq-wrap">
+        <div class="faq-left">
+          <div class="faq-left-chip">SORU & CEVAP</div>
+          <div class="faq-left-title">Sık Sorulan Sorular</div>
+          <div class="faq-left-desc">Platformumuza dair en sık sorulan sorulara yanıtlar bulabilirsiniz.</div>
+        </div>
+        <div class="faq-list">
+          ${[['İçerik yönetim sistemini nasıl kullanabilirim?','Sisteme kayıt olduktan sonra /uygulama paneline erişerek içeriklerinizi yönetebilirsiniz.'],
+             ['Sosyal medya otomasyonu nasıl çalışır?','Sosyal hesaplarınızı panele bağladıktan sonra tek tıkla tüm platformlarda paylaşabilirsiniz.'],
+             ['Çoklu kullanıcı desteği var mı?','Evet. Editör, yazar ve yönetici rolleri atayabilirsiniz.'],
+             ['Verilerimin güvenliği nasıl sağlanıyor?','KVKK uyumlu altyapı, günlük yedekleme ve şifreli bağlantılar kullanılmaktadır.']].map((f,i)=>`
+          <div class="faq-item ${i===0?'open':''}">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <div class="faq-num">0${i+1}</div>
+              <div class="faq-q-txt">${f[0]}</div>
+              <div class="faq-chevron">▾</div>
+            </div>
+            <div class="faq-ans">${f[1]}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Trending -->
+    <div class="section">
+      <div class="section-head" style="margin-bottom:0">
+        <div class="section-title">Gündem</div>
+      </div>
+      <br>
+      <div class="trending-grid">
+        ${[['Son Haberler',['#1a3a5c,#0d2137','#0d2a1f,#1a4a3c','#1a0d37,#2a1a4c','#3a1a1a,#2a0d0d','#2a1a0d,#1a0d00']],
+           ['En Çok Yorumlanan',null],
+           ['Öne Çıkanlar',['#0d1a3a,#0a1020','#1a2a3c,#0d1a2c','#0a1a0d,#0d2a1f','#1a0a1a,#2a1a2c','#1a1a0d,#2a2a0a']]].map((col,ci)=>`
+        <div class="trend-col">
+          <div class="trend-col-head"><span class="trend-col-title">${col[0]}</span><span class="trend-col-link">Tümü →</span></div>
+          ${[1,2,3,4,5].map((n,i)=>`
+          <div class="trend-item">
+            <div class="trend-num">${String(n).padStart(2,'0')}</div>
+            ${ci!==1?`<div class="trend-thumb" style="background:linear-gradient(135deg,${(col[1]||[])[i]||'#1a2a3c,#0d1a2c'})"></div>`:''}
+            <div class="trend-info">
+              <div class="trend-cat">${['Teknoloji','Ekonomi','Dünya','Spor','Kültür'][i]}</div>
+              <div class="trend-ttl">${ci===1?`Bu konu ${n}: Haber başlığı ve kısa metin (${[342,289,256,198,175][i]} yorum)`:`Haber başlığı ${n}: Kısa açıklama metni buraya gelecek`}</div>
+              <div class="trend-meta">${ci===1?`💬 ${[342,289,256,198,175][i]} yorum`:'3 saat önce'}</div>
+            </div>
+          </div>`).join('')}
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="section panel">
+      <div class="cta-wrap">
+        <div>
+          <div class="cta-chip">İLETİŞİM</div>
+          <div class="cta-title">Projenizi Hayata Geçirelim</div>
+          <div class="cta-desc">Teklif almak, iş birliği yapmak veya proje hakkında bilgi almak için formu doldurun.</div>
+          <div class="cta-info">
+            ${[['✉️','E-posta','info@kurumsal.com.tr'],['📞','Telefon','+90 212 000 00 00'],['📍','Adres','Maslak, İstanbul']].map(c=>`
+            <div class="cta-info-item">
+              <div class="cta-info-icon">${c[0]}</div>
+              <div><div class="cta-info-lbl">${c[1]}</div><div class="cta-info-val">${c[2]}</div></div>
+            </div>`).join('')}
+          </div>
+          <button class="mobile-contact-cta-btn">Bize Yazın →</button>
+        </div>
+        <div class="cta-form">
+          <div class="form-row">
+            <div class="form-field"><div class="form-lbl">Ad Soyad</div><div class="form-inp" style="color:#475569">Adınız</div></div>
+            <div class="form-field"><div class="form-lbl">E-posta</div><div class="form-inp" style="color:#475569">email@example.com</div></div>
+          </div>
+          <div class="form-field"><div class="form-lbl">Konu</div><div class="form-inp" style="color:#475569">Proje konusu</div></div>
+          <div class="form-field"><div class="form-lbl">Mesaj</div><div class="form-textarea" style="color:#475569;padding-top:6px">Mesajınızı yazın...</div></div>
+          <button class="form-btn">Gönder →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="newsletter">
+      <div class="newsletter-title">Günlük Bülten</div>
+      <div class="newsletter-sub">Önemli haberleri ve analizleri kaçırmayın. Spam yok.</div>
+      <div class="newsletter-form">
+        <div class="newsletter-input" style="color:#475569">E-posta adresiniz</div>
+        <button class="newsletter-btn">Abone Ol</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand-name">KURUMSAL</div>
+          <div class="footer-brand-sub">Güvenilir Haber & Analiz</div>
+          <div class="footer-desc">Türkiye'nin en güvenilir kurumsal haber ve analiz platformu.</div>
+          <div class="footer-socials">🐦 𝕏 &nbsp; 💼 &nbsp; ▶️ &nbsp; 📸 &nbsp; ♪</div>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Hızlı Bağlantılar</div>
+          <div class="footer-col-links">
+            ${['Ana Sayfa','Haberler','Blog','Ürünler & Hizmetler','Hakkımızda','İletişim'].map(l=>`<div class="footer-col-link">${l}</div>`).join('')}
+          </div>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Kategoriler</div>
+          <div class="footer-col-links">
+            ${['💻 Teknoloji','📈 Ekonomi','🌍 Dünya','⚽ Spor','🏥 Sağlık','🎭 Kültür'].map(l=>`<div class="footer-col-link">${l}</div>`).join('')}
+          </div>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Kurumsal</div>
+          <div class="footer-col-links">
+            ${['Gizlilik Politikası','Kullanım Şartları','Çerez Politikası','KVKK','Reklam Ver','Yazarlık Başvurusu'].map(l=>`<div class="footer-col-link">${l}</div>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Bülten</div>
+          <div style="font-size:10px;color:#475569;margin-bottom:8px;line-height:1.5">Günlük haber özeti e-postanıza gelsin.</div>
+          <div class="footer-nl-input" style="color:#334155">E-posta adresiniz</div>
+          <button class="footer-nl-btn">Abone Ol</button>
+          <div style="font-size:9px;color:#334155;margin-top:4px">Spam yok. İstediğiniz zaman çıkabilirsiniz.</div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2026 KURUMSAL. Tüm hakları saklıdır.</div>
+        <div class="footer-links">
+          <div class="footer-btm-link">RSS</div>
+          <div class="footer-btm-link">Site Haritası</div>
+          <div class="footer-btm-link">İletişim</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildMobileHeader() {
+  return `
+    <div class="c-header mobile">
+      <div class="c-logo">KURUMSAL</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+        <div style="font-size:18px;color:#94a3b8;cursor:pointer">🔍</div>
+        <div style="font-size:18px;color:#94a3b8;cursor:pointer">☰</div>
+      </div>
+    </div>
+  `;
+}
+
+// Inject content
+const sections = buildSections();
+document.getElementById('mainContent').innerHTML = sections;
+document.getElementById('mobileContent').innerHTML = buildMobileHeader() + sections + `
+  <div class="mobile-bottom-nav">
+    <div class="mbn-item active"><div class="mbn-icon">🏠</div><div>Ana Sayfa</div></div>
+    <div class="mbn-item"><div class="mbn-icon">📰</div><div>Haberler</div></div>
+    <div class="mbn-item"><div class="mbn-icon">📥</div><div>Havuz</div></div>
+    <div class="mbn-item"><div class="mbn-icon">🔍</div><div>Ara</div></div>
+    <div class="mbn-item"><div class="mbn-icon">👤</div><div>Profil</div></div>
+  </div>
+`;
+
+// Apply mobile class to mobile content
+document.querySelector('.mobile-screen').querySelectorAll('*').forEach(el => {
+  // nothing needed — handled by .mobile wrapper
+});
+document.getElementById('mobileContent').closest('.mobile-frame').querySelectorAll('.section,.stats-strip,.newsletter,.footer,.c-ticker,.c-header,.ad-banner').forEach(el=>{
+  // add mobile class via wrapper
+});
+
+// Easier: wrap mobile content in a .mobile div
+const mobileInner = document.getElementById('mobileContent').innerHTML;
+document.getElementById('mobileContent').innerHTML = `<div class="mobile">${mobileInner}</div>`;
+
+function showView(v) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const dd = document.getElementById('desktopDevice');
+  const md = document.getElementById('mobileDevice');
+  if(v==='both'){dd.classList.add('visible');md.classList.add('visible')}
+  else if(v==='desktop'){dd.classList.add('visible');md.classList.remove('visible')}
+  else{dd.classList.remove('visible');md.classList.add('visible')}
+}
+</script>
+</body>
+</html>
