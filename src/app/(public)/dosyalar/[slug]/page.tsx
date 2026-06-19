@@ -81,7 +81,16 @@ export default async function DosyaDetailPage({ params }: Props) {
                     </div>
                     <h1 className="text-xl font-bold text-gray-900 mb-2">{file.title}</h1>
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                      <span className="flex items-center gap-1.5"><User className="w-4 h-4" />{file.author.name}</span>
+                      {file.author.username ? (
+                        <Link
+                          href={`/profil/${file.author.username}`}
+                          className="flex items-center gap-1.5 hover:text-blue-600"
+                        >
+                          <User className="w-4 h-4" />{file.author.name}
+                        </Link>
+                      ) : (
+                        <span className="flex items-center gap-1.5"><User className="w-4 h-4" />{file.author.name}</span>
+                      )}
                       <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" />{formatDate(file.createdAt)}</span>
                       <span className="flex items-center gap-1.5"><Eye className="w-4 h-4" />{file.viewCount} görüntüleme</span>
                       <span className="flex items-center gap-1.5"><Download className="w-4 h-4" />{file.downloadCount} indirme</span>
@@ -146,7 +155,7 @@ export default async function DosyaDetailPage({ params }: Props) {
                   <Download className="w-5 h-5" />
                   İndir ({formatBytes(file.fileSize)})
                 </a>
-                <p className="text-xs text-gray-400 text-center mt-3">PDF formatında, ücretsiz</p>
+                <p className="text-xs text-gray-400 text-center mt-3">Ücretsiz</p>
               </div>
 
               {related.length > 0 && (
