@@ -24,7 +24,38 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 
   const body = await req.json();
+
+  const existing = await db.file.findUnique({
+    where: { id: params.id },
+    select: { authorId: true, status: true, title: true, slug: true },
+  });
+
   const file = await db.file.update({ where: { id: params.id }, data: body });
+
+  if (existing && body.status && body.status !== existing.status) {
+    if (body.status === 'APPROVED') {
+      await db.notification.create({
+        data: {
+          userId: existing.authorId,
+          title: 'Dosyanız Onaylandı',
+          message: `"${existing.title}" başlıklı dosyanız onaylandı ve yayına alındı.`,
+          type: 'file_approved',
+          link: `/dosyalar/${existing.slug}`,
+        },
+      });
+    } else if (body.status === 'REJECTED') {
+      await db.notification.create({
+        data: {
+          userId: existing.authorId,
+          title: 'Dosyanız Reddedildi',
+          message: `"${existing.title}" başlıklı dosyanız reddedildi.`,
+          type: 'file_rejected',
+          link: `/dosyalarim`,
+        },
+      });
+    }
+  }
+
   return NextResponse.json({ success: true, data: file });
 }
 
