@@ -2,7 +2,7 @@ import { db } from '@/lib/db'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { Pagination } from '@/components/ui/Pagination'
-import { Users2, Lock, Globe, MessageSquare } from 'lucide-react'
+import { Users2, Globe, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -41,13 +41,11 @@ export default async function GruplarPage({
       <main className="min-h-screen bg-gray-50">
         <div className="bg-white border-b">
           <div className="container-custom py-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Users2 className="w-6 h-6 text-blue-600" />
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Gruplar</h1>
-                  <p className="text-gray-500 text-sm mt-0.5">{total.toLocaleString('tr-TR')} topluluk</p>
-                </div>
+            <div className="flex items-center gap-3">
+              <Users2 className="w-6 h-6 text-blue-600" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Gruplar</h1>
+                <p className="text-gray-500 text-sm mt-0.5">{total.toLocaleString('tr-TR')} topluluk</p>
               </div>
             </div>
           </div>
@@ -57,9 +55,10 @@ export default async function GruplarPage({
           {groups.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {groups.map((group) => (
-                <div
+                <Link
                   key={group.id}
-                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-all group"
+                  href={`/gruplar/${group.slug}`}
+                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md hover:border-blue-200 transition-all block"
                 >
                   {group.image ? (
                     <img src={group.image} alt={group.name} className="w-full h-28 object-cover" />
@@ -94,7 +93,7 @@ export default async function GruplarPage({
                       </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

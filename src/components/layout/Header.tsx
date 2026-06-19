@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
-  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles, CreditCard, Upload,
+  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles, CreditCard, Upload, Users2,
 } from 'lucide-react';
 
 const navItems = [
@@ -32,6 +32,7 @@ const navItems = [
       { label: 'Mevzuat', href: '/mevzuat' },
     ],
   },
+  { label: 'Gruplar', href: '/gruplar', icon: Users2 },
   { label: 'Soru Bankası', href: '/sorular', icon: HelpCircle },
   { label: 'Arşiv', href: '/arsiv', icon: Archive },
   {
