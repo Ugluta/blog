@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
-  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles,
+  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles, CreditCard,
 } from 'lucide-react';
 
 const navItems = [
@@ -42,6 +42,7 @@ const navItems = [
       { label: 'AI Belge Oluştur', href: '/belge-olustur' },
     ],
   },
+  { label: 'Üyelik', href: '/uyelik', icon: CreditCard },
 ];
 
 export function Header() {
@@ -209,6 +210,13 @@ export function Header() {
                         onClick={() => setShowUserMenu(false)}
                       >
                         <Sparkles className="w-4 h-4" /> AI Belge Oluştur
+                      </Link>
+                      <Link
+                        href="/uyelik"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <CreditCard className="w-4 h-4" /> Üyelik Paketleri
                       </Link>
                       <Link
                         href="/profil"
