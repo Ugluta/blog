@@ -31,10 +31,10 @@ export default function TrendingSection() {
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <SectionHeader title="Son Haberler" href="/haberler" />
+            <SectionHeader title="Son Yazılar" href="/blog" />
             <div className="space-y-4">
               {recentPosts.slice(0, 5).map((post, i) => (
-                <Link key={post.id} href={`/haber/${post.id}`} className="group flex items-center gap-3">
+                <Link key={post.id} href={`/blog/${post.id}`} className="group flex items-center gap-3">
                   <span className="text-2xl font-black text-slate-800 flex-shrink-0 w-7 tabular-nums">{i + 1}</span>
                   <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800 rounded-lg">
                     <Image src={post.image} alt={post.title} fill className="object-cover" sizes="56px" />
@@ -52,10 +52,10 @@ export default function TrendingSection() {
           </div>
 
           <div>
-            <SectionHeader title="En Çok Yorumlanan" href="/haberler" />
+            <SectionHeader title="En Çok Okunan" href="/blog" />
             <div className="space-y-4">
               {mostCommentedPosts.slice(0, 5).map((post, i) => (
-                <Link key={post.id} href={`/haber/${post.id}`} className="group flex items-start gap-3">
+                <Link key={post.id} href={`/blog/${post.id}`} className="group flex items-start gap-3">
                   <span className="text-2xl font-black text-slate-800 flex-shrink-0 w-7 tabular-nums">{i + 1}</span>
                   <div className="flex-1 min-w-0">
                     <span className={`text-[9px] font-bold uppercase ${catColors[post.category] ?? "text-amber-400"}`}>{post.category}</span>
@@ -75,10 +75,10 @@ export default function TrendingSection() {
           </div>
 
           <div>
-            <SectionHeader title="Öne Çıkanlar" href="/haberler" />
+            <SectionHeader title="Öne Çıkanlar" href="/blog" />
             <div className="space-y-4">
               {recentPosts.slice(0, 5).map((post, i) => (
-                <Link key={post.id} href={`/haber/${post.id}`} className="group flex items-center gap-3">
+                <Link key={post.id} href={`/blog/${post.id}`} className="group flex items-center gap-3">
                   <span className="text-2xl font-black text-slate-800 flex-shrink-0 w-7 tabular-nums">{i + 1}</span>
                   <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-slate-800 rounded-lg">
                     <Image src={`https://picsum.photos/56/56?random=${post.id + 90}`} alt={post.title} fill className="object-cover" sizes="56px" />

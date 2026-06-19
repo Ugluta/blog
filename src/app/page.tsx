@@ -1,6 +1,5 @@
 import MegaHeader from "@/components/layout/MegaHeader";
 import Footer from "@/components/layout/Footer";
-import BreakingNewsTicker from "@/components/home/BreakingNewsTicker";
 import HeroSection from "@/components/home/HeroSection";
 import StatsSection from "@/components/home/StatsSection";
 import EditorPickSection from "@/components/home/EditorPickSection";
@@ -59,7 +58,6 @@ export default async function HomePage() {
   return (
     <>
       <MegaHeader />
-      <BreakingNewsTicker />
 
       <main style={{ backgroundColor: "#0a0f1e" }}>
         {sections.hero && <HeroSection />}

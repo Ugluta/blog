@@ -31,7 +31,7 @@ export default function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* ── Main featured story (2/3 width) ─── */}
           <div className="lg:col-span-2">
-            <Link href={`/haber/${main.id}`} className="block group">
+            <Link href={`/blog/${main.id}`} className="block group">
               <div
                 className="relative overflow-hidden img-zoom-container bg-slate-800 rounded-2xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5 transition-shadow"
               >
@@ -80,7 +80,7 @@ export default function HeroSection() {
             {side.slice(0, 3).map((item) => (
               <Link
                 key={item.id}
-                href={`/haber/${item.id}`}
+                href={`/blog/${item.id}`}
                 className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3 rounded-xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
                 style={{ backgroundColor: "#0F172A" }}
               >

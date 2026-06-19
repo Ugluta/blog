@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { newsCategories, categoryNewsBlocks } from "@/lib/mockData";
 
-const SHOW_CATEGORIES = ["teknoloji", "ekonomi", "dunya", "spor"];
+const SHOW_CATEGORIES = ["teknoloji", "ekonomi", "saglik", "kultur"];
 
 function CategoryRow({ categoryId }: { categoryId: string }) {
   const cat = newsCategories.find((c) => c.id === categoryId);
@@ -19,7 +19,7 @@ function CategoryRow({ categoryId }: { categoryId: string }) {
           </span>
         </div>
         <Link
-          href={`/haberler/${cat.id}`}
+          href={`/blog`}
           className="text-xs text-amber-400 hover:text-amber-300 transition-colors font-medium flex items-center gap-1"
         >
           Tümünü Gör <span>→</span>
@@ -31,7 +31,7 @@ function CategoryRow({ categoryId }: { categoryId: string }) {
         {items.map((item) => (
           <Link
             key={item.id}
-            href={`/haber/${item.id}`}
+            href={`/blog/${item.id}`}
             className="flex gap-3 group rounded-xl border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3 shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
             style={{ backgroundColor: "#0F172A" }}
           >
@@ -75,7 +75,7 @@ export default function NewsCategoryBlocks() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <span className="w-2 h-8 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex-shrink-0" />
-            <h2 className="text-xl font-bold text-white">Haberler</h2>
+            <h2 className="text-xl font-bold text-white">İçerikler</h2>
           </div>
         </div>
 

@@ -146,6 +146,7 @@ h1, h2, h3, h4, h5, h6 {
 .badge-spor      { background: linear-gradient(135deg,#991b1b,#ef4444); color: #fff; border-radius: 999px; }
 .badge-saglik    { background: linear-gradient(135deg,#155e75,#06b6d4); color: #fff; border-radius: 999px; }
 .badge-kultur    { background: linear-gradient(135deg,#92400e,#f59e0b); color: #fff; border-radius: 999px; }
+.badge-girisim   { background: linear-gradient(135deg,#1e3a5f,#3b82f6); color: #fff; border-radius: 999px; }
 
 /* Modern card */
 .card-modern {

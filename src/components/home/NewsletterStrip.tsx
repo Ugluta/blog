@@ -53,10 +53,10 @@ export default function NewsletterStrip() {
             className="text-2xl font-bold text-white mb-2"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Günlük Bülten
+            Haftalık Bülten
           </h2>
           <p className="text-sm text-slate-400 mb-6">
-            Her sabah önemli haberleri e-postanıza getiriyoruz.
+            Platform güncellemeleri ve en iyi içerikleri haftada bir e-postanıza getiriyoruz.
           </p>
 
           {status === "success" ? (

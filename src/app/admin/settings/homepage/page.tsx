@@ -12,11 +12,11 @@ interface Section {
 }
 
 const defaultSections: Section[] = [
-  { id: "hero", label: "Hero Haber Bloğu", description: "Ana manşet + yan haberler (2/3 + 1/3)", icon: "🗞️", active: true, order: 0 },
+  { id: "hero", label: "Hero / Öne Çıkan İçerik", description: "Ana öne çıkan + yan içerikler (2/3 + 1/3)", icon: "🎯", active: true, order: 0 },
   { id: "stats", label: "İstatistik Sayaçlar", description: "Makale, okuyucu, kategori, deneyim", icon: "📊", active: true, order: 1 },
   { id: "ad_top", label: "Üst Reklam Bandı", description: "728×90 leaderboard reklam alanı", icon: "📣", active: false, order: 2 },
-  { id: "editor_pick", label: "Editörün Seçimi", description: "2×2 resimli öne çıkan haberler", icon: "⭐", active: true, order: 3 },
-  { id: "news", label: "Haberler", description: "Kategori bazlı haber satırları", icon: "📰", active: true, order: 4 },
+  { id: "editor_pick", label: "Editörün Seçimi", description: "2×2 resimli öne çıkan içerik kartları", icon: "⭐", active: true, order: 3 },
+  { id: "news", label: "İçerikler", description: "Kategori bazlı içerik satırları", icon: "📰", active: true, order: 4 },
   { id: "articles_grid", label: "Makaleler Gridi", description: "4 sütun kare görsellerle makaleler", icon: "🔲", active: true, order: 5 },
   { id: "blog", label: "Blog Yazıları", description: "En son blog gönderileri ızgarası", icon: "✍️", active: true, order: 6 },
   { id: "gallery", label: "Galeri Şeridi", description: "Yatay kaydırmalı galeri albümleri", icon: "🖼️", active: true, order: 7 },
@@ -24,7 +24,7 @@ const defaultSections: Section[] = [
   { id: "services", label: "Hizmetler / Ne Yapıyoruz", description: "Koyu arka plan, başlık + 2×2 hizmet grid", icon: "⚙️", active: true, order: 9 },
   { id: "faq", label: "SSS / Özellikler", description: "4 sorulu accordion soru-cevap bloku", icon: "❓", active: true, order: 10 },
   { id: "pricing", label: "Fiyatlandırma", description: "3 sütun fiyat kartları", icon: "💳", active: false, order: 11 },
-  { id: "trending", label: "Gündem / Trending", description: "Son haberler, en çok yorumlanan, öne çıkanlar", icon: "🔥", active: true, order: 12 },
+  { id: "trending", label: "Popüler / Trending", description: "Son yazılar, en çok okunan, öne çıkanlar", icon: "🔥", active: true, order: 12 },
   { id: "contact_cta", label: "İletişim / Teklif Al", description: "Sol bilgi + sağ form iletişim bloku", icon: "📬", active: false, order: 13 },
   { id: "newsletter", label: "Bülten Aboneliği", description: "E-posta bülteni kayıt formu", icon: "✉️", active: true, order: 14 },
 ];
