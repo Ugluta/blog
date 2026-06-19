@@ -109,13 +109,13 @@ async function main() {
 
   // ── Default Categories ─────────────────────────────────────────────────────
   const rootCategories = [
-    { name: "Teknoloji", slug: "teknoloji", order: 0 },
-    { name: "Ekonomi",   slug: "ekonomi",   order: 1 },
-    { name: "Spor",      slug: "spor",       order: 2 },
-    { name: "Sağlık",    slug: "saglik",     order: 3 },
-    { name: "Kültür & Sanat", slug: "kultur-sanat", order: 4 },
-    { name: "Dünya",     slug: "dunya",      order: 5 },
-    { name: "Gündem",    slug: "gundem",     order: 6 },
+    { name: "Teknoloji",  slug: "teknoloji",  order: 0 },
+    { name: "Ürün",       slug: "urun",        order: 1 },
+    { name: "Girişim",    slug: "girisim",     order: 2 },
+    { name: "Tasarım",    slug: "tasarim",     order: 3 },
+    { name: "Kariyer",    slug: "kariyer",     order: 4 },
+    { name: "Kültür",     slug: "kultur",      order: 5 },
+    { name: "Ekonomi",    slug: "ekonomi",     order: 6 },
   ];
 
   for (const cat of rootCategories) {
@@ -130,10 +130,11 @@ async function main() {
   const teknolojiCat = await prisma.category.findUnique({ where: { slug: "teknoloji" } });
   if (teknolojiCat) {
     const subCats = [
-      { name: "Yapay Zeka", slug: "yapay-zeka", order: 0 },
-      { name: "Mobil",      slug: "mobil",      order: 1 },
-      { name: "Siber Güvenlik", slug: "siber-guvenlik", order: 2 },
-      { name: "Girişim",    slug: "girisim",    order: 3 },
+      { name: "Yapay Zeka",      slug: "yapay-zeka",      order: 0 },
+      { name: "Web Geliştirme",  slug: "web-gelistirme",  order: 1 },
+      { name: "Mobil",           slug: "mobil",            order: 2 },
+      { name: "Siber Güvenlik",  slug: "siber-guvenlik",  order: 3 },
+      { name: "Açık Kaynak",     slug: "acik-kaynak",      order: 4 },
     ];
     for (const sub of subCats) {
       await prisma.category.upsert({
