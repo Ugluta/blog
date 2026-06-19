@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { JoinGroupButton } from '@/components/JoinGroupButton'
-import { Users2, MessageSquare, Calendar, Pin, ArrowLeft, Eye, Lock } from 'lucide-react'
+import { Users2, MessageSquare, Calendar, Pin, ArrowLeft, Eye, Lock, PenSquare } from 'lucide-react'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -76,7 +76,15 @@ export default async function GroupDetailPage({ params }: Props) {
                   </span>
                 </div>
               </div>
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex items-center gap-3">
+                {isMember && (
+                  <Link
+                    href={`/gruplar/${group.slug}/konu-ac`}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 transition-colors"
+                  >
+                    <PenSquare className="w-4 h-4" /> Konu Aç
+                  </Link>
+                )}
                 {isMember ? (
                   <span className="px-4 py-2 bg-green-50 text-green-700 rounded-xl text-sm font-medium border border-green-200">
                     ✓ Üyesiniz
@@ -101,14 +109,22 @@ export default async function GroupDetailPage({ params }: Props) {
             <div className="text-center py-16">
               <MessageSquare className="w-12 h-12 text-gray-200 mx-auto mb-4" />
               <p className="text-gray-500 font-medium">Henüz konu açılmamış</p>
-              <p className="text-gray-400 text-sm mt-1">İlk konuyu siz açın!</p>
+              {isMember && (
+                <Link
+                  href={`/gruplar/${group.slug}/konu-ac`}
+                  className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
+                >
+                  <PenSquare className="w-4 h-4" /> İlk konuyu aç
+                </Link>
+              )}
             </div>
           ) : (
             <div className="space-y-3">
               {group.posts.map((post) => (
-                <div
+                <Link
                   key={post.id}
-                  className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-sm transition-shadow"
+                  href={`/gruplar/${group.slug}/konu/${post.id}`}
+                  className="block bg-white rounded-xl border border-gray-100 p-5 hover:shadow-sm hover:border-blue-100 transition-all"
                 >
                   {post.isPinned && (
                     <div className="flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full mb-2 w-fit">
@@ -137,7 +153,7 @@ export default async function GroupDetailPage({ params }: Props) {
                       {new Date(post.createdAt).toLocaleDateString('tr-TR')}
                     </span>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
