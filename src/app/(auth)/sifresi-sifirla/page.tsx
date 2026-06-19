@@ -48,7 +48,7 @@ function SifresiSifirlaContent() {
     setLoading(false)
     if (res.ok) {
       setDone(true)
-      setTimeout(() => router.push('/giris'), 3000)
+      setTimeout(() => router.push('/giris?sifre-sifirlanda=1'), 3000)
     } else {
       const d = await res.json()
       setError(d.error || 'Bir hata oluştu')
