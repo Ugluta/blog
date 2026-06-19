@@ -1,492 +1,334 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { currencyData, weatherData } from "@/lib/mockData";
 
-const navItems = [
-  { label: "Ana Sayfa", href: "/" },
+const NAV = [
   {
-    label: "Haberler",
-    href: "/haberler",
-    dropdown: [
-      { label: "Teknoloji", href: "/haberler/teknoloji" },
-      { label: "Ekonomi", href: "/haberler/ekonomi" },
-      { label: "Dünya", href: "/haberler/dunya" },
-      { label: "Spor", href: "/haberler/spor" },
-      { label: "Sağlık", href: "/haberler/saglik" },
-      { label: "Kültür", href: "/haberler/kultur" },
+    label: "Ürünler",
+    items: [
+      { label: "İçerik Yönetimi", desc: "Haber ve blog yazıları oluşturun", href: "/uygulama", icon: "📝" },
+      { label: "Sosyal Medya", desc: "Tüm platformlara otomatik yayın", href: "/uygulama/sosyal-hesaplar", icon: "🌐" },
+      { label: "Video Üretimi", desc: "Yapay zeka ile video oluşturun", href: "/uygulama/video-olustur", icon: "🎬" },
+      { label: "Analitik", desc: "Performansınızı takip edin", href: "/uygulama/analitik", icon: "📊" },
+    ],
+  },
+  {
+    label: "Çözümler",
+    items: [
+      { label: "Medya Şirketleri", desc: "Büyük ölçekli içerik operasyonları", href: "/cozumler/medya", icon: "🏢" },
+      { label: "Ajanslar", desc: "Çok müşterili içerik yönetimi", href: "/cozumler/ajanslar", icon: "🤝" },
+      { label: "Girişimciler", desc: "Hızlı büyüme için içerik araçları", href: "/cozumler/girisimciler", icon: "🚀" },
     ],
   },
   { label: "Blog", href: "/blog" },
-  { label: "Galeri", href: "/galeri" },
-  { label: "Ürünler", href: "/urunler" },
-  { label: "Hakkımızda", href: "/hakkimizda" },
-  { label: "İletişim", href: "/iletisim" },
+  { label: "Fiyatlandırma", href: "/fiyatlandirma" },
 ];
 
-function getTurkishDate() {
-  const now = new Date();
-  const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-  const months = [
-    "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
-    "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık",
-  ];
-  return `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-}
-
 export default function MegaHeader() {
-  const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileNewsOpen, setMobileNewsOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const pathname = usePathname();
   const router = useRouter();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const menuTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
   useEffect(() => {
-    if (searchOpen && searchRef.current) {
-      searchRef.current.focus();
-    }
+    if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
 
-  const handleMenuEnter = (label: string) => {
-    if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
+  useEffect(() => {
+    setMobileOpen(false);
+    setActiveMenu(null);
+  }, [pathname]);
+
+  const open = (label: string) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     setActiveMenu(label);
   };
-
-  const handleMenuLeave = () => {
-    menuTimerRef.current = setTimeout(() => setActiveMenu(null), 100);
+  const close = () => {
+    timerRef.current = setTimeout(() => setActiveMenu(null), 120);
+  };
+  const keep = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
   };
 
-  const handleDropdownEnter = () => {
-    if (menuTimerRef.current) clearTimeout(menuTimerRef.current);
-  };
-
-  const handleDropdownLeave = () => {
-    menuTimerRef.current = setTimeout(() => setActiveMenu(null), 100);
-  };
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const val = searchValue.trim();
-    if (val) {
-      router.push(`/arama?q=${encodeURIComponent(val)}`);
-      setSearchOpen(false);
-      setSearchValue("");
-    }
-  };
-
-  const onMobileSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const input = e.currentTarget.querySelector("input") as HTMLInputElement;
-    const val = input.value.trim();
-    if (val) {
-      router.push(`/arama?q=${encodeURIComponent(val)}`);
-      setMobileOpen(false);
-    }
+    const v = searchValue.trim();
+    if (v) { router.push(`/arama?q=${encodeURIComponent(v)}`); setSearchOpen(false); setSearchValue(""); }
   };
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "shadow-2xl backdrop-blur-sm" : ""
+        scrolled
+          ? "shadow-[0_2px_24px_rgba(0,0,0,0.5)] backdrop-blur-xl bg-[#0a0f1eee]"
+          : "bg-[#0a0f1e]"
       }`}
-      style={{ backgroundColor: "#0a0f1e" }}
     >
-      {/* ── Top Bar (30px) ──────────────────────────────── */}
-      <div className="border-b border-slate-700/50" style={{ backgroundColor: "#0a0f1e" }}>
-        <div className="max-w-screen-xl mx-auto px-4">
-          <div className="flex items-center justify-between h-[30px] text-[11px] text-slate-400">
-            {/* Left: Turkish date */}
-            <span className="hidden sm:block tracking-wide">{getTurkishDate()}</span>
+      <div className="max-w-screen-xl mx-auto px-5">
+        <div className="flex items-center h-16 gap-8">
 
-            {/* Center: Currency ticker — USD/EUR/GBP */}
-            <div className="flex items-center gap-5 overflow-hidden">
-              {currencyData.slice(0, 3).map((c) => (
-                <div key={c.code} className="flex items-center gap-1 whitespace-nowrap">
-                  <span className="text-slate-500 font-medium">{c.code}</span>
-                  <span className="font-semibold text-slate-200">{c.buy.toFixed(2)}</span>
-                  <span
-                    className={`font-medium ${c.change >= 0 ? "text-emerald-400" : "text-red-400"}`}
-                  >
-                    {c.change >= 0 ? "▲" : "▼"}
-                    {Math.abs(c.change).toFixed(2)}%
-                  </span>
-                </div>
-              ))}
+          {/* ── Logo ── */}
+          <Link href="/" className="flex-shrink-0 flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: "linear-gradient(135deg,#FBBF24,#F59E0B)" }}>
+              <span className="text-slate-900 font-black text-sm">K</span>
             </div>
+            <span className="text-white font-bold text-lg tracking-tight">
+              Kurumsal<span className="text-amber-400">.</span>
+            </span>
+          </Link>
 
-            {/* Right: Weather + social icons */}
-            <div className="flex items-center gap-3">
-              <div className="hidden md:flex items-center gap-1 text-slate-300">
-                <span className="text-xs">{weatherData.emoji}</span>
-                <span className="font-semibold">{weatherData.temp}°C</span>
-                <span className="text-slate-500 hidden lg:inline ml-0.5">{weatherData.city}</span>
-              </div>
-              <div className="flex items-center gap-2 ml-1">
-                <a
-                  href="https://twitter.com"
-                  className="text-slate-500 hover:text-amber-400 transition-colors"
-                  aria-label="X/Twitter"
+          {/* ── Desktop Nav ── */}
+          <nav className="hidden lg:flex items-center gap-1 flex-1">
+            {NAV.map((item) =>
+              item.items ? (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={() => open(item.label)}
+                  onMouseLeave={close}
                 >
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  className="text-slate-500 hover:text-amber-400 transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                </a>
-                <a
-                  href="https://youtube.com"
-                  className="text-slate-500 hover:text-amber-400 transition-colors"
-                  aria-label="YouTube"
-                >
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Main Header (56px sticky) ───────────────────── */}
-      <div
-        className={`border-b border-slate-700/50 transition-all duration-300 ${
-          scrolled ? "backdrop-blur-md" : ""
-        }`}
-        style={{ backgroundColor: "#0F172A" }}
-      >
-        <div className="max-w-screen-xl mx-auto px-4">
-          <div className="flex items-center justify-between h-14 gap-4">
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0 flex flex-col leading-tight">
-              <span
-                className="text-xl font-black tracking-[0.15em] uppercase"
-                style={{ color: "#F59E0B" }}
-              >
-                KURUMSAL
-              </span>
-              <span className="text-[9px] tracking-[0.22em] text-slate-400 uppercase font-light">
-                Güvenilir Haber &amp; Analiz
-              </span>
-            </Link>
-
-            {/* Desktop nav — centered */}
-            <nav className="hidden lg:flex items-center h-14 flex-1 justify-center">
-              {navItems.map((item) =>
-                item.dropdown ? (
-                  <div
-                    key={item.label}
-                    className="relative h-14 flex items-center"
-                    onMouseEnter={() => handleMenuEnter(item.label)}
-                    onMouseLeave={handleMenuLeave}
-                  >
-                    <button
-                      className={`flex items-center gap-1 px-4 py-1.5 mx-0.5 text-sm font-medium transition-all rounded-full ${
-                        pathname.startsWith(item.href)
-                          ? "text-amber-400 bg-amber-500/10"
-                          : "text-slate-300 hover:text-amber-400 hover:bg-slate-700/60"
-                      }`}
-                    >
-                      {item.label}
-                      <svg
-                        className={`w-3 h-3 ml-0.5 transition-transform duration-200 ${
-                          activeMenu === item.label ? "rotate-180" : ""
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2.5}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-
-                    {/* Invisible bridge — prevents gap between button and dropdown */}
-                    <div className="absolute top-full left-0 h-1 w-full" />
-
-                    {/* Dropdown panel */}
-                    {activeMenu === item.label && (
-                      <div
-                        className="absolute top-[calc(100%+1px)] left-0 w-52 z-50 anim-slide-down"
-                        onMouseEnter={handleDropdownEnter}
-                        onMouseLeave={handleDropdownLeave}
-                        style={{
-                          backgroundColor: "#0F172A",
-                          border: "1px solid rgba(51,65,85,0.6)",
-                          borderTop: "2px solid #F59E0B",
-                          borderRadius: "0 0 16px 16px",
-                          boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
-                        }}
-                      >
-                        <ul className="py-1">
-                          {item.dropdown.map((link) => (
-                            <li key={link.href}>
-                              <Link
-                                href={link.href}
-                                className={`block px-4 py-2.5 text-sm transition-colors border-l-2 ${
-                                  pathname === link.href
-                                    ? "text-amber-400 border-amber-500 bg-slate-800/40"
-                                    : "text-slate-300 hover:text-amber-400 border-transparent hover:border-amber-500 hover:bg-slate-800/60"
-                                }`}
-                                onClick={() => setActiveMenu(null)}
-                              >
-                                {link.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="border-t border-slate-700/60 px-4 py-2.5">
-                          <Link
-                            href="/haberler"
-                            className="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors"
-                            onClick={() => setActiveMenu(null)}
-                          >
-                            Tüm Haberler →
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className={`px-4 py-1.5 mx-0.5 flex items-center text-sm font-medium transition-all rounded-full ${
-                      pathname === item.href
-                        ? "text-amber-400 bg-amber-500/10"
-                        : "text-slate-300 hover:text-amber-400 hover:bg-slate-700/60"
+                  <button
+                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activeMenu === item.label
+                        ? "bg-white/8 text-white"
+                        : "text-slate-400 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {item.label}
-                  </Link>
-                )
-              )}
-            </nav>
-
-            {/* Right: search icon + Abone Ol button */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {/* Inline expanding search */}
-              <div className="relative flex items-center">
-                {searchOpen ? (
-                  <form onSubmit={handleSearchSubmit} className="flex items-center">
-                    <input
-                      ref={searchRef}
-                      type="text"
-                      value={searchValue}
-                      onChange={(e) => setSearchValue(e.target.value)}
-                      placeholder="Ara..."
-                      className="w-44 bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all rounded-full"
-                      onBlur={() => {
-                        if (!searchValue) setSearchOpen(false);
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="ml-1 p-1.5 text-slate-400 hover:text-amber-400 transition-colors"
-                      onClick={() => {
-                        setSearchOpen(false);
-                        setSearchValue("");
-                      }}
-                      aria-label="Aramayı kapat"
+                    <svg
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === item.label ? "rotate-180 text-amber-400" : ""}`}
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </form>
-                ) : (
-                  <button
-                    className="hidden lg:flex p-2 text-slate-400 hover:text-amber-400 transition-colors"
-                    onClick={() => setSearchOpen(true)}
-                    aria-label="Arama"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
-                )}
-              </div>
 
-              <a
-                href="/abone-ol"
-                className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-bold text-slate-900 transition-all hover:scale-105 rounded-full shadow-lg shadow-amber-500/20"
-                style={{ background: "linear-gradient(135deg, #FBBF24, #F59E0B)" }}
-              >
-                Abone Ol
-              </a>
+                  {/* Dropdown */}
+                  {activeMenu === item.label && (
+                    <div
+                      className="absolute top-[calc(100%+8px)] left-0 anim-slide-down"
+                      style={{ minWidth: 320 }}
+                      onMouseEnter={keep}
+                      onMouseLeave={close}
+                    >
+                      {/* Arrow */}
+                      <div className="absolute -top-1.5 left-6 w-3 h-3 rotate-45 bg-[#0F172A] border-l border-t border-slate-700/60" />
+                      <div className="bg-[#0F172A] border border-slate-700/60 rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
+                        <div className="p-2">
+                          {item.items.map((link) => (
+                            <Link
+                              key={link.href}
+                              href={link.href}
+                              onClick={() => setActiveMenu(null)}
+                              className="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors group"
+                            >
+                              <span className="text-xl flex-shrink-0 mt-0.5">{link.icon}</span>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-100 group-hover:text-amber-400 transition-colors">
+                                  {link.label}
+                                </p>
+                                <p className="text-xs text-slate-500 mt-0.5">{link.desc}</p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="px-4 py-3 border-t border-slate-700/50 bg-slate-800/30">
+                          <Link
+                            href="/uygulama"
+                            className="text-xs text-amber-400 hover:text-amber-300 font-semibold transition-colors flex items-center gap-1"
+                            onClick={() => setActiveMenu(null)}
+                          >
+                            Tüm özellikleri gör →
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href!}
+                  className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all ${
+                    pathname === item.href || pathname.startsWith(item.href! + "/")
+                      ? "text-white bg-white/8"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+          </nav>
 
-              {/* Mobile hamburger */}
+          {/* ── Right actions ── */}
+          <div className="flex items-center gap-2 ml-auto flex-shrink-0">
+            {/* Search */}
+            {searchOpen ? (
+              <form onSubmit={handleSearch} className="flex items-center gap-2">
+                <input
+                  ref={searchRef}
+                  type="text"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder="Ara..."
+                  className="w-48 bg-white/8 border border-slate-700 text-slate-100 placeholder-slate-500 px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:border-amber-500 transition-colors"
+                  onBlur={() => { if (!searchValue) setSearchOpen(false); }}
+                />
+                <button type="button" onClick={() => { setSearchOpen(false); setSearchValue(""); }} className="text-slate-500 hover:text-slate-300 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </form>
+            ) : (
               <button
-                className="lg:hidden p-2 text-slate-400 hover:text-amber-400 transition-colors"
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label="Menüyü aç/kapat"
+                onClick={() => setSearchOpen(true)}
+                className="hidden lg:flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+                aria-label="Ara"
               >
-                {mobileOpen ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                )}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </button>
-            </div>
+            )}
+
+            <Link
+              href="/giris"
+              className="hidden lg:block px-3.5 py-1.5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            >
+              Giriş Yap
+            </Link>
+
+            <Link
+              href="/abone-ol"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-slate-900 rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-amber-500/25"
+              style={{ background: "linear-gradient(135deg,#FBBF24,#F59E0B)" }}
+            >
+              Başlayın
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+
+            {/* Mobile hamburger */}
+            <button
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Menü"
+            >
+              {mobileOpen ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* ── Mobile Menu (full-width slide-down) ─────────── */}
+      {/* ── Mobile Menu ── */}
       {mobileOpen && (
-        <div
-          className="lg:hidden border-b border-slate-700/50 anim-slide-down"
-          style={{ backgroundColor: "#0F172A" }}
-        >
-          {/* Search input */}
-          <div className="px-4 pt-3 pb-2">
-            <form onSubmit={onMobileSearchSubmit}>
+        <div className="lg:hidden border-t border-slate-700/40 bg-[#0a0f1e] anim-slide-down">
+          {/* Mobile search */}
+          <div className="px-5 pt-4 pb-2">
+            <form onSubmit={handleSearch}>
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Haber, blog, konu ara..."
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 px-4 py-2 pr-10 text-sm focus:outline-none focus:border-amber-500 rounded-xl"
+                  placeholder="Ara..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  className="w-full bg-white/5 border border-slate-700 text-slate-100 placeholder-slate-500 px-4 py-2.5 pr-10 text-sm rounded-xl focus:outline-none focus:border-amber-500 transition-colors"
                 />
-                <button
-                  type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-400"
-                >
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </button>
               </div>
             </form>
           </div>
 
-          {/* Nav links stacked */}
-          <nav className="px-4 pb-4 space-y-0.5">
-            {navItems.map((item) => (
-              <div key={item.label}>
-                {item.dropdown ? (
-                  <>
-                    <button
-                      className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors"
-                      className="rounded-xl"
-                      onClick={() => setMobileNewsOpen(!mobileNewsOpen)}
-                    >
-                      <span>{item.label}</span>
-                      <svg
-                        className={`w-3.5 h-3.5 transition-transform ${
-                          mobileNewsOpen ? "rotate-180" : ""
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2.5}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                    {/* Accordion sub-items */}
-                    {mobileNewsOpen && (
-                      <div className="ml-4 mt-0.5 border-l border-slate-700/50 pl-3 space-y-0.5">
-                        {item.dropdown.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            className="block px-3 py-2 text-sm text-slate-400 hover:text-amber-400 transition-colors"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
-                        <Link
-                          href="/haberler"
-                          className="block px-3 py-2 text-sm text-amber-400 hover:text-amber-300 font-medium transition-colors"
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          Tüm Haberler →
-                        </Link>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`block px-3 py-2.5 text-sm font-medium transition-colors rounded-xl ${
-                      pathname === item.href
-                        ? "text-amber-400 bg-slate-800/60"
-                        : "text-slate-300 hover:text-amber-400 hover:bg-slate-800/60"
-                    }`}
-                    onClick={() => setMobileOpen(false)}
+          <nav className="px-3 pb-4 space-y-0.5">
+            {NAV.map((item) =>
+              item.items ? (
+                <div key={item.label}>
+                  <button
+                    onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
                   >
                     {item.label}
-                  </Link>
-                )}
-              </div>
-            ))}
-            <div className="pt-3">
-              <a
-                href="/abone-ol"
-                className="block w-full text-center px-4 py-2.5 text-sm font-bold text-slate-900 rounded-full"
-                style={{ background: "linear-gradient(135deg, #FBBF24, #F59E0B)" }}
+                    <svg
+                      className={`w-4 h-4 transition-transform ${mobileExpanded === item.label ? "rotate-180 text-amber-400" : "text-slate-600"}`}
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {mobileExpanded === item.label && (
+                    <div className="ml-3 mt-1 border-l border-slate-700/50 pl-3 space-y-0.5">
+                      {item.items.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-amber-400 hover:bg-white/5 transition-colors"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          <span className="text-base">{link.icon}</span>
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href!}
+                  className="block px-3 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+
+            <div className="pt-3 px-1 flex flex-col gap-2">
+              <Link
+                href="/giris"
+                className="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 border border-slate-700 hover:border-slate-500 hover:text-white transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
-                Abone Ol
-              </a>
+                Giriş Yap
+              </Link>
+              <Link
+                href="/abone-ol"
+                className="block text-center px-4 py-2.5 rounded-xl text-sm font-bold text-slate-900 transition-all"
+                style={{ background: "linear-gradient(135deg,#FBBF24,#F59E0B)" }}
+                onClick={() => setMobileOpen(false)}
+              >
+                Başlayın →
+              </Link>
             </div>
           </nav>
         </div>
