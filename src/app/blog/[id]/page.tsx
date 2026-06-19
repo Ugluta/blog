@@ -15,6 +15,6 @@ export default async function BlogPostRedirect({ params }: Props) {
     })
     .catch(() => null);
 
-  if (post) redirect(`/haber/${post.slug}`);
+  if (post) redirect(`/blog/${post.slug}`);
   redirect("/blog");
 }
