@@ -4,9 +4,10 @@ import { auth } from '@/lib/auth';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const file = await db.file.findUnique({
-    where: { id: params.id, status: 'APPROVED', isActive: true },
+    where: { id, status: 'APPROVED', isActive: true },
   });
 
   if (!file) return NextResponse.json({ error: 'Bulunamadı' }, { status: 404 });

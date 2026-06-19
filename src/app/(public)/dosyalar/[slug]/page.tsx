@@ -9,12 +9,13 @@ import { Download, Eye, Calendar, User, FileText, Tag, ArrowLeft } from 'lucide-
 import type { Metadata } from 'next';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   const file = await db.file.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     select: { title: true, description: true, metaTitle: true, metaDesc: true },
   });
   if (!file) return { title: 'Dosya Bulunamadı' };
@@ -25,8 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DosyaDetailPage({ params }: Props) {
+  const { slug } = await params;
   const file = await db.file.findUnique({
-    where: { slug: params.slug, status: 'APPROVED', isActive: true },
+    where: { slug, status: 'APPROVED', isActive: true },
     include: {
       author: { select: { name: true, image: true, username: true } },
       category: true,
@@ -37,10 +39,8 @@ export default async function DosyaDetailPage({ params }: Props) {
 
   if (!file) notFound();
 
-  // Increment view count
   await db.file.update({ where: { id: file.id }, data: { viewCount: { increment: 1 } } });
 
-  // Related files
   const related = await db.file.findMany({
     where: {
       status: 'APPROVED',
@@ -140,13 +140,13 @@ export default async function DosyaDetailPage({ params }: Props) {
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-100 p-5">
                 <a
-                  href={`/api/files/${file.id}/download`}
+                  href={`/api/dosyalar/${file.id}/download`}
                   className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
                 >
                   <Download className="w-5 h-5" />
                   İndir ({formatBytes(file.fileSize)})
                 </a>
-                <p className="text-xs text-gray-400 text-center mt-3">PDF formatında, ücret yok</p>
+                <p className="text-xs text-gray-400 text-center mt-3">PDF formatında, ücretsiz</p>
               </div>
 
               {related.length > 0 && (
