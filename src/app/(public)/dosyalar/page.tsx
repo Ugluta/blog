@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Search, Folder, Download, ChevronRight, FileText } from 'lucide-react'
+import { Search, Folder, Download, ChevronRight, FileText, Heart } from 'lucide-react'
 
 const SCHOOL_TYPES = [
   { value: '', label: 'Tüm Okul Türleri' },
@@ -55,23 +55,34 @@ export default function DosyalarPage() {
   const [total, setTotal]               = useState(0)
   const [search, setSearch]             = useState('')
   const [filesLoading, setFilesLoading] = useState(false)
+  const [favoriteIds, setFavoriteIds]   = useState<Set<string>>(new Set())
+  const [favLoadingIds, setFavLoadingIds] = useState<Set<string>>(new Set())
 
-  // fetch categories once
   useEffect(() => {
     fetch('/api/kategoriler')
-      .then(r => r.json())
-      .then(data => setCategories(Array.isArray(data) ? data : []))
+      .then((r) => r.json())
+      .then((data) => setCategories(Array.isArray(data) ? data : []))
   }, [])
 
-  // fetch files whenever filters change
+  useEffect(() => {
+    fetch('/api/favoriler')
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setFavoriteIds(new Set(data.map((f: { file: { id: string } }) => f.file.id)))
+        }
+      })
+      .catch(() => {})
+  }, [])
+
   const fetchFiles = useCallback(async () => {
     setFilesLoading(true)
     try {
       const p = new URLSearchParams({ limit: '60' })
-      if (schoolType)          p.set('schoolType', schoolType)
-      if (selSub)              p.set('kategoriId', selSub.id)
-      else if (selCat)         p.set('kategoriId', selCat.id)
-      if (search.trim())       p.set('ara', search.trim())
+      if (schoolType)    p.set('schoolType', schoolType)
+      if (selSub)        p.set('kategoriId', selSub.id)
+      else if (selCat)   p.set('kategoriId', selCat.id)
+      if (search.trim()) p.set('ara', search.trim())
 
       const res  = await fetch(`/api/dosyalar?${p}`)
       const data = await res.json()
@@ -84,9 +95,41 @@ export default function DosyalarPage() {
 
   useEffect(() => { fetchFiles() }, [fetchFiles])
 
-  // panel 2 list: if a top-level category with children is selected show children, else show top-level
+  const toggleFavorite = async (e: React.MouseEvent, fileId: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (favLoadingIds.has(fileId)) return
+
+    setFavLoadingIds((prev) => new Set([...prev, fileId]))
+    const isFav = favoriteIds.has(fileId)
+
+    const res = await fetch('/api/favoriler', {
+      method: isFav ? 'DELETE' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fileId }),
+    })
+
+    if (res.status === 401) {
+      window.location.href = '/giris?callbackUrl=/dosyalar'
+      return
+    }
+    if (res.ok) {
+      setFavoriteIds((prev) => {
+        const next = new Set(prev)
+        if (isFav) next.delete(fileId)
+        else next.add(fileId)
+        return next
+      })
+    }
+    setFavLoadingIds((prev) => {
+      const next = new Set(prev)
+      next.delete(fileId)
+      return next
+    })
+  }
+
   const panel2List: Category[] = selCat?.children?.length ? selCat.children : categories
-  const panel2Header            = selCat?.children?.length ? 'ALT KATEGORİLER' : 'KATEGORİLER'
+  const panel2Header = selCat?.children?.length ? 'ALT KATEGİRİLER' : 'KATEGİRİLER'
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 64px)' }}>
@@ -137,7 +180,7 @@ export default function DosyalarPage() {
             )}
           </div>
           <div className="overflow-y-auto flex-1">
-            {panel2List.map(cat => {
+            {panel2List.map((cat) => {
               const active = selCat?.children?.length
                 ? selSub?.id === cat.id
                 : selCat?.id === cat.id
@@ -163,9 +206,7 @@ export default function DosyalarPage() {
                     <span className="truncate">{cat.name}</span>
                   </span>
                   {cat.fileCount != null && (
-                    <span className={`text-xs shrink-0 ml-1 ${
-                      active ? 'text-blue-100' : 'text-gray-400'
-                    }`}>
+                    <span className={`text-xs shrink-0 ml-1 ${active ? 'text-blue-100' : 'text-gray-400'}`}>
                       {cat.fileCount}
                     </span>
                   )}
@@ -177,7 +218,6 @@ export default function DosyalarPage() {
 
         {/* ── PANEL 3: Dosyalar ── */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
-          {/* panel 3 header */}
           <div className="px-4 py-2.5 bg-white border-b border-gray-200 flex items-center gap-3 shrink-0">
             <span className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
               3. EVRAKLAR
@@ -185,7 +225,7 @@ export default function DosyalarPage() {
             {selCat && (
               <span className="text-xs text-gray-400">
                 {selSub ? `${selCat.name} › ${selSub.name}` : selCat.name}
-                {schoolType ? ` · ${SCHOOL_TYPES.find(s => s.value === schoolType)?.label}` : ''}
+                {schoolType ? ` · ${SCHOOL_TYPES.find((s) => s.value === schoolType)?.label}` : ''}
               </span>
             )}
             <div className="ml-auto flex items-center gap-3">
@@ -195,7 +235,7 @@ export default function DosyalarPage() {
                   type="text"
                   placeholder="Evraklarda ara..."
                   value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg w-56 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
                 />
               </div>
@@ -207,6 +247,7 @@ export default function DosyalarPage() {
           <div className="px-4 py-2 bg-white border-b border-gray-100 flex items-center gap-3">
             <input type="checkbox" className="w-4 h-4 rounded" readOnly />
             <span className="text-xs font-semibold text-gray-500 flex-1">EVRAK ADI</span>
+            <span className="text-xs font-semibold text-gray-500 w-6">&nbsp;</span>
             <span className="text-xs font-semibold text-gray-500 w-20 text-right">İNDİRME</span>
           </div>
 
@@ -224,15 +265,17 @@ export default function DosyalarPage() {
                 </p>
               </div>
             ) : (
-              files.map(file => {
+              files.map((file) => {
                 const ft = FILE_BADGE[file.fileType] ?? FILE_BADGE.OTHER
+                const isFav = favoriteIds.has(file.id)
+                const isLoading = favLoadingIds.has(file.id)
                 return (
                   <Link
                     key={file.id}
                     href={`/dosyalar/${file.slug}`}
                     className="flex items-center gap-3 px-4 py-2.5 bg-white border-b border-gray-50 hover:bg-blue-50 transition-colors group"
                   >
-                    <input type="checkbox" className="w-4 h-4 rounded" onClick={e => e.stopPropagation()} readOnly />
+                    <input type="checkbox" className="w-4 h-4 rounded" onClick={(e) => e.stopPropagation()} readOnly />
                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 ${ft.bg} ${ft.text}`}>
                       {ft.label}
                     </div>
@@ -241,13 +284,25 @@ export default function DosyalarPage() {
                         {file.title}
                       </p>
                       <div className="flex items-center gap-2 mt-0.5">
-                        {file.grade  && <span className="text-xs text-gray-400">{file.grade.level}. Sınıf</span>}
+                        {file.grade   && <span className="text-xs text-gray-400">{file.grade.level}. Sınıf</span>}
                         {file.subject && <span className="text-xs text-gray-400">· {file.subject.name}</span>}
                         {file.isPremium && (
                           <span className="text-xs bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded font-medium">Premium</span>
                         )}
                       </div>
                     </div>
+                    <button
+                      onClick={(e) => toggleFavorite(e, file.id)}
+                      disabled={isLoading}
+                      className={`shrink-0 p-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+                        isFav
+                          ? 'text-red-500 hover:bg-red-50'
+                          : 'text-gray-300 hover:text-red-400 hover:bg-red-50 opacity-0 group-hover:opacity-100'
+                      }`}
+                      title={isFav ? 'Favorilerden çıkar' : 'Favorilere ekle'}
+                    >
+                      <Heart className={`w-4 h-4 ${isFav ? 'fill-red-500' : ''}`} />
+                    </button>
                     <div className="flex items-center gap-1 text-xs text-gray-400 w-20 justify-end shrink-0">
                       <Download className="w-3 h-3" />
                       {file.downloadCount.toLocaleString('tr-TR')}
