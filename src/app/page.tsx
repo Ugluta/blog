@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Search, Download, Users, FileText, TrendingUp, BookOpen, ArrowRight, Star, Shield, Zap, ChevronRight } from 'lucide-react';
+import { Download, Users, FileText, TrendingUp, BookOpen, ArrowRight, Star, Shield, Zap, ChevronRight, ScanText, Sparkles, Users2 } from 'lucide-react';
 
 const schoolTypes = [
   { label: 'Anaokulu', href: '/dosyalar?okul=ANAOKULU', emoji: '🌱', color: 'bg-green-50 border-green-100 hover:bg-green-100' },
@@ -21,7 +21,7 @@ const subjects = [
   { name: 'Fizik', icon: '⚛️', color: 'text-indigo-500 bg-indigo-50', href: '/dosyalar?ders=fizik' },
   { name: 'Kimya', icon: '🧪', color: 'text-pink-500 bg-pink-50', href: '/dosyalar?ders=kimya' },
   { name: 'Biyoloji', icon: '🧬', color: 'text-teal-500 bg-teal-50', href: '/dosyalar?ders=biyoloji' },
-  { name: 'Tarih', icon: '🏛️', color: 'text-orange-500 bg-orange-50', href: '/dosyalar?ders=tarih' },
+  { name: 'Tarih', icon: '🏗️', color: 'text-orange-500 bg-orange-50', href: '/dosyalar?ders=tarih' },
   { name: 'Coğrafya', icon: '🗺️', color: 'text-lime-500 bg-lime-50', href: '/dosyalar?ders=cografya' },
   { name: 'Müzik', icon: '🎵', color: 'text-violet-500 bg-violet-50', href: '/dosyalar?ders=muzik' },
   { name: 'Beden Eğitimi', icon: '⚽', color: 'text-cyan-500 bg-cyan-50', href: '/dosyalar?ders=beden-egitimi' },
@@ -42,6 +42,8 @@ const features = [
   { icon: TrendingUp, title: 'SEO Optimize', desc: 'Arama motorlarında üst sıralarda yer alan içerikler.' },
   { icon: Star, title: 'Kaliteli İçerik', desc: 'Uzman eğitimciler tarafından hazırlanmış ve denetlenmiş materyaller.' },
 ];
+
+const quickSearches = ['Yıllık Plan', 'Sınav Sorusu', 'Kazanım Testi', 'MEB Evrak'];
 
 export default function HomePage() {
   return (
@@ -64,26 +66,32 @@ export default function HomePage() {
               Hepsi tek platformda, ücretsiz.
             </p>
 
-            {/* Search Bar */}
+            {/* Search Bar — GET form so it works without JS */}
             <div className="max-w-2xl mx-auto">
-              <div className="flex gap-2 bg-white/10 border border-white/20 rounded-2xl p-2 backdrop-blur-sm">
-                <div className="flex-1 flex items-center gap-3 bg-white rounded-xl px-4">
-                  <Search className="w-5 h-5 text-gray-400 shrink-0" />
-                  <input
-                    type="search"
-                    placeholder="Yıllık plan, ders sorusu, evrak ara..."
-                    className="w-full py-3 text-gray-800 bg-transparent outline-none placeholder:text-gray-400"
-                  />
-                </div>
-                <button className="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-xl transition-colors shrink-0">
-                  Ara
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-3 justify-center">
-                {['Yıllık Plan', 'Sınav Sorusu', 'Kazanım Testi', 'MEB Evrak'].map((q) => (
-                  <button key={q} className="text-xs bg-white/10 border border-white/20 hover:bg-white/20 rounded-full px-3 py-1 transition-colors">
-                    {q}
+              <form method="GET" action="/ara">
+                <div className="flex gap-2 bg-white/10 border border-white/20 rounded-2xl p-2 backdrop-blur-sm">
+                  <div className="flex-1 flex items-center gap-3 bg-white rounded-xl px-4">
+                    <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                      type="search"
+                      name="q"
+                      placeholder="Yıllık plan, ders sorusu, evrak ara..."
+                      className="w-full py-3 text-gray-800 bg-transparent outline-none placeholder:text-gray-400"
+                    />
+                  </div>
+                  <button type="submit" className="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-xl transition-colors shrink-0">
+                    Ara
                   </button>
+                </div>
+              </form>
+              <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                {quickSearches.map((q) => (
+                  <Link key={q} href={`/ara?q=${encodeURIComponent(q)}`}
+                    className="text-xs bg-white/10 border border-white/20 hover:bg-white/20 rounded-full px-3 py-1 transition-colors">
+                    {q}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -122,11 +130,8 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {schoolTypes.map((s) => (
-                <Link
-                  key={s.label}
-                  href={s.href}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${s.color} transition-all duration-200 card-hover`}
-                >
+                <Link key={s.label} href={s.href}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${s.color} transition-all duration-200 card-hover`}>
                   <span className="text-3xl">{s.emoji}</span>
                   <span className="text-sm font-semibold text-gray-800">{s.label}</span>
                 </Link>
@@ -142,11 +147,8 @@ export default function HomePage() {
             <p className="section-subtitle">En çok aranan dosya kategorileri</p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {categories.map((cat) => (
-                <Link
-                  key={cat.name}
-                  href={cat.href}
-                  className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-white"
-                >
+                <Link key={cat.name} href={cat.href}
+                  className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-white">
                   <div className={`w-12 h-12 ${cat.color} rounded-xl flex items-center justify-center text-2xl`}>
                     {cat.icon}
                   </div>
@@ -174,11 +176,8 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
               {subjects.map((s) => (
-                <Link
-                  key={s.name}
-                  href={s.href}
-                  className={`flex flex-col items-center gap-2 p-3 rounded-xl ${s.color} hover:shadow-md transition-all duration-200 hover:-translate-y-0.5`}
-                >
+                <Link key={s.name} href={s.href}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl ${s.color} hover:shadow-md transition-all duration-200 hover:-translate-y-0.5`}>
                   <span className="text-2xl">{s.icon}</span>
                   <span className="text-xs font-medium text-center leading-tight">{s.name}</span>
                 </Link>
@@ -187,8 +186,61 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FEATURES */}
+        {/* AI TOOLS */}
         <section className="py-16">
+          <div className="container-custom">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">Yapay Zeka Araçları</h2>
+              <p className="text-gray-500 max-w-xl mx-auto">OCR ve AI ile işinizi çok daha hızlı halledin.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+              <Link href="/ocr"
+                className="group flex flex-col gap-4 p-6 rounded-2xl border border-purple-100 bg-purple-50 hover:bg-purple-100 hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center">
+                  <ScanText className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-1">OCR — Görüntüden Metin</h3>
+                  <p className="text-sm text-gray-600">Fotograf veya taranmış belgelerden metni otomatik çıkarın.</p>
+                </div>
+                <span className="text-sm font-medium text-purple-700 flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Kullan <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+
+              <Link href="/belge-olustur"
+                className="group flex flex-col gap-4 p-6 rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-blue-50 hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-1">AI Belge Oluştur</h3>
+                  <p className="text-sm text-gray-600">Ders planı, sınav, dilekçe ve daha fazlasını AI ile saniyeler içinde yazın.</p>
+                </div>
+                <span className="text-sm font-medium text-purple-700 flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Dene <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+
+              <Link href="/gruplar"
+                className="group flex flex-col gap-4 p-6 rounded-2xl border border-blue-100 bg-blue-50 hover:bg-blue-100 hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                  <Users2 className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-1">Topluluk Grupları</h3>
+                  <p className="text-sm text-gray-600">Aynı ilgi alanından öğretmenlerle bir araya gelin ve deneyim paylaşın.</p>
+                </div>
+                <span className="text-sm font-medium text-blue-700 flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Keşfet <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        <section className="py-16 bg-gray-50">
           <div className="container-custom">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">Neden ÖğretmenEvrak?</h2>
@@ -216,17 +268,13 @@ export default function HomePage() {
               150.000+ öğretmen ve idareci kullanıyor. Sen de katıl.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/kayit"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors"
-              >
+              <Link href="/kayit"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors">
                 Ücretsiz Başla <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link
-                href="/dosyalar"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500/30 border border-white/20 text-white font-semibold rounded-xl hover:bg-blue-500/40 transition-colors"
-              >
-                Dosyalara Göz At
+              <Link href="/uyelik"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500/30 border border-white/20 text-white font-semibold rounded-xl hover:bg-blue-500/40 transition-colors">
+                Paketleri Gör
               </Link>
             </div>
           </div>
