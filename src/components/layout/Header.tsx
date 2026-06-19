@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
-  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText,
+  Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText, Sparkles,
 } from 'lucide-react';
 
 const navItems = [
@@ -39,6 +39,7 @@ const navItems = [
     icon: ScanText,
     children: [
       { label: 'OCR — Görüntüden Metin', href: '/ocr' },
+      { label: 'AI Belge Oluştur', href: '/belge-olustur' },
     ],
   },
 ];
@@ -145,7 +146,6 @@ export function Header() {
 
             {status === 'authenticated' && session?.user ? (
               <>
-                {/* Notification Bell */}
                 <Link
                   href="/bildirimler"
                   className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -159,7 +159,6 @@ export function Header() {
                   )}
                 </Link>
 
-                {/* User Menu */}
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setShowUserMenu((v) => !v)}
@@ -171,7 +170,7 @@ export function Header() {
                     <ChevronDown className="w-3 h-3 text-gray-500" />
                   </button>
                   {showUserMenu && (
-                    <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                    <div className="absolute top-full right-0 mt-1 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
                       <div className="px-4 py-2 border-b border-gray-50">
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {session.user.name || session.user.email}
@@ -203,6 +202,13 @@ export function Header() {
                         onClick={() => setShowUserMenu(false)}
                       >
                         <ScanText className="w-4 h-4" /> OCR Aracı
+                      </Link>
+                      <Link
+                        href="/belge-olustur"
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-purple-50 hover:text-purple-600"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <Sparkles className="w-4 h-4" /> AI Belge Oluştur
                       </Link>
                       <Link
                         href="/profil"
@@ -242,7 +248,6 @@ export function Header() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100"
@@ -252,7 +257,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white animate-fade-in">
           <div className="container-custom py-4 space-y-2">
