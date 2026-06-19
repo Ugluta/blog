@@ -1,7 +1,7 @@
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
-import { Users2, Plus, Lock, Globe } from 'lucide-react';
+import { Users2, Plus, Lock, Globe, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Metadata } from 'next';
 
@@ -61,6 +61,14 @@ export default async function GruplarPage() {
               <span>👥 {group._count.members} üye</span>
               <span>💬 {group._count.posts} gönderi</span>
               <span>{formatDate(group.createdAt)}</span>
+            </div>
+            <div className="pt-3 mt-3 border-t border-gray-50">
+              <Link
+                href={`/admin/gruplar/${group.id}`}
+                className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-700"
+              >
+                <Pencil className="w-3.5 h-3.5" /> Düzenle
+              </Link>
             </div>
           </div>
         ))}
