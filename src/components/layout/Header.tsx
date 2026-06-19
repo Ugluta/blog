@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, BookOpen, FileText, Newspaper,
   Archive, HelpCircle, ChevronDown, Heart, LogOut, User, ScanText,
@@ -50,6 +51,7 @@ export function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (status !== 'authenticated') return;
@@ -72,6 +74,14 @@ export function Header() {
   const userInitials = session?.user?.name
     ? session.user.name.slice(0, 2).toUpperCase()
     : session?.user?.email?.slice(0, 2).toUpperCase() ?? 'U';
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/ara?q=${encodeURIComponent(searchQuery.trim())}`);
+      setMobileOpen(false);
+    }
+  }
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
@@ -122,7 +132,7 @@ export function Header() {
 
           {/* Search + Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="relative">
+            <form onSubmit={handleSearch} className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="search"
@@ -131,7 +141,7 @@ export function Header() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg w-52 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
               />
-            </div>
+            </form>
 
             {status === 'authenticated' && session?.user ? (
               <>
@@ -246,14 +256,16 @@ export function Header() {
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white animate-fade-in">
           <div className="container-custom py-4 space-y-2">
-            <div className="relative mb-4">
+            <form onSubmit={handleSearch} className="relative mb-4">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="search"
                 placeholder="Ara..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
+            </form>
             {navItems.map((item) => (
               <div key={item.label}>
                 <Link
