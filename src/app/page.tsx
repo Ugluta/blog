@@ -20,19 +20,19 @@ export const revalidate = 60;
 
 const defaultSections = {
   hero: true,
-  stats: true,
+  stats: false,
   ad_top: false,
-  editor_pick: true,
-  news: true,
-  articles_grid: true,
+  editor_pick: false,
+  news: false,
+  articles_grid: false,
   blog: true,
-  gallery: true,
+  gallery: false,
   ad_mid: false,
   services: true,
   faq: true,
-  pricing: false,
-  trending: true,
-  contact_cta: false,
+  pricing: true,
+  trending: false,
+  contact_cta: true,
   newsletter: true,
 };
 

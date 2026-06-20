@@ -1,117 +1,91 @@
-import Image from "next/image";
 import Link from "next/link";
-import { heroNewsItems } from "@/lib/mockData";
-
-const categoryClass: Record<string, string> = {
-  Teknoloji: "badge-teknoloji",
-  Ekonomi: "badge-ekonomi",
-  Dünya: "badge-dunya",
-  Spor: "badge-spor",
-  Sağlık: "badge-saglik",
-  Kültür: "badge-kultur",
-};
-
-function CategoryBadge({ category }: { category: string }) {
-  const cls = categoryClass[category] ?? "bg-slate-700 text-slate-300";
-  return (
-    <span
-      className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${cls}`}
-    >
-      {category}
-    </span>
-  );
-}
 
 export default function HeroSection() {
-  const [main, ...side] = heroNewsItems;
-
   return (
-    <section className="py-8 anim-fade-up" style={{ backgroundColor: "#0a0f1e" }}>
-      <div className="max-w-screen-xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* ── Main featured story (2/3 width) ─── */}
-          <div className="lg:col-span-2">
-            <Link href={`/blog/${main.id}`} className="block group">
-              <div
-                className="relative overflow-hidden img-zoom-container bg-slate-800 rounded-2xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5 transition-shadow"
-              >
-                {/* Image with 16:9 ratio */}
-                <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-                  <Image
-                    src={main.image}
-                    alt={main.title}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 66vw"
-                  />
-                  {/* Bottom gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
-                </div>
+    <section className="relative overflow-hidden" style={{ background: "#09090b" }}>
+      {/* Background glow orbs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-20 blur-[120px]"
+          style={{ background: "radial-gradient(circle, #f59e0b, transparent)" }}
+        />
+        <div
+          className="absolute -bottom-40 -right-20 w-[500px] h-[500px] rounded-full opacity-15 blur-[120px]"
+          style={{ background: "radial-gradient(circle, #3b82f6, transparent)" }}
+        />
+      </div>
 
-                {/* Text overlay at bottom */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CategoryBadge category={main.category} />
-                    <span className="text-xs text-slate-400">{main.time}</span>
-                  </div>
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-white group-hover:text-amber-300 transition-colors mb-2">
-                    {main.title}
-                  </h2>
-                  <p className="text-sm text-slate-300 leading-relaxed line-clamp-2 hidden sm:block mb-3">
-                    {main.excerpt}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-6 h-6 flex items-center justify-center text-xs font-bold text-amber-400 flex-shrink-0"
-                      style={{ backgroundColor: "rgba(245,158,11,0.15)", borderRadius: "50%" }}
-                    >
-                      {main.author.charAt(0)}
-                    </div>
-                    <span className="text-xs text-slate-400">{main.author}</span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
+      {/* Grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-          {/* ── Side stories (1/3 width) ─── */}
-          <div className="flex flex-col gap-3">
-            {side.slice(0, 3).map((item) => (
-              <Link
-                key={item.id}
-                href={`/blog/${item.id}`}
-                className="flex gap-3 group border border-slate-700/30 hover:border-amber-500/30 transition-colors p-3 rounded-xl shadow-lg shadow-slate-900/50 hover:shadow-xl hover:shadow-amber-500/5"
-                style={{ backgroundColor: "#0F172A" }}
-              >
-                {/* Small image 72px */}
-                <div
-                  className="flex-shrink-0 relative overflow-hidden img-zoom-container bg-slate-700 rounded-lg"
-                  style={{ width: 72, height: 72 }}
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="72px"
-                  />
-                </div>
+      <div className="relative max-w-6xl mx-auto px-6 py-28 lg:py-40 text-center">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+          Yapay Zeka Destekli Platform — Şimdi Dene
+          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
 
-                {/* Text right */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <CategoryBadge category={item.category} />
-                    <span className="text-[10px] text-slate-500">{item.time}</span>
-                  </div>
-                  <h3 className="text-sm font-semibold leading-snug text-slate-200 group-hover:text-amber-300 transition-colors line-clamp-2 mb-1">
-                    {item.title}
-                  </h3>
-                  <span className="text-[11px] text-slate-500 block">{item.author}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+        {/* Headline */}
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight text-white leading-[1.08] mb-6">
+          İçerik üretin,
+          <br />
+          <span
+            className="inline-block"
+            style={{
+              background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #8b5cf6 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            hızla yayınlayın.
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="max-w-2xl mx-auto text-lg text-zinc-400 leading-relaxed mb-10">
+          Blog, makale ve dijital içeriklerinizi tek platformdan yönetin.
+          Yapay zeka yazarken siz büyüyün.
+        </p>
+
+        {/* CTA buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+          <Link
+            href="/uygulama"
+            className="px-8 py-3.5 rounded-xl text-sm font-bold text-black transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #f59e0b, #f97316)" }}
+          >
+            Ücretsiz Başlayın →
+          </Link>
+          <Link
+            href="/blog"
+            className="px-8 py-3.5 rounded-xl text-sm font-semibold text-zinc-300 border border-zinc-700 hover:border-zinc-500 hover:text-white transition-all"
+          >
+            Blog'u Keşfet
+          </Link>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-3 max-w-2xl mx-auto gap-px bg-zinc-800 rounded-2xl overflow-hidden border border-zinc-800">
+          {[
+            { value: "10K+", label: "İçerik Üretildi" },
+            { value: "500+", label: "Aktif Kullanıcı" },
+            { value: "99.9%", label: "Uptime" },
+          ].map((s) => (
+            <div key={s.label} className="py-5 px-4 text-center" style={{ background: "#111113" }}>
+              <p className="text-2xl font-black text-white mb-1">{s.value}</p>
+              <p className="text-xs text-zinc-500 font-medium">{s.label}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,95 +1,117 @@
 import Link from "next/link";
 
-const services = [
+const features = [
   {
-    id: 1,
-    title: "Stratejik Planlama",
-    desc: "İşletmenizin hedeflerine uygun güçlü stratejiler geliştiriyoruz.",
-    color: "#F59E0B",
     icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
       </svg>
     ),
+    color: "#f59e0b",
+    title: "AI İçerik Üretimi",
+    desc: "Tek tıkla makale, blog yazısı ve sosyal medya içerikleri oluşturun. GPT-4 ve Claude destekli.",
   },
   {
-    id: 2,
-    title: "Veri Analizi",
-    desc: "İş süreçlerinizi optimize etmek için veriye dayalı içgörüler sunuyoruz.",
-    color: "#3B82F6",
     icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
       </svg>
     ),
+    color: "#3b82f6",
+    title: "Analitik Dashboard",
+    desc: "Gerçek zamanlı okuyucu analizi, trafik kaynakları ve içerik performansını takip edin.",
   },
   {
-    id: 3,
-    title: "Teknoloji Entegrasyonu",
-    desc: "İş verimliliğinizi artırmak için en yeni araç ve sistemleri entegre ediyoruz.",
-    color: "#10B981",
     icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.401.604-.401.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
       </svg>
     ),
+    color: "#10b981",
+    title: "Sosyal Medya Yönetimi",
+    desc: "İçeriklerinizi Twitter, LinkedIn, Instagram'a otomatik olarak zamanlayın ve yayınlayın.",
   },
   {
-    id: 4,
-    title: "Yenilikçi Çözümler",
-    desc: "Sektörün en son trendlerini takip ederek rekabetçi avantaj sağlıyoruz.",
-    color: "#8B5CF6",
     icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
       </svg>
     ),
+    color: "#8b5cf6",
+    title: "SEO Optimizasyonu",
+    desc: "Meta etiketleri, sitemap ve yapısal veri otomatik oluşturulur. Google'da üst sıralarda yer alın.",
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+      </svg>
+    ),
+    color: "#ec4899",
+    title: "Medya Yönetimi",
+    desc: "Görsel, video ve dosyalarınızı bulutta depolayın. CDN ile dünyanın her yerine hızlıca iletin.",
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      </svg>
+    ),
+    color: "#f97316",
+    title: "Geliştirici API",
+    desc: "REST API ve webhook desteğiyle mevcut sistemlerinize entegre edin. Tam kontrol sizde.",
   },
 ];
 
 export default function ServicesSection() {
   return (
-    <section className="py-16" style={{ background: "linear-gradient(135deg, #0F172A 0%, #131f35 100%)" }}>
-      <div className="max-w-screen-xl mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16 items-center">
-          <div className="lg:col-span-1">
-            <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-4">
-              <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
-              NELER YAPIYORUZ
-            </span>
-            <h2 className="text-2xl lg:text-3xl font-bold leading-tight text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Şirketiniz için en iyi yaklaşım
-            </h2>
-            <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              Kapsamlı çözümlerimizle işletmenizi bir üst seviyeye taşıyoruz. Stratejiden teknolojiye tüm ihtiyaçlarınıza yanıt veriyoruz.
-            </p>
-            <Link
-              href="/hizmetler"
-              className="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-600 hover:border-amber-500 text-slate-200 hover:text-amber-400 text-sm font-semibold transition-colors rounded-xl"
-            >
-              Daha Fazla
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </Link>
-          </div>
+    <section className="py-24" style={{ background: "#09090b" }}>
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block text-xs font-bold uppercase tracking-widest text-amber-400 mb-4">
+            Platform Özellikleri
+          </span>
+          <h2 className="text-3xl lg:text-5xl font-black text-white mb-4">
+            Her şey tek platformda
+          </h2>
+          <p className="text-zinc-400 text-lg max-w-xl mx-auto">
+            İçerik üretiminden yayınlamaya, analizden optimizasyona — tüm araçlar burada.
+          </p>
+        </div>
 
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {services.map((s) => (
-              <div key={s.id} className="group">
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-3"
-                  style={{ backgroundColor: `${s.color}20`, color: s.color }}
-                >
-                  {s.icon}
-                </div>
-                <h3 className="text-base font-bold text-slate-100 mb-2 group-hover:text-amber-300 transition-colors">
-                  {s.title}
-                </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
+        {/* Feature grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {features.map((f) => (
+            <div
+              key={f.title}
+              className="group p-6 rounded-2xl border border-zinc-800 hover:border-zinc-600 transition-all"
+              style={{ background: "#111113" }}
+            >
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                style={{ background: `${f.color}18`, color: f.color }}
+              >
+                {f.icon}
               </div>
-            ))}
-          </div>
+              <h3 className="text-base font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">
+                {f.title}
+              </h3>
+              <p className="text-sm text-zinc-500 leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link
+            href="/urunler"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+          >
+            Tüm özellikleri gör
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
