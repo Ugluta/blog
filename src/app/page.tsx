@@ -19,233 +19,380 @@ async function getRecentPosts() {
   }
 }
 
+const CARD_GRADIENTS = [
+  "linear-gradient(135deg,#667eea 0%,#764ba2 60%,#f093fb 100%)",
+  "linear-gradient(135deg,#4facfe 0%,#00f2fe 50%,#43e97b 100%)",
+  "linear-gradient(135deg,#f5576c 0%,#fda085 60%,#ffecd2 100%)",
+];
+
+const STATIC_CARDS = [
+  {
+    category: "Yapay Zeka",
+    title: "Temsilciler oluşturmanın ve ölçeklendirmenin yeni yolları",
+    desc: "Temsilcileri büyük ölçekte oluşturmak, bağlamak ve optimize etmek için tek platform.",
+    href: "/blog",
+    gradient: CARD_GRADIENTS[0],
+  },
+  {
+    category: "İçerik",
+    title: "Çalışma şeklinizi değiştiren yapay zeka destekli içerik asistanı",
+    desc: "Kullandığınız her şeye bağlanan, sizin adınıza harekete geçen platform.",
+    href: "/uygulama",
+    gradient: CARD_GRADIENTS[1],
+  },
+  {
+    category: "Yenilikler",
+    title: "Platformdan en büyük yapay zeka güncellemeleri ve haberler",
+    desc: "Yeni geliştirici araçlarından altyapıya kadar her etken yapay zeka güncellemesi.",
+    href: "/changelog",
+    gradient: CARD_GRADIENTS[2],
+  },
+];
+
 export default async function HomePage() {
   const posts = await getRecentPosts();
+
+  const topCards =
+    posts.length >= 3
+      ? posts.map((p, i) => ({
+          category: p.category?.name ?? "İçerik",
+          title: p.title,
+          desc: p.excerpt ?? "",
+          href: `/blog/${p.slug}`,
+          gradient: CARD_GRADIENTS[i % CARD_GRADIENTS.length],
+        }))
+      : STATIC_CARDS;
 
   return (
     <>
       <MegaHeader />
-      <main>
+      <main className="bg-white">
 
-        {/* ── HERO ──────────────────────────────────────────── */}
-        <section className="relative overflow-hidden bg-white">
-          {/* Subtle grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-60" />
-          {/* Gradient glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full opacity-20 blur-[100px]" style={{ background: "radial-gradient(ellipse, #f59e0b, #ef4444, transparent)" }} />
-
-          <div className="relative max-w-5xl mx-auto px-6 py-28 lg:py-40 text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Yapay Zeka Destekli — Yeni Nesil Platform
-            </span>
-
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-gray-900 leading-[1.06] mb-6">
-              İçerik yönetimi
-              <br />
-              <span style={{ background: "linear-gradient(135deg, #f59e0b, #ef4444)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                yeniden tanımlandı.
-              </span>
-            </h1>
-
-            <p className="max-w-2xl mx-auto text-xl text-gray-500 leading-relaxed mb-10">
-              Blog, makale ve dijital içeriklerinizi tek platformdan yönetin.
-              Yapay zeka yazarken, siz büyüyün.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/uygulama"
-                className="px-8 py-3.5 rounded-xl text-sm font-bold text-white shadow-lg shadow-amber-200 hover:shadow-amber-300 hover:scale-105 transition-all"
-                style={{ background: "linear-gradient(135deg, #f59e0b, #ef4444)" }}
-              >
-                Ücretsiz Başlayın →
-              </Link>
-              <Link
-                href="/blog"
-                className="px-8 py-3.5 rounded-xl text-sm font-semibold text-gray-600 border border-gray-200 hover:border-gray-400 hover:text-gray-900 bg-white transition-all"
-              >
-                Blog'u İncele
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── LOGO BAR ──────────────────────────────────────── */}
-        <section className="border-y border-gray-100 bg-gray-50 py-8">
-          <div className="max-w-5xl mx-auto px-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6">
-              Güvenilen Teknolojiler
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 opacity-40 grayscale">
-              {["Next.js", "Prisma", "TypeScript", "PostgreSQL", "Tailwind CSS", "Vercel"].map((name) => (
-                <span key={name} className="text-sm font-bold text-gray-800">{name}</span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── FEATURES ──────────────────────────────────────── */}
-        <section className="py-24 bg-white">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <span className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3 block">Platform</span>
-              <h2 className="text-3xl lg:text-5xl font-black text-gray-900 mb-4">Her şey tek yerde</h2>
-              <p className="text-gray-500 text-lg max-w-xl mx-auto">
-                İçerik üretiminden analize, sosyal medyadan SEO'ya — tüm araçlar dahil.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { icon: "✦", color: "#f59e0b", bg: "#fef3c7", title: "AI İçerik Üretimi", desc: "GPT-4 ve Claude ile saniyeler içinde makale, blog ve sosyal medya içerikleri oluşturun." },
-                { icon: "◈", color: "#3b82f6", bg: "#dbeafe", title: "Analitik Dashboard", desc: "Gerçek zamanlı okuyucu verisi, trafik kaynakları ve içerik performans metrikleri." },
-                { icon: "⇄", color: "#10b981", bg: "#d1fae5", title: "Sosyal Medya Yönetimi", desc: "Twitter, LinkedIn ve Instagram'a otomatik zamanlama ve çoklu hesap yönetimi." },
-                { icon: "◎", color: "#8b5cf6", bg: "#ede9fe", title: "SEO Optimizasyonu", desc: "Otomatik meta etiket, sitemap ve yapısal veri. Google'da üst sıralara çıkın." },
-                { icon: "▣", color: "#ec4899", bg: "#fce7f3", title: "Medya Kütüphanesi", desc: "Görsel ve videolarınızı CDN üzerinden dünyaya hızla iletin. Sınırsız depolama." },
-                { icon: "⌥", color: "#f97316", bg: "#ffedd5", title: "Geliştirici API", desc: "REST API ve webhook ile mevcut sistemlerinize entegre edin. Tam esneklik." },
-              ].map((f) => (
-                <div key={f.title} className="group p-6 rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-lg hover:shadow-gray-100 transition-all bg-white">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4" style={{ background: f.bg, color: f.color }}>
-                    {f.icon}
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors">{f.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── STATS ─────────────────────────────────────────── */}
-        <section className="py-20 bg-gray-900">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-              {[
-                { value: "10K+", label: "İçerik Üretildi" },
-                { value: "500+", label: "Aktif Kullanıcı" },
-                { value: "99.9%", label: "Çalışma Süresi" },
-                { value: "3 sn", label: "Ortalama Yükleme" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-4xl font-black text-white mb-1">{s.value}</p>
-                  <p className="text-sm text-gray-400">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── HOW IT WORKS ──────────────────────────────────── */}
-        <section className="py-24 bg-white">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <span className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3 block">Nasıl Çalışır?</span>
-              <h2 className="text-3xl lg:text-5xl font-black text-gray-900">3 adımda başlayın</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { step: "01", title: "Hesap Oluşturun", desc: "Ücretsiz kayıt olun, kredi kartı gerekmez. 2 dakikada hazır." },
-                { step: "02", title: "İçerik Üretin", desc: "AI destekli editörümüzle içerik oluşturun veya mevcut içeriklerinizi aktarın." },
-                { step: "03", title: "Yayınlayın ve Büyüyün", desc: "Tek tıkla yayınlayın, analizlerle büyüyün, sosyal medyada paylaşın." },
-              ].map((s) => (
-                <div key={s.step} className="relative">
-                  <div className="text-6xl font-black text-gray-100 mb-4 leading-none">{s.step}</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{s.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── PRICING ───────────────────────────────────────── */}
-        <section className="py-24 bg-gray-50">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <span className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3 block">Fiyatlandırma</span>
-              <h2 className="text-3xl lg:text-5xl font-black text-gray-900 mb-4">Şeffaf, basit fiyatlar</h2>
-              <p className="text-gray-500 text-lg">Gizli ücret yok. İstediğin zaman iptal et.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { name: "Ücretsiz", price: "₺0", period: "/ay", features: ["3 içerik/ay", "1 sosyal hesap", "Temel analitik", "5 GB depolama"], cta: "Başlayın", highlight: false },
-                { name: "Pro", price: "₺299", period: "/ay", features: ["Sınırsız içerik", "10 sosyal hesap", "Gelişmiş analitik", "50 GB depolama", "AI asistan", "Öncelikli destek"], cta: "Pro'ya Geç", highlight: true },
-                { name: "Kurumsal", price: "Özel", period: "", features: ["Sınırsız her şey", "Özel entegrasyon", "Özel AI modeli", "SLA garantisi", "Dedike destek"], cta: "İletişime Geç", highlight: false },
-              ].map((p) => (
-                <div
-                  key={p.name}
-                  className={`rounded-2xl p-7 ${p.highlight ? "bg-gray-900 ring-2 ring-amber-500 shadow-xl shadow-amber-100" : "bg-white border border-gray-200"}`}
+        {/* ── 1. TOP 3 CARDS — AWS style ── */}
+        <section className="bg-[#f8f8f8] py-14 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {topCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="group bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg hover:shadow-gray-200/80 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <p className={`text-sm font-bold mb-1 ${p.highlight ? "text-amber-400" : "text-gray-500"}`}>{p.name}</p>
-                  <div className="flex items-end gap-1 mb-6">
-                    <span className={`text-4xl font-black ${p.highlight ? "text-white" : "text-gray-900"}`}>{p.price}</span>
-                    <span className={`text-sm pb-1 ${p.highlight ? "text-gray-400" : "text-gray-400"}`}>{p.period}</span>
+                  <div className="h-44 relative" style={{ background: card.gradient }}>
+                    <span className="absolute top-3 left-3 text-[11px] font-semibold px-2.5 py-1 rounded bg-black/25 text-white backdrop-blur-sm tracking-wide">
+                      {card.category}
+                    </span>
                   </div>
-                  <ul className="space-y-3 mb-8">
-                    {p.features.map((f) => (
-                      <li key={f} className={`flex items-center gap-2 text-sm ${p.highlight ? "text-gray-300" : "text-gray-600"}`}>
-                        <span className="text-amber-500 font-bold">✓</span> {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href={p.name === "Kurumsal" ? "/iletisim" : "/uygulama"}
-                    className={`block text-center py-3 rounded-xl text-sm font-bold transition-all ${
-                      p.highlight
-                        ? "bg-amber-500 hover:bg-amber-400 text-black"
-                        : "border border-gray-200 text-gray-700 hover:border-gray-400 hover:text-gray-900 bg-white"
-                    }`}
-                  >
-                    {p.cta}
-                  </Link>
-                </div>
+                  <div className="p-5">
+                    <h3 className="text-[15px] font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#1a73e8] transition-colors">
+                      {card.title}
+                    </h3>
+                    {card.desc && (
+                      <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{card.desc}</p>
+                    )}
+                    <p className="mt-4 text-sm text-[#1a73e8] font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Devamını oku <span>→</span>
+                    </p>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── RECENT POSTS ──────────────────────────────────── */}
-        {posts.length > 0 && (
-          <section className="py-24 bg-white">
-            <div className="max-w-5xl mx-auto px-6">
-              <div className="flex items-end justify-between mb-12">
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3 block">Blog</span>
-                  <h2 className="text-3xl font-black text-gray-900">Son Yazılar</h2>
-                </div>
-                <Link href="/blog" className="text-sm font-semibold text-amber-600 hover:text-amber-500">
-                  Tümünü Gör →
+        {/* ── 2. BIG HERO BANNER — AWS style ── */}
+        <section className="py-14 bg-white">
+          <div className="max-w-7xl mx-auto px-6">
+            <div
+              className="relative rounded-2xl overflow-hidden h-72 lg:h-[380px] flex items-end"
+              style={{ background: "linear-gradient(120deg,#0f172a 0%,#1e1b4b 40%,#312e81 70%,#4c1d95 100%)" }}
+            >
+              <div className="absolute top-0 right-0 w-2/3 h-full opacity-20"
+                style={{ background: "radial-gradient(ellipse at 90% 50%,#f59e0b,transparent 65%)" }} />
+              <div className="absolute bottom-0 left-0 w-1/2 h-1/2 opacity-10"
+                style={{ background: "radial-gradient(ellipse,#818cf8,transparent)" }} />
+              <div className="relative z-10 p-8 lg:p-12 max-w-2xl">
+                <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">Başarı Hikayesi</p>
+                <h2 className="text-2xl lg:text-4xl font-bold text-white mb-3 leading-tight">
+                  Medya şirketi, AI platformuyla yayın sürelerini %40 azalttı
+                </h2>
+                <p className="text-gray-300 text-sm mb-5 leading-relaxed max-w-lg hidden md:block">
+                  Kurumsal platformu kullanarak içerik üretim akışını tamamen dönüştüren şirketin hikayesini okuyun.
+                </p>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-gray-900 text-sm font-bold rounded-full hover:bg-gray-100 transition-colors"
+                >
+                  Hikayeyi oku →
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {posts.map((post) => (
-                  <Link key={post.id} href={`/blog/${post.slug}`} className="group p-6 rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all">
-                    {post.category && (
-                      <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">{post.category.name}</span>
-                    )}
-                    <h3 className="font-bold text-gray-900 mt-2 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors">
-                      {post.title}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 3. CATEGORY CARDS — AWS industry 2-col style ── */}
+        <section className="bg-[#f8f8f8] border-y border-gray-200 py-14">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-baseline justify-between mb-8">
+              <h2 className="text-xl font-bold text-gray-900 border-b-2 border-amber-500 pb-1">
+                İçerik yönetimi
+              </h2>
+              <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                Tüm içerikleri gör →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {[
+                {
+                  tag: "İçerik Yönetimi",
+                  title: "Büyük şirketler, AI çözümleriyle içerik verimliliği artırıyor",
+                  desc: "AI içerik araçlarıyla içerik operasyonlarındaki küresel süreçleri nasıl optimize edebilirsiniz.",
+                  gradient: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
+                  href: "/blog",
+                },
+                {
+                  tag: "Sosyal Medya",
+                  title: "Küresel markalar için sosyal medya ve içerik otomasyonu stratejisi",
+                  desc: "AI ve içerik otomasyonu teknolojileriyle sosyal medya etkileşimini nasıl optimize edebilirsiniz.",
+                  gradient: "linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)",
+                  href: "/uygulama/sosyal-hesaplar",
+                },
+              ].map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="group bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all flex"
+                >
+                  <div className="w-36 flex-shrink-0 relative" style={{ background: card.gradient }}>
+                    <span className="absolute bottom-3 left-2 right-2 text-[10px] font-bold text-white/80 uppercase tracking-wider leading-tight">
+                      {card.tag}
+                    </span>
+                  </div>
+                  <div className="p-5 flex-1">
+                    <h3 className="text-[14px] font-bold text-gray-900 mb-1.5 group-hover:text-[#1a73e8] transition-colors line-clamp-2">
+                      {card.title}
                     </h3>
-                    {post.excerpt && <p className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>}
-                  </Link>
+                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">{card.desc}</p>
+                    <p className="mt-3 text-[#1a73e8] text-sm font-medium">→</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 4. PRODUCT CARDS — Google "Başlayın" 4-col style ── */}
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Platformla hemen başlayın
+            </h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  icon: (
+                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                      <rect width="40" height="40" rx="8" fill="#FEF3C7"/>
+                      <path d="M12 28V16l8-4 8 4v12l-8 4-8-4z" stroke="#F59E0B" strokeWidth="1.5"/>
+                      <path d="M20 12v16M12 16l8 4 8-4" stroke="#F59E0B" strokeWidth="1.5"/>
+                    </svg>
+                  ),
+                  title: "İçerik Yönetimi",
+                  desc: "Her cihazda kullanıcıların beğeneceği içerikler oluşturmanıza yardımcı modern araçlar.",
+                  href: "/uygulama",
+                },
+                {
+                  icon: (
+                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                      <rect width="40" height="40" rx="8" fill="#D1FAE5"/>
+                      <circle cx="20" cy="20" r="6" stroke="#10B981" strokeWidth="1.5"/>
+                      <path d="M8 20h6M26 20h6M20 8v6M20 26v6" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                  ),
+                  title: "Sosyal Medya",
+                  desc: "Daha hızlı zamanlama, akıllı paylaşım ve tüm platformlara otomatik bağlantı.",
+                  href: "/uygulama/sosyal-hesaplar",
+                },
+                {
+                  icon: (
+                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                      <rect width="40" height="40" rx="8" fill="#DBEAFE"/>
+                      <path d="M14 26l4-8 4 4 4-10" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <rect x="10" y="10" width="20" height="20" rx="3" stroke="#3B82F6" strokeWidth="1.5"/>
+                    </svg>
+                  ),
+                  title: "Analitik",
+                  desc: "Gerçek zamanlı performans analizi ve içerik optimizasyon önerileri.",
+                  href: "/uygulama/analitik",
+                },
+                {
+                  icon: (
+                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+                      <rect width="40" height="40" rx="8" fill="#EDE9FE"/>
+                      <path d="M20 12l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z" stroke="#8B5CF6" strokeWidth="1.5" strokeLinejoin="round"/>
+                    </svg>
+                  ),
+                  title: "AI Studio",
+                  desc: "AI Studio'da yapay zeka destekli içerik uygulamaları geliştirin.",
+                  href: "/uygulama/video-olustur",
+                },
+              ].map((p) => (
+                <Link
+                  key={p.title}
+                  href={p.href}
+                  className="group p-6 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all bg-white"
+                >
+                  <div className="mb-4">{p.icon}</div>
+                  <h3 className="text-[15px] font-bold text-gray-900 mb-2">{p.title}</h3>
+                  <p className="text-sm text-[#1a73e8] leading-relaxed">{p.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 5. 2-COL FEATURE — Google Android skills style ── */}
+        <section className="bg-gray-50 border-y border-gray-200 py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div
+                className="rounded-2xl h-64 lg:h-72 relative overflow-hidden"
+                style={{ background: "linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)" }}
+              >
+                {[
+                  { text: "İçerik", left: "18%", top: "22%", rotate: "-8deg" },
+                  { text: "SEO", left: "52%", top: "14%", rotate: "5deg" },
+                  { text: "Sosyal", left: "63%", top: "44%", rotate: "-4deg" },
+                  { text: "Video", left: "18%", top: "58%", rotate: "7deg" },
+                  { text: "Analitik", left: "44%", top: "64%", rotate: "-5deg" },
+                ].map((tag) => (
+                  <div
+                    key={tag.text}
+                    className="absolute px-3 py-1.5 bg-amber-500 text-white text-xs font-bold rounded-lg shadow-lg"
+                    style={{ left: tag.left, top: tag.top, transform: `rotate(${tag.rotate})` }}
+                  >
+                    {tag.text}
+                  </div>
                 ))}
               </div>
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                  Platform becerileriyle daha akıllı bir içerik asistanı oluşturun
+                </h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Platformumuzdaki araçları kullanarak içerik tabanlı iş akışlarını hızlandırın ve kaliteli materyaller üretin.
+                </p>
+                <Link
+                  href="/uygulama"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a73e8] text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Daha fazla bilgi
+                </Link>
+              </div>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
-        {/* ── CTA ───────────────────────────────────────────── */}
-        <section className="py-24" style={{ background: "linear-gradient(135deg, #f59e0b, #ef4444)" }}>
-          <div className="max-w-3xl mx-auto px-6 text-center">
-            <h2 className="text-3xl lg:text-5xl font-black text-white mb-4">Bugün başlayın</h2>
-            <p className="text-orange-100 text-lg mb-8">Kurulum yok, kredi kartı yok. 2 dakikada hazır.</p>
-            <Link
-              href="/uygulama"
-              className="inline-block px-10 py-4 rounded-xl bg-white text-amber-600 text-sm font-black hover:bg-orange-50 transition-colors shadow-xl"
-            >
-              Ücretsiz Deneyin →
-            </Link>
+        {/* ── 6. 3-COL COMMUNITY CARDS — Google style ── */}
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  gradient: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
+                  title: "İçerik programlarını keşfedin",
+                  desc: "Ajanslar, medya şirketleri ve girişimcilerin dünyanın büyük içerik problemlerini çözmesini sağlar.",
+                  cta: "Daha fazla bilgi",
+                  href: "/cozumler",
+                },
+                {
+                  gradient: "linear-gradient(135deg,#11998e 0%,#38ef7d 100%)",
+                  title: "Bir etkinlik bulun",
+                  desc: "Online ve şahsen düzenlenen içerik etkinlikleri aracılığıyla bilginizi artırın.",
+                  cta: "Etkinlikleri görüntüle",
+                  href: "/iletisim",
+                },
+                {
+                  gradient: "linear-gradient(135deg,#f093fb 0%,#f5576c 100%)",
+                  title: "Topluluğa katılın",
+                  desc: "İçerik üretim yolculuğunuzun neresinde olursanız olun, deneyim paylaşan bir ağa tanışın.",
+                  cta: "Toplulukları keşfedin",
+                  href: "/topluluk",
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  className="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition-all"
+                >
+                  <div className="h-44" style={{ background: card.gradient }} />
+                  <div className="p-6 bg-white">
+                    <h3 className="text-base font-bold text-gray-900 mb-2">{card.title}</h3>
+                    <p className="text-sm text-gray-600 mb-5 leading-relaxed">{card.desc}</p>
+                    <Link
+                      href={card.href}
+                      className="inline-flex items-center px-4 py-2 bg-[#1a73e8] text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      {card.cta}
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 7. SOCIAL FOLLOW — Google style ── */}
+        <section className="bg-gray-50 border-t border-gray-200 py-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-10">
+              Kurumsal&apos;ı takip edin
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+                  ),
+                  name: "YouTube",
+                  desc: "Yapay zeka destekli içerik üreticilerinden oluşan topluluğa katılın ve en son gelişmeleri öğrenin.",
+                  href: "https://youtube.com",
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  ),
+                  name: "Twitter / X",
+                  desc: "En son platform haberlerini, ipuçlarını ve topluluk öne çıkanlarından haberdar olun.",
+                  href: "https://twitter.com",
+                },
+                {
+                  icon: (
+                    <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                  ),
+                  name: "LinkedIn",
+                  desc: "Geliştirici etkinliklerini, platform güncellemelerini ve ilham verici hikayeleri keşfedin.",
+                  href: "https://linkedin.com",
+                },
+              ].map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-5 rounded-xl border border-gray-100 bg-white hover:shadow-sm transition-all block"
+                >
+                  <div className="mb-3">{s.icon}</div>
+                  <h3 className="text-base font-bold text-gray-900 mb-2">{s.name}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{s.desc}</p>
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
