@@ -15,7 +15,7 @@ const globalForPrisma = globalThis as unknown as { prisma: any };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const prisma: any =
   PrismaClientClass
-    ? (globalForPrisma.prisma ?? new PrismaClientClass({ log: [] }))
+    ? (globalForPrisma.prisma ?? new PrismaClientClass())
     : null;
 
 if (PrismaClientClass && process.env.NODE_ENV !== "production") {
