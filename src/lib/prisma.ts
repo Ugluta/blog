@@ -1,23 +1,18 @@
-// Prisma client — run `npx prisma generate` after setting DATABASE_URL
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let PrismaClientClass: any;
-try {
-  // Will be available after `npx prisma generate`
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  PrismaClientClass = require("@/generated/prisma").PrismaClient;
-} catch {
-  PrismaClientClass = null;
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/generated/prisma";
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+function createPrismaClient() {
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const globalForPrisma = globalThis as unknown as { prisma: any };
+export const prisma: PrismaClient =
+  globalForPrisma.prisma ?? createPrismaClient();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const prisma: any =
-  PrismaClientClass
-    ? (globalForPrisma.prisma ?? new PrismaClientClass())
-    : null;
-
-if (PrismaClientClass && process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
