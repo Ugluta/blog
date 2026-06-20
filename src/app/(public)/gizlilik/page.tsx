@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Gizlilik Politikası',
-  description: 'ÖğretmenEvrak gizlilik politikası ve KVKK kapsamında kişisel verilerin korunması.',
+  description: 'EğitimPortal gizlilik politikası ve KVKK kapsamında kişisel verilerin korunması.',
 }
 
 export default function GizlilikPage() {
@@ -18,7 +18,7 @@ export default function GizlilikPage() {
 
           <div className="bg-white rounded-2xl border border-gray-100 p-8 space-y-6 text-sm text-gray-700 leading-relaxed">
             <p>
-              ÖğretmenEvrak olarak kişisel verilerinizin güvenliğini önemsiyoruz. Bu politika, 6698 sayılı
+              EğitimPortal olarak kişisel verilerinizin güvenliğini önemsiyoruz. Bu politika, 6698 sayılı
               Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında hazırlanmıştır.
             </p>
 
@@ -93,8 +93,8 @@ export default function GizlilikPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-3">8. İletişim</h2>
               <p>
                 KVKK kapsamındaki başvurularınız için:{' '}
-                <a href="mailto:kvkk@ogretmenevrak.com" className="text-blue-600 hover:underline">
-                  kvkk@ogretmenevrak.com
+                <a href="mailto:kvkk@egitimportal.com" className="text-blue-600 hover:underline">
+                  kvkk@egitimportal.com
                 </a>
               </p>
             </section>

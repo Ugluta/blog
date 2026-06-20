@@ -11,7 +11,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
     return
   }
 
-  const from = process.env.EMAIL_FROM ?? 'Öğretmen Evrak <noreply@ogretmenevrak.com>'
+  const from = process.env.EMAIL_FROM ?? 'EğitimPortal <noreply@egitimportal.com>'
 
   const html = `
     <!DOCTYPE html>
@@ -21,7 +21,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
       <div style="max-width: 480px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
         <div style="text-align: center; margin-bottom: 32px;">
           <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: #2563eb; border-radius: 12px; margin-bottom: 16px;">
-            <span style="color: #fff; font-size: 20px; font-weight: 700;">Ö</span>
+            <span style="color: #fff; font-size: 20px; font-weight: 700;">E</span>
           </div>
           <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #111827;">Şifre Sıfırlama</h1>
         </div>
@@ -39,7 +39,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
         </p>
         <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 24px 0;" />
         <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 0;">
-          Öğretmen Evrak — <a href="${process.env.NEXTAUTH_URL}" style="color: #9ca3af;">ogretmenevrak.com</a>
+          EğitimPortal — <a href="${process.env.NEXTAUTH_URL}" style="color: #9ca3af;">egitimportal.com</a>
         </p>
       </div>
     </body>
@@ -55,7 +55,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
     body: JSON.stringify({
       from,
       to: [to],
-      subject: 'Şifre Sıfırlama — Öğretmen Evrak',
+      subject: 'Şifre Sıfırlama — EğitimPortal',
       html,
     }),
   })

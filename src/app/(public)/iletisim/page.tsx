@@ -36,8 +36,8 @@ export default function IletisimPage() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-900 mb-0.5">E-posta</p>
-                  <a href="mailto:info@ogretmenevrak.com" className="text-sm text-blue-600 hover:underline">
-                    info@ogretmenevrak.com
+                  <a href="mailto:info@egitimportal.com" className="text-sm text-blue-600 hover:underline">
+                    info@egitimportal.com
                   </a>
                 </div>
               </div>

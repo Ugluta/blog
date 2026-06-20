@@ -46,7 +46,7 @@ export function Footer() {
                 <path d="M8 10h14M8 15h9M8 20h11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
               </svg>
               <span className="text-[16px] font-semibold text-white tracking-tight">
-                Öğretmen<span className="text-blue-400">Evrak</span>
+                Eğitim<span className="text-blue-400">Portal</span>
               </span>
             </Link>
             <p className="text-[13px] leading-relaxed text-slate-500">
@@ -113,7 +113,7 @@ export function Footer() {
       <div className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[12px] text-slate-600">
-            &copy; {new Date().getFullYear()} ÖğretmenEvrak. Tüm hakları saklıdır.
+            &copy; {new Date().getFullYear()} EğitimPortal. Tüm hakları saklıdır.
           </p>
           <div className="flex items-center gap-5">
             <Link href="/kullanim-kosullari" className="text-[12px] text-slate-600 hover:text-slate-300 transition-colors">

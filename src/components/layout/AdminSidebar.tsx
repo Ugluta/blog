@@ -96,9 +96,9 @@ export function AdminSidebar() {
       <div className="h-14 flex items-center justify-between px-4 border-b border-slate-800 shrink-0">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-blue-500 transition-colors">
-            Ö
+            E
           </div>
-          <span className="font-semibold text-white text-sm">ÖğretmenEvrak</span>
+          <span className="font-semibold text-white text-sm">EğitimPortal</span>
         </Link>
         <Link
           href="/bildirimler"

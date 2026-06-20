@@ -36,7 +36,7 @@ export default function SifremiUnuttumPage() {
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold">
-              <span className="text-blue-600">Öğretmen</span>Evrak
+              <span className="text-blue-600">Eğitim</span>Portal
             </span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-6">Şifremi Unuttum</h1>

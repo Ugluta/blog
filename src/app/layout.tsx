@@ -7,15 +7,15 @@ const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ogretmenevrak.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://egitimportal.com'),
   title: {
-    default: 'ÖğretmenEvrak - Öğretmenler için Her Şey',
-    template: '%s | ÖğretmenEvrak',
+    default: 'EğitimPortal - Öğretmenler için Her Şey',
+    template: '%s | EğitimPortal',
   },
   description: 'Öğretmen ve idareciler için materyal, evrak, soru bankası ve doküman platformu. Ücretsiz dosya indirme, yıllık plan, ders planı ve daha fazlası.',
   keywords: ['öğretmen', 'evrak', 'materyal', 'yıllık plan', 'ders planı', 'sınav sorusu', 'meb', 'eğitim'],
-  authors: [{ name: 'ÖğretmenEvrak' }],
-  creator: 'ÖğretmenEvrak',
+  authors: [{ name: 'EğitimPortal' }],
+  creator: 'EğitimPortal',
   robots: {
     index: true,
     follow: true,
@@ -24,11 +24,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    siteName: 'ÖğretmenEvrak',
+    siteName: 'EğitimPortal',
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@ogretmenevrak',
+    creator: '@egitimportal',
   },
 };
 

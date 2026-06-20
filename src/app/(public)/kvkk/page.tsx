@@ -3,15 +3,15 @@ import { Footer } from '@/components/layout/Footer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'KVKK Aydınlatma Metni — ÖğretmenEvrak',
-  description: '6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında ÖğretmenEvrak aydınlatma metni.',
+  title: 'KVKK Aydınlatma Metni — EğitimPortal',
+  description: '6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında EğitimPortal aydınlatma metni.',
 }
 
 const sections = [
   {
     title: '1. Veri Sorumlusu',
     content:
-      '6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, kişisel verileriniz; veri sorumlusu sıfatıyla ÖğretmenEvrak ("Platform") tarafından aşağıda açıklanan kapsamda işlenmektedir.',
+      '6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, kişisel verileriniz; veri sorumlusu sıfatıyla EğitimPortal ("Platform") tarafından aşağıda açıklanan kapsamda işlenmektedir.',
   },
   {
     title: '2. İşlenen Kişisel Veriler',
@@ -46,7 +46,7 @@ const sections = [
   {
     title: '8. Başvuru Yöntemi',
     content:
-      'Haklarınızı kullanmak için info@ogretmenevrak.com adresine "KVKK Başvurusu" konusuyla e-posta gönderebilirsiniz. Başvurularınız en geç 30 gün içinde sonuçlandırılacaktır. Başvurunuz kimlik doğrulaması gerektiren bir konuyla ilgiliyse ek bilgi talep edilebilir.',
+      'Haklarınızı kullanmak için info@egitimportal.com adresine "KVKK Başvurusu" konusuyla e-posta gönderebilirsiniz. Başvurularınız en geç 30 gün içinde sonuçlandırılacaktır. Başvurunuz kimlik doğrulaması gerektiren bir konuyla ilgiliyse ek bilgi talep edilebilir.',
   },
   {
     title: '9. Çerezler (Cookies)',

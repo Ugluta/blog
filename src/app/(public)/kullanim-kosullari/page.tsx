@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Kullanım Koşulları',
-  description: 'ÖğretmenEvrak platformu kullanım koşulları.',
+  description: 'EğitimPortal platformu kullanım koşulları.',
 }
 
 export default function KullanimKosullariPage() {
@@ -20,7 +20,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-3">1. Kabul</h2>
               <p>
-                ÖğretmenEvrak platformunu (<strong>ogretmenevrak.com</strong>) kullanarak bu Kullanım Koşulları&apos;nı
+                EğitimPortal platformunu (<strong>egitimportal.com</strong>) kullanarak bu Kullanım Koşulları&apos;nı
                 kabul etmiş sayılırsınız. Bu koşulları kabul etmiyorsanız platformu kullanmayınız.
               </p>
             </section>
@@ -28,7 +28,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-3">2. Hizmet Tanımı</h2>
               <p>
-                ÖğretmenEvrak, öğretmenler ve eğitim çalışanları için ders planı, yıllık plan, sınav sorusu ve
+                EğitimPortal, öğretmenler ve eğitim çalışanları için ders planı, yıllık plan, sınav sorusu ve
                 evrak örneği gibi eğitim materyallerinin paylaşıldığı ve indirilebildiği ücretsiz bir platformdur.
               </p>
             </section>
@@ -59,7 +59,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-3">5. Fikri Mülkiyet</h2>
               <p>
-                Platform altyapısı, tasarım ve özgün içeriklerin hakları ÖğretmenEvrak&apos;a aittir. Kullanıcı
+                Platform altyapısı, tasarım ve özgün içeriklerin hakları EğitimPortal&apos;a aittir. Kullanıcı
                 tarafından yüklenen içeriklerin telif hakları içeriği yükleyen kullanıcıya ait olmakla birlikte,
                 yükleme işlemiyle platformun bu içeriği tüm kullanıcılara sunmasına onay verilmiş sayılır.
               </p>
@@ -68,7 +68,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-3">6. Hizmetin Değiştirilmesi</h2>
               <p>
-                ÖğretmenEvrak, önceden bildirim yapmaksızın hizmet kapsamını, fiyatlandırmayı veya bu koşulları
+                EğitimPortal, önceden bildirim yapmaksızın hizmet kapsamını, fiyatlandırmayı veya bu koşulları
                 değiştirme hakkını saklı tutar. Değişiklikler sitede yayınlandığı tarihten itibaren geçerlidir.
               </p>
             </section>
@@ -85,8 +85,8 @@ export default function KullanimKosullariPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-3">8. Hesap Kapatma</h2>
               <p>
                 Koşulları ihlal eden hesaplar uyarı yapılmaksızın kapatılabilir. Hesabınızı kendiniz kapatmak için{' '}
-                <a href="mailto:destek@ogretmenevrak.com" className="text-blue-600 hover:underline">
-                  destek@ogretmenevrak.com
+                <a href="mailto:destek@egitimportal.com" className="text-blue-600 hover:underline">
+                  destek@egitimportal.com
                 </a>{' '}
                 adresine başvurabilirsiniz.
               </p>
@@ -103,8 +103,8 @@ export default function KullanimKosullariPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-3">10. İletişim</h2>
               <p>
                 Sorularınız için:{' '}
-                <a href="mailto:destek@ogretmenevrak.com" className="text-blue-600 hover:underline">
-                  destek@ogretmenevrak.com
+                <a href="mailto:destek@egitimportal.com" className="text-blue-600 hover:underline">
+                  destek@egitimportal.com
                 </a>
               </p>
             </section>

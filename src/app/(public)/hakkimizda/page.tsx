@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 import { BookOpen, Users, Target, Zap } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Hakkımızda — ÖğretmenEvrak',
-  description: 'ÖğretmenEvrak hakkında bilgi edinin. Misyonumuz, vizyonumuz ve ekibimiz.',
+  title: 'Hakkımızda — EğitimPortal',
+  description: 'EğitimPortal hakkında bilgi edinin. Misyonumuz, vizyonumuz ve ekibimiz.',
 }
 
 const values = [
@@ -22,7 +22,7 @@ const values = [
   {
     icon: Users,
     title: 'Topluluğumuz',
-    text: 'Türkiye\'nin dört bir yanından binlerce öğretmen, okul yöneticisi ve eğitim çalışanı ÖğretmenEvrak\'ta bir araya geliyor. Her gün yeni materyaller paylaşılıyor, deneyimler aktarılıyor.',
+    text: 'Türkiye\'nin dört bir yanından binlerce öğretmen, okul yöneticisi ve eğitim çalışanı EğitimPortal\'da bir araya geliyor. Her gün yeni materyaller paylaşılıyor, deneyimler aktarılıyor.',
   },
   {
     icon: Zap,
@@ -40,13 +40,13 @@ export default function HakkimizdaPage() {
         <section className="border-b border-gray-100 py-16 px-4">
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-5">
-              <BookOpen className="w-4 h-4" /> ÖğretmenEvrak
+              <BookOpen className="w-4 h-4" /> EğitimPortal
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
               Öğretmenler için,<br />öğretmenlerle birlikte
             </h1>
             <p className="text-lg text-gray-500 leading-relaxed">
-              2024 yılında kurulan ÖğretmenEvrak; okul evraklarını, ders materyallerini ve eğitim kaynaklarını
+              2024 yılında kurulan EğitimPortal; okul evraklarını, ders materyallerini ve eğitim kaynaklarını
               tek çatı altında toplayan bir platform olarak yola çıktı.
             </p>
           </div>

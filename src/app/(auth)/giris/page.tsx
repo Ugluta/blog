@@ -112,7 +112,7 @@ export default function GirisPage() {
             <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold"><span className="text-blue-600">Öğretmen</span>Evrak</span>
+            <span className="text-xl font-bold"><span className="text-blue-600">Eğitim</span>Portal</span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 mt-6">Giriş Yap</h1>
           <p className="text-gray-500 text-sm mt-1">Hesabınıza giriş yapın</p>
