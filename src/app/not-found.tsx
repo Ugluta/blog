@@ -17,10 +17,10 @@ export default function NotFound() {
             Ana Sayfaya Dön
           </Link>
           <Link
-            href="/haberler"
+            href="/blog"
             className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm rounded-xl border border-slate-700 transition-colors"
           >
-            Haberlere Bak
+            Blog&apos;a Bak
           </Link>
         </div>
         <div className="mt-12 text-slate-700 text-xs font-mono">

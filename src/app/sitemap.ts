@@ -6,8 +6,7 @@ const BASE = process.env.NEXTAUTH_URL ?? "https://example.com";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: `${BASE}/haberler`, lastModified: new Date(), changeFrequency: "hourly", priority: 0.9 },
-    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
+    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "hourly", priority: 0.9 },
     { url: `${BASE}/galeri`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/urunler`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/kod-ornekleri`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.6 },
@@ -32,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
     const postRoutes: MetadataRoute.Sitemap = posts.map((p: typeof posts[0]) => ({
-      url: `${BASE}/haberler/${p.slug}`,
+      url: `${BASE}/blog/${p.slug}`,
       lastModified: p.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.6,

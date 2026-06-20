@@ -4,17 +4,17 @@ import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KURUMSAL | Türkiye'nin Öncü Kurumsal Haber ve Analiz Platformu",
+  title: "Kurumsal | İçerik Yönetimi ve Yayıncılık Platformu",
   description:
-    "Teknoloji, ekonomi, dünya haberleri, spor, sağlık ve kültür alanlarında güncel haberler, derinlemesine analizler ve uzman yorumları. Türkiye'nin en güvenilir kurumsal içerik platformu.",
-  keywords: "haberler, teknoloji, ekonomi, spor, sağlık, kültür, Türkiye, analiz",
-  authors: [{ name: "KURUMSAL Editöryal Ekibi" }],
+    "Yapay zeka destekli içerik üretimi, sosyal medya yönetimi ve otomatik yayıncılık platformu. Blog, makale ve dijital içeriklerinizi tek yerden yönetin.",
+  keywords: "içerik yönetimi, blog platformu, yapay zeka, sosyal medya, yayıncılık, teknoloji",
+  authors: [{ name: "Kurumsal Ekibi" }],
   openGraph: {
     type: "website",
     locale: "tr_TR",
-    title: "KURUMSAL | Türkiye'nin Öncü Haber Platformu",
-    description: "Güncel haberler, analizler ve kurumsal içerikler",
-    siteName: "KURUMSAL",
+    title: "Kurumsal | İçerik Yönetimi Platformu",
+    description: "Yapay zeka destekli içerik üretimi ve yayıncılık platformu",
+    siteName: "Kurumsal",
   },
 };
 

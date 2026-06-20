@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 const BASE = process.env.NEXTAUTH_URL ?? "https://example.com";
 const SITE_TITLE = process.env.NEXT_PUBLIC_SITE_TITLE ?? "Blog";
-const SITE_DESC = process.env.NEXT_PUBLIC_SITE_DESC ?? "En güncel haberler ve içerikler";
+const SITE_DESC = process.env.NEXT_PUBLIC_SITE_DESC ?? "Platform güncellemeleri ve en iyi içerikler";
 
 function escapeXml(str: string) {
   return str
@@ -29,8 +29,8 @@ export async function GET() {
   const items = posts.map(post => `
     <item>
       <title>${escapeXml(post.title)}</title>
-      <link>${BASE}/haberler/${escapeXml(post.slug)}</link>
-      <guid isPermaLink="true">${BASE}/haberler/${escapeXml(post.slug)}</guid>
+      <link>${BASE}/blog/${escapeXml(post.slug)}</link>
+      <guid isPermaLink="true">${BASE}/blog/${escapeXml(post.slug)}</guid>
       ${post.excerpt ? `<description>${escapeXml(post.excerpt)}</description>` : ""}
       ${post.publishedAt ? `<pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>` : ""}
       ${post.coverImage ? `<enclosure url="${escapeXml(post.coverImage)}" type="image/jpeg" length="0" />` : ""}

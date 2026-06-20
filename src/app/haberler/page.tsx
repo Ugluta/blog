@@ -147,7 +147,7 @@ export default async function HaberlerPage() {
               {/* Featured */}
               {featured && (
                 <div className="mb-8">
-                  <Link href={`/haber/${featured.slug}`} className="group block">
+                  <Link href={`/blog/${featured.slug}`} className="group block">
                     <div className="relative aspect-[16/7] rounded-2xl overflow-hidden bg-slate-800 mb-4">
                       {featured.coverImage ? (
                         <Image
@@ -190,13 +190,13 @@ export default async function HaberlerPage() {
               {rest.length > 0 && (
                 <>
                   <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">
-                    Son Haberler
+                    Son Yazılar
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {rest.map((post) => (
                       <Link
                         key={post.id}
-                        href={`/haber/${post.slug}`}
+                        href={`/blog/${post.slug}`}
                         className="group flex flex-col bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-amber-500/30 rounded-2xl overflow-hidden transition-colors"
                       >
                         <div className="relative aspect-[16/9] bg-slate-800">

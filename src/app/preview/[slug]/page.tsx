@@ -68,7 +68,7 @@ export default async function PreviewPage({ params }: Props) {
   }
 
   if (post.status === "PUBLISHED") {
-    redirect(`/haber/${slug}`);
+    redirect(`/blog/${slug}`);
   }
 
   return (

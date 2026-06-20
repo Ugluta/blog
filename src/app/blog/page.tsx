@@ -56,8 +56,9 @@ function formatDate(d: Date | null) {
 const CAT_COLORS: Record<string, string> = {
   Teknoloji: "bg-blue-500/20 text-blue-400",
   Ekonomi: "bg-emerald-500/20 text-emerald-400",
-  Dünya: "bg-purple-500/20 text-purple-400",
-  Spor: "bg-red-500/20 text-red-400",
+  Girişim: "bg-blue-500/20 text-blue-400",
+  Tasarım: "bg-violet-500/20 text-violet-400",
+  Kariyer: "bg-orange-500/20 text-orange-400",
   Sağlık: "bg-cyan-500/20 text-cyan-400",
   Kültür: "bg-amber-500/20 text-amber-400",
 };
@@ -95,7 +96,7 @@ export default async function BlogPage() {
               <>
                 {/* Featured */}
                 {featured && (
-                  <Link href={`/haber/${featured.slug}`} className="group block mb-8">
+                  <Link href={`/blog/${featured.slug}`} className="group block mb-8">
                     <div className="relative rounded-2xl overflow-hidden bg-slate-800 border border-slate-700/50 hover:border-amber-500/30 transition-all">
                       {featured.coverImage ? (
                         <div className="relative h-64 sm:h-80">
@@ -137,7 +138,7 @@ export default async function BlogPage() {
                 {/* Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                   {rest.map((post: PostItem) => (
-                    <Link key={post.id} href={`/haber/${post.slug}`} className="group block bg-slate-800 rounded-xl overflow-hidden border border-slate-700/50 hover:border-amber-500/30 transition-all">
+                    <Link key={post.id} href={`/blog/${post.slug}`} className="group block bg-slate-800 rounded-xl overflow-hidden border border-slate-700/50 hover:border-amber-500/30 transition-all">
                       {post.coverImage && (
                         <div className="relative h-44">
                           <Image src={post.coverImage} alt={post.title} fill className="object-cover" sizes="400px" unoptimized />

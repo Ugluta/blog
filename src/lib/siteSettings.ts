@@ -166,7 +166,7 @@ export const defaultSettings: SiteSettings = {
         id: 'about',
         title: 'Hakkımızda',
         type: 'text',
-        content: "Türkiye'nin öncü dijital haber ve analiz platformu. Doğru, hızlı ve güvenilir habercilik.",
+        content: "Yapay zeka destekli içerik üretimi, sosyal medya yönetimi ve yayıncılık platformu.",
         active: true,
       },
       {
@@ -176,8 +176,8 @@ export const defaultSettings: SiteSettings = {
         content: '',
         links: [
           { label: 'Ana Sayfa', href: '/' },
-          { label: 'Haberler', href: '/haberler' },
           { label: 'Blog', href: '/blog' },
+          { label: 'Makaleler', href: '/haberler' },
           { label: 'Ürünler & Hizmetler', href: '/urunler' },
           { label: 'Hakkımızda', href: '/hakkimizda' },
           { label: 'İletişim', href: '/iletisim' },
@@ -227,13 +227,13 @@ export const defaultSettings: SiteSettings = {
   seo: {
     titleSeparator: '|',
     titleTemplate: '%s | KURUMSAL',
-    defaultDescription: "Türkiye'nin öncü dijital haber ve analiz platformu.",
+    defaultDescription: "Yapay zeka destekli içerik üretimi ve yayıncılık platformu.",
     ogImage: '/og-default.jpg',
     googleVerification: '',
     googleAnalyticsId: '',
     enableSitemap: true,
     enableRobots: true,
-    schemaType: 'NewsMediaOrganization',
+    schemaType: 'Organization',
     canonicalUrl: 'https://kurumsal.com.tr',
   },
   social: {
@@ -288,19 +288,18 @@ export const defaultSettings: SiteSettings = {
     headerMenu: [
       { id: 'home', label: 'Ana Sayfa', href: '/' },
       {
-        id: 'haberler',
-        label: 'Haberler',
+        id: 'platform',
+        label: 'Platform',
         href: '#',
         megaColumns: [
           [
-            { id: 'tek', label: '💻 Teknoloji', href: '/kategori/teknoloji' },
-            { id: 'eko', label: '📈 Ekonomi', href: '/kategori/ekonomi' },
-            { id: 'dun', label: '🌍 Dünya', href: '/kategori/dunya' },
+            { id: 'icerik', label: '📝 İçerik Yönetimi', href: '/uygulama' },
+            { id: 'sosyal', label: '🌐 Sosyal Medya', href: '/uygulama/sosyal-hesaplar' },
+            { id: 'video', label: '🎬 Video Üretimi', href: '/uygulama/video-olustur' },
           ],
           [
-            { id: 'spo', label: '⚽ Spor', href: '/kategori/spor' },
-            { id: 'sag', label: '🏥 Sağlık', href: '/kategori/saglik' },
-            { id: 'kul', label: '🎭 Kültür', href: '/kategori/kultur' },
+            { id: 'analitik', label: '📊 Analitik', href: '/uygulama/analitik' },
+            { id: 'fiyat', label: '💳 Fiyatlandırma', href: '/fiyatlandirma' },
           ],
         ],
       },
