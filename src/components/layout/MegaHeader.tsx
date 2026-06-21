@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -147,7 +147,7 @@ function AnnouncementBar() {
 // ---------- Product icon boxes for dropdown ----------
 
 function ProductIcon({ label, iconBg, iconColor }: { label: string; iconBg: string; iconColor: string }) {
-  const paths: Record<string, JSX.Element> = {
+  const paths: Record<string, ReactNode> = {
     "İçerik Yönetimi": (
       <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
         <path d="M2 4h12M2 7.5h8M2 11h5" stroke={iconColor} strokeWidth="1.5" strokeLinecap="round" />

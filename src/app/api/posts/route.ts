@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/slugify";
+import type { PostStatus } from "@/generated/prisma";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(50, Number(searchParams.get("limit") ?? 20));
 
   const where = {
-    ...(status ? { status } : {}),
+    ...(status ? { status: status as PostStatus } : {}),
     ...(categoryId ? { categoryId } : {}),
     ...(q
       ? {
