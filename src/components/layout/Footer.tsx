@@ -30,15 +30,13 @@ const COLS = [
       { label: "İletişim", href: "/iletisim" },
       { label: "Kariyer", href: "/kariyer" },
       { label: "Ortaklık", href: "/ortaklik" },
-      { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
-      { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
     ],
   },
   {
     title: "Hesap",
     links: [
       { label: "Müşteri Paneli", href: "/uygulama" },
-      { label: "Ücretsiz Başla", href: "/uygulama" },
+      { label: "Ücretsiz Başla", href: "/kayit" },
       { label: "Giriş Yap", href: "/giris" },
       { label: "Kayıt Ol", href: "/kayit" },
     ],
@@ -86,24 +84,15 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#0c0c0e" }} className="border-t border-white/[0.06]">
+    <footer style={{ background: "#0f172a" }} className="border-t border-white/[0.06]">
 
-      {/* ── Main grid ── */}
-      {/*
-        Altın oran yerleşimi: Sol sütun genişliği ≈ 1.618 × nav sütun genişliği
-        5 birim toplam: 1.618 (logo) + 4 × 1 (nav) = 5.618 birim
-        Logo sütunu ≈ %28.8, her nav sütunu ≈ %17.8
-        CSS grid: [1.618fr_1fr_1fr_1fr_1fr]
-      */}
-      <div className="max-w-screen-xl mx-auto px-8 pt-16 pb-12">
-        <div
-          className="grid gap-8"
-          style={{ gridTemplateColumns: "1.618fr 1fr 1fr 1fr 1fr" }}
-        >
-          {/* Brand column */}
-          <div className="pr-8">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 mb-5 w-fit group">
+      {/* ── Brand + social strip ── */}
+      <div style={{ background: "#1e293b" }} className="border-b border-white/[0.06]">
+        <div className="max-w-screen-xl mx-auto px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+
+          {/* Logo + tagline */}
+          <div>
+            <Link href="/" className="flex items-center gap-2.5 mb-2 w-fit group">
               <div
                 className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: "linear-gradient(135deg,#FBBF24,#F59E0B)" }}
@@ -114,64 +103,35 @@ export default function Footer() {
                 Kurumsal<span className="text-amber-400">.</span>
               </span>
             </Link>
-
-            {/* Description */}
-            <p className="text-sm text-zinc-400 leading-[1.7] mb-6" style={{ maxWidth: "22ch" }}>
+            <p className="text-slate-400 text-sm leading-relaxed" style={{ maxWidth: "36ch" }}>
               Yapay zeka destekli içerik üretimi, sosyal medya yönetimi ve otomatik yayıncılık platformu.
             </p>
-
-            {/* Social icons */}
-            <div className="flex items-center gap-1.5 mb-8">
-              {SOCIAL.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/8 transition-all"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
-
-            {/* Mobile app */}
-            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-600 mb-3">
-              Mobil Uygulama
-            </p>
-            <div className="flex flex-col gap-2">
-              <a
-                href="#"
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-white/10 hover:border-white/20 transition-all w-fit group"
-              >
-                <svg className="w-5 h-5 text-zinc-400 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3.18 23.76c.3.17.64.24.99.2l12.6-12.6-3.18-3.18L3.18 23.76zM20.47 10.2l-2.7-1.55-3.57 3.57 3.57 3.57 2.73-1.57c.78-.45.78-1.57-.03-2.02zM2.01.56C1.86.76 1.77 1.02 1.77 1.33v21.34c0 .31.09.57.24.77l.12.11L13.38 12 2.13.45.01.56zM13.77 8.57l-10.59-10.6c-.16-.16-.35-.24-.56-.24-.3 0-.55.19-.69.48L13.77 8.57z" />
-                </svg>
-                <div>
-                  <p className="text-[9px] text-zinc-500 leading-none uppercase tracking-wide">Get it on</p>
-                  <p className="text-xs font-semibold text-zinc-200 leading-tight">Google Play</p>
-                </div>
-              </a>
-              <a
-                href="#"
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-white/10 hover:border-white/20 transition-all w-fit group"
-              >
-                <svg className="w-5 h-5 text-zinc-400 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                </svg>
-                <div>
-                  <p className="text-[9px] text-zinc-500 leading-none uppercase tracking-wide">Download on the</p>
-                  <p className="text-xs font-semibold text-zinc-200 leading-tight">App Store</p>
-                </div>
-              </a>
-            </div>
           </div>
 
-          {/* Nav columns */}
+          {/* Social icons */}
+          <div className="flex items-center gap-2">
+            {SOCIAL.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Link columns ── */}
+      <div className="max-w-screen-xl mx-auto px-8 py-14">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
           {COLS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-[11px] font-black uppercase tracking-[0.12em] text-white mb-5">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-5">
                 {col.title}
               </h3>
               <ul className="space-y-3.5">
@@ -179,7 +139,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
+                      className="text-sm text-slate-400 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -191,46 +151,28 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Divider ── */}
-      <div className="border-t border-white/[0.06]" />
-
       {/* ── Bottom bar ── */}
-      <div className="max-w-screen-xl mx-auto px-8">
-        <div className="flex items-center justify-between py-5 gap-4">
-          <span className="text-xs text-zinc-600">
+      <div className="border-t border-white/[0.06]">
+        <div className="max-w-screen-xl mx-auto px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-xs text-slate-600">
             © {new Date().getFullYear()} Kurumsal, Ltd. Tüm hakları saklıdır.
           </span>
           <div className="flex items-center gap-5">
-            <a
-              href="mailto:destek@kurumsal.com.tr"
-              className="flex items-center gap-1.5 text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
-            >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              destek@kurumsal.com.tr
-            </a>
-            <div className="flex items-center gap-1">
-              {SOCIAL.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-7 h-7 flex items-center justify-center text-zinc-600 hover:text-zinc-300 transition-colors"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
+            {[
+              { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
+              { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
+              { label: "Çerezler", href: "/cerezler" },
+            ].map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-xs text-slate-600 hover:text-slate-300 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
-
-        {/* Sub-tagline */}
-        <p className="pb-5 text-[10px] font-bold tracking-[0.2em] uppercase text-zinc-800">
-          Yapay Zeka Destekli İçerik Platformu
-        </p>
       </div>
 
     </footer>
