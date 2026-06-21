@@ -1,68 +1,106 @@
 import Link from "next/link";
 import MegaHeader from "@/components/layout/MegaHeader";
 import Footer from "@/components/layout/Footer";
-import { prisma } from "@/lib/prisma";
 
-export const revalidate = 60;
-
-async function getRecentPosts() {
-  try {
-    if (!prisma) return [];
-    return await prisma.post.findMany({
-      where: { status: "PUBLISHED" },
-      orderBy: { publishedAt: "desc" },
-      take: 3,
-      select: { id: true, title: true, slug: true, excerpt: true, publishedAt: true, category: { select: { name: true } } },
-    });
-  } catch {
-    return [];
-  }
-}
-
-const CARD_GRADIENTS = [
-  "linear-gradient(135deg,#667eea 0%,#764ba2 60%,#f093fb 100%)",
-  "linear-gradient(135deg,#4facfe 0%,#00f2fe 50%,#43e97b 100%)",
-  "linear-gradient(135deg,#f5576c 0%,#fda085 60%,#ffecd2 100%)",
-];
-
-const STATIC_CARDS = [
+const TOP_CARDS = [
   {
     category: "Yapay Zeka",
     title: "Temsilciler oluşturmanın ve ölçeklendirmenin yeni yolları",
     desc: "Temsilcileri büyük ölçekte oluşturmak, bağlamak ve optimize etmek için tek platform.",
     href: "/blog",
-    gradient: CARD_GRADIENTS[0],
+    gradient: "linear-gradient(135deg,#667eea 0%,#764ba2 60%,#f093fb 100%)",
   },
   {
     category: "İçerik",
     title: "Çalışma şeklinizi değiştiren yapay zeka destekli içerik asistanı",
     desc: "Kullandığınız her şeye bağlanan, sizin adınıza harekete geçen platform.",
     href: "/uygulama",
-    gradient: CARD_GRADIENTS[1],
+    gradient: "linear-gradient(135deg,#4facfe 0%,#00f2fe 50%,#43e97b 100%)",
   },
   {
     category: "Yenilikler",
     title: "Platformdan en büyük yapay zeka güncellemeleri ve haberler",
     desc: "Yeni geliştirici araçlarından altyapıya kadar her etken yapay zeka güncellemesi.",
     href: "/changelog",
-    gradient: CARD_GRADIENTS[2],
+    gradient: "linear-gradient(135deg,#f5576c 0%,#fda085 60%,#ffecd2 100%)",
   },
 ];
 
-export default async function HomePage() {
-  const posts = await getRecentPosts();
+const PRODUCT_CARDS = [
+  {
+    icon: (
+      <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="8" fill="#FEF3C7"/>
+        <path d="M12 28V16l8-4 8 4v12l-8 4-8-4z" stroke="#F59E0B" strokeWidth="1.5"/>
+        <path d="M20 12v16M12 16l8 4 8-4" stroke="#F59E0B" strokeWidth="1.5"/>
+      </svg>
+    ),
+    title: "İçerik Yönetimi",
+    desc: "Her cihazda kullanıcıların beğeneceği içerikler oluşturmanıza yardımcı modern araçlar.",
+    href: "/uygulama",
+  },
+  {
+    icon: (
+      <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="8" fill="#D1FAE5"/>
+        <circle cx="20" cy="20" r="6" stroke="#10B981" strokeWidth="1.5"/>
+        <path d="M8 20h6M26 20h6M20 8v6M20 26v6" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    ),
+    title: "Sosyal Medya",
+    desc: "Daha hızlı zamanlama, akıllı paylaşım ve tüm platformlara otomatik bağlantı.",
+    href: "/uygulama/sosyal-hesaplar",
+  },
+  {
+    icon: (
+      <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="8" fill="#DBEAFE"/>
+        <path d="M14 26l4-8 4 4 4-10" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <rect x="10" y="10" width="20" height="20" rx="3" stroke="#3B82F6" strokeWidth="1.5"/>
+      </svg>
+    ),
+    title: "Analitik",
+    desc: "Gerçek zamanlı performans analizi ve içerik optimizasyon önerileri.",
+    href: "/uygulama/analitik",
+  },
+  {
+    icon: (
+      <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="8" fill="#EDE9FE"/>
+        <path d="M20 12l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z" stroke="#8B5CF6" strokeWidth="1.5" strokeLinejoin="round"/>
+      </svg>
+    ),
+    title: "AI Studio",
+    desc: "AI Studio'da yapay zeka destekli içerik uygulamaları geliştirin.",
+    href: "/uygulama/video-olustur",
+  },
+];
 
-  const topCards =
-    posts.length >= 3
-      ? posts.map((p, i) => ({
-          category: p.category?.name ?? "İçerik",
-          title: p.title,
-          desc: p.excerpt ?? "",
-          href: `/blog/${p.slug}`,
-          gradient: CARD_GRADIENTS[i % CARD_GRADIENTS.length],
-        }))
-      : STATIC_CARDS;
+const COMMUNITY_CARDS = [
+  {
+    gradient: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
+    title: "İçerik programlarını keşfedin",
+    desc: "Ajanslar, medya şirketleri ve girişimcilerin dünyanın büyük içerik problemlerini çözmesini sağlar.",
+    cta: "Daha fazla bilgi",
+    href: "/cozumler",
+  },
+  {
+    gradient: "linear-gradient(135deg,#11998e 0%,#38ef7d 100%)",
+    title: "Bir etkinlik bulun",
+    desc: "Online ve şahsen düzenlenen içerik etkinlikleri aracılığıyla bilginizi artırın.",
+    cta: "Etkinlikleri görüntüle",
+    href: "/iletisim",
+  },
+  {
+    gradient: "linear-gradient(135deg,#f093fb 0%,#f5576c 100%)",
+    title: "Topluluğa katılın",
+    desc: "İçerik üretim yolculuğunuzun neresinde olursanız olun, deneyim paylaşan bir ağa tanışın.",
+    cta: "Toplulukları keşfedin",
+    href: "/topluluk",
+  },
+];
 
+export default function HomePage() {
   return (
     <>
       <MegaHeader />
@@ -72,7 +110,7 @@ export default async function HomePage() {
         <section className="bg-[#f8f8f8] py-14 border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {topCards.map((card) => (
+              {TOP_CARDS.map((card) => (
                 <Link
                   key={card.title}
                   href={card.href}
@@ -87,9 +125,7 @@ export default async function HomePage() {
                     <h3 className="text-[15px] font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#1a73e8] transition-colors">
                       {card.title}
                     </h3>
-                    {card.desc && (
-                      <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{card.desc}</p>
-                    )}
+                    <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">{card.desc}</p>
                     <p className="mt-4 text-sm text-[#1a73e8] font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                       Devamını oku <span>→</span>
                     </p>
@@ -188,55 +224,7 @@ export default async function HomePage() {
               Platformla hemen başlayın
             </h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  icon: (
-                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-                      <rect width="40" height="40" rx="8" fill="#FEF3C7"/>
-                      <path d="M12 28V16l8-4 8 4v12l-8 4-8-4z" stroke="#F59E0B" strokeWidth="1.5"/>
-                      <path d="M20 12v16M12 16l8 4 8-4" stroke="#F59E0B" strokeWidth="1.5"/>
-                    </svg>
-                  ),
-                  title: "İçerik Yönetimi",
-                  desc: "Her cihazda kullanıcıların beğeneceği içerikler oluşturmanıza yardımcı modern araçlar.",
-                  href: "/uygulama",
-                },
-                {
-                  icon: (
-                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-                      <rect width="40" height="40" rx="8" fill="#D1FAE5"/>
-                      <circle cx="20" cy="20" r="6" stroke="#10B981" strokeWidth="1.5"/>
-                      <path d="M8 20h6M26 20h6M20 8v6M20 26v6" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round"/>
-                    </svg>
-                  ),
-                  title: "Sosyal Medya",
-                  desc: "Daha hızlı zamanlama, akıllı paylaşım ve tüm platformlara otomatik bağlantı.",
-                  href: "/uygulama/sosyal-hesaplar",
-                },
-                {
-                  icon: (
-                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-                      <rect width="40" height="40" rx="8" fill="#DBEAFE"/>
-                      <path d="M14 26l4-8 4 4 4-10" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      <rect x="10" y="10" width="20" height="20" rx="3" stroke="#3B82F6" strokeWidth="1.5"/>
-                    </svg>
-                  ),
-                  title: "Analitik",
-                  desc: "Gerçek zamanlı performans analizi ve içerik optimizasyon önerileri.",
-                  href: "/uygulama/analitik",
-                },
-                {
-                  icon: (
-                    <svg className="w-10 h-10" viewBox="0 0 40 40" fill="none">
-                      <rect width="40" height="40" rx="8" fill="#EDE9FE"/>
-                      <path d="M20 12l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6l2-6z" stroke="#8B5CF6" strokeWidth="1.5" strokeLinejoin="round"/>
-                    </svg>
-                  ),
-                  title: "AI Studio",
-                  desc: "AI Studio'da yapay zeka destekli içerik uygulamaları geliştirin.",
-                  href: "/uygulama/video-olustur",
-                },
-              ].map((p) => (
+              {PRODUCT_CARDS.map((p) => (
                 <Link
                   key={p.title}
                   href={p.href}
@@ -297,29 +285,7 @@ export default async function HomePage() {
         <section className="bg-white py-16">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  gradient: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)",
-                  title: "İçerik programlarını keşfedin",
-                  desc: "Ajanslar, medya şirketleri ve girişimcilerin dünyanın büyük içerik problemlerini çözmesini sağlar.",
-                  cta: "Daha fazla bilgi",
-                  href: "/cozumler",
-                },
-                {
-                  gradient: "linear-gradient(135deg,#11998e 0%,#38ef7d 100%)",
-                  title: "Bir etkinlik bulun",
-                  desc: "Online ve şahsen düzenlenen içerik etkinlikleri aracılığıyla bilginizi artırın.",
-                  cta: "Etkinlikleri görüntüle",
-                  href: "/iletisim",
-                },
-                {
-                  gradient: "linear-gradient(135deg,#f093fb 0%,#f5576c 100%)",
-                  title: "Topluluğa katılın",
-                  desc: "İçerik üretim yolculuğunuzun neresinde olursanız olun, deneyim paylaşan bir ağa tanışın.",
-                  cta: "Toplulukları keşfedin",
-                  href: "/topluluk",
-                },
-              ].map((card) => (
+              {COMMUNITY_CARDS.map((card) => (
                 <div
                   key={card.title}
                   className="rounded-xl border border-gray-100 overflow-hidden hover:shadow-md transition-all"
@@ -350,31 +316,19 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                  ),
+                  icon: <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>,
                   name: "YouTube",
                   desc: "Yapay zeka destekli içerik üreticilerinden oluşan topluluğa katılın ve en son gelişmeleri öğrenin.",
                   href: "https://youtube.com",
                 },
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  ),
+                  icon: <svg className="w-8 h-8 text-gray-900" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>,
                   name: "Twitter / X",
                   desc: "En son platform haberlerini, ipuçlarını ve topluluk öne çıkanlarından haberdar olun.",
                   href: "https://twitter.com",
                 },
                 {
-                  icon: (
-                    <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                  ),
+                  icon: <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>,
                   name: "LinkedIn",
                   desc: "Geliştirici etkinliklerini, platform güncellemelerini ve ilham verici hikayeleri keşfedin.",
                   href: "https://linkedin.com",
