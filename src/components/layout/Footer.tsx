@@ -109,10 +109,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-[#7A9AB8] hover:text-white transition-all"
-                style={{ background: "rgba(58,110,168,0.15)" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(58,110,168,0.35)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(58,110,168,0.15)"; }}
+                className="social-icon-btn w-9 h-9 rounded-lg flex items-center justify-center text-[#7A9AB8] hover:text-white transition-colors"
               >
                 {s.icon}
               </a>

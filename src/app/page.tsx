@@ -215,10 +215,7 @@ export default function HomePage() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="group bg-white border border-[#DDD8CF] rounded-2xl overflow-hidden hover:border-[#B5CDE8] hover:-translate-y-1 transition-all duration-300"
-                  style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(58,110,168,0.10)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+                  className="card-lift group bg-white border border-[#DDD8CF] rounded-2xl overflow-hidden hover:border-[#B5CDE8] hover:-translate-y-1"
                 >
                   <div className="h-1 bg-[#3A6EA8]" />
                   <div className="p-7">
@@ -289,10 +286,7 @@ export default function HomePage() {
                 <Link
                   key={p.title}
                   href={p.href}
-                  className="group bg-white border border-[#DDD8CF] p-7 rounded-2xl hover:border-[#B5CDE8] hover:-translate-y-1 transition-all duration-300"
-                  style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(58,110,168,0.10)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+                  className="card-lift group bg-white border border-[#DDD8CF] p-7 rounded-2xl hover:border-[#B5CDE8] hover:-translate-y-1"
                 >
                   <div className="w-11 h-11 rounded-xl bg-[#EBF2FA] flex items-center justify-center mb-6">
                     {p.icon}
@@ -380,10 +374,7 @@ export default function HomePage() {
               {COMMUNITY.map((card) => (
                 <div
                   key={card.title}
-                  className="bg-white border border-[#DDD8CF] rounded-2xl p-7 flex flex-col hover:border-[#B5CDE8] hover:-translate-y-1 transition-all duration-300"
-                  style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(58,110,168,0.10)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+                  className="card-lift bg-white border border-[#DDD8CF] rounded-2xl p-7 flex flex-col hover:border-[#B5CDE8] hover:-translate-y-1"
                 >
                   <div className="w-8 h-1 bg-[#3A6EA8] rounded-full mb-6" />
                   <h3 className="text-base font-extrabold text-[#111] mb-3 leading-snug">{card.title}</h3>
@@ -416,10 +407,7 @@ export default function HomePage() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group bg-white border border-[#DDD8CF] rounded-2xl p-7 block hover:border-[#B5CDE8] hover:-translate-y-1 transition-all duration-300"
-                  style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px rgba(58,110,168,0.10)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
+                  className="card-lift group bg-white border border-[#DDD8CF] rounded-2xl p-7 block hover:border-[#B5CDE8] hover:-translate-y-1"
                 >
                   <div className="w-11 h-11 bg-[#EBF2FA] rounded-xl flex items-center justify-center mb-5 text-[#3A6EA8]">
                     {s.icon}

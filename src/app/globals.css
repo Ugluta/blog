@@ -137,6 +137,21 @@ a:hover { color: var(--saks); }
 .ticker-inner:hover { animation-play-state: paused; }
 
 /* ── Code blocks ────────────────────────────────────────────── */
+.card-lift {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+.card-lift:hover {
+  box-shadow: 0 6px 24px rgba(58,110,168,0.10);
+}
+.social-icon-btn {
+  background: rgba(58,110,168,0.15);
+  transition: background 0.2s;
+}
+.social-icon-btn:hover {
+  background: rgba(58,110,168,0.35);
+}
+
 .code-block { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; overflow: auto; }
 .code-block pre { padding: 1.25rem; font-size: 0.8125rem; line-height: 1.6; }
 .code-block code { font-family: 'Fira Code','JetBrains Mono',Consolas,monospace; color: #e6edf3; }
