@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 type ConnectedAccount = {
@@ -46,8 +46,18 @@ const PLATFORM_ICON: Record<string, string> = {
 
 const MAX_FREE_ACCOUNTS = 1;
 
-export default function SocialAccountsPage() {
+function SearchParamsHandler({ onToast }: { onToast: (type: "success" | "error", text: string) => void }) {
   const searchParams = useSearchParams();
+  useEffect(() => {
+    const connected = searchParams.get("connected");
+    const error = searchParams.get("error");
+    if (connected) onToast("success", `${PLATFORM_LABEL[connected.toUpperCase()] ?? connected} başarıyla bağlandı!`);
+    if (error) onToast("error", `Bağlantı başarısız: ${error}`);
+  }, [searchParams, onToast]);
+  return null;
+}
+
+export default function SocialAccountsPage() {
   const [accounts, setAccounts] = useState<ConnectedAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -57,13 +67,6 @@ export default function SocialAccountsPage() {
     setToast({ type, text });
     setTimeout(() => setToast(null), 3500);
   };
-
-  useEffect(() => {
-    const connected = searchParams.get("connected");
-    const error = searchParams.get("error");
-    if (connected) showToast("success", `${PLATFORM_LABEL[connected.toUpperCase()] ?? connected} başarıyla bağlandı!`);
-    if (error) showToast("error", `Bağlantı başarısız: ${error}`);
-  }, [searchParams]);
 
   useEffect(() => {
     fetch("/api/social/accounts")
@@ -94,6 +97,9 @@ export default function SocialAccountsPage() {
 
   return (
     <div className="p-4 lg:p-6 max-w-4xl space-y-6">
+      <Suspense fallback={null}>
+        <SearchParamsHandler onToast={showToast} />
+      </Suspense>
       {/* Toast */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-lg transition-all ${toast.type === "success" ? "bg-green-500/20 border border-green-500/40 text-green-300" : "bg-red-500/20 border border-red-500/40 text-red-300"}`}>
