@@ -15,6 +15,7 @@ type UserRole = "SUPER_ADMIN" | "ADMIN" | "EDITOR" | "PUBLISHER" | "VIEWER";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/giris",
