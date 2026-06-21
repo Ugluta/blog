@@ -28,7 +28,7 @@ export default function RootLayout({
       <head>
         <ThemeProvider />
       </head>
-      <body className="min-h-full text-slate-100 antialiased">
+      <body className="min-h-full text-[#111111] antialiased">
         <Providers>
           <div className="min-h-screen">
             {children}

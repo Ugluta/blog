@@ -2,11 +2,20 @@ import Link from "next/link";
 
 const COLS = [
   {
+    title: "İçerik",
+    links: [
+      { label: "Blog", href: "/blog" },
+      { label: "Müzik", href: "/muzik" },
+      { label: "Haberler", href: "/haberler" },
+      { label: "Galeri", href: "/galeri" },
+      { label: "Kod Örnekleri", href: "/kod-ornekleri" },
+    ],
+  },
+  {
     title: "Platform",
     links: [
       { label: "İçerik Yönetimi", href: "/uygulama" },
       { label: "Sosyal Medya", href: "/uygulama/sosyal-hesaplar" },
-      { label: "Video Üretimi", href: "/uygulama/video-olustur" },
       { label: "Analitik", href: "/uygulama/analitik" },
       { label: "Fiyatlandırma", href: "/fiyatlandirma" },
       { label: "API", href: "/api-referansi" },
@@ -15,10 +24,8 @@ const COLS = [
   {
     title: "Kaynaklar",
     links: [
-      { label: "Blog", href: "/blog" },
       { label: "Belgelendirme", href: "/docs" },
       { label: "Değişiklik Günlüğü", href: "/changelog" },
-      { label: "Yol Haritası", href: "/roadmap" },
       { label: "Topluluk", href: "/topluluk" },
       { label: "Destek", href: "/destek" },
     ],
@@ -28,15 +35,6 @@ const COLS = [
     links: [
       { label: "Hakkımızda", href: "/hakkimizda" },
       { label: "İletişim", href: "/iletisim" },
-      { label: "Kariyer", href: "/kariyer" },
-      { label: "Ortaklık", href: "/ortaklik" },
-    ],
-  },
-  {
-    title: "Hesap",
-    links: [
-      { label: "Müşteri Paneli", href: "/uygulama" },
-      { label: "Ücretsiz Başla", href: "/kayit" },
       { label: "Giriş Yap", href: "/giris" },
       { label: "Kayıt Ol", href: "/kayit" },
     ],
@@ -84,31 +82,25 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#0f172a" }} className="border-t border-white/[0.06]">
+    <footer style={{ background: "#0B1829" }}>
 
       {/* ── Brand + social strip ── */}
-      <div style={{ background: "#1e293b" }} className="border-b border-white/[0.06]">
-        <div className="max-w-screen-xl mx-auto px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-
-          {/* Logo + tagline */}
+      <div style={{ background: "#112240", borderBottom: "1px solid rgba(181,205,232,0.10)" }}>
+        <div className="max-w-screen-xl mx-auto px-8 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
-            <Link href="/" className="flex items-center gap-2.5 mb-2 w-fit group">
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg,#FBBF24,#F59E0B)" }}
-              >
-                <span className="text-black font-black text-sm">K</span>
+            <Link href="/" className="flex items-center gap-3 mb-3 w-fit group">
+              <div className="w-8 h-8 rounded-lg bg-[#3A6EA8] flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-black text-sm">K</span>
               </div>
-              <span className="text-white font-bold text-base tracking-tight">
-                Kurumsal<span className="text-amber-400">.</span>
+              <span className="text-white font-extrabold text-base tracking-tight group-hover:text-[#B5CDE8] transition-colors">
+                Kurumsal
               </span>
             </Link>
-            <p className="text-slate-400 text-sm leading-relaxed" style={{ maxWidth: "36ch" }}>
+            <p className="text-[#7A9AB8] text-sm leading-relaxed" style={{ maxWidth: "38ch" }}>
               Yapay zeka destekli içerik üretimi, sosyal medya yönetimi ve otomatik yayıncılık platformu.
             </p>
           </div>
 
-          {/* Social icons */}
           <div className="flex items-center gap-2">
             {SOCIAL.map((s) => (
               <a
@@ -117,7 +109,10 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-[#7A9AB8] hover:text-white transition-all"
+                style={{ background: "rgba(58,110,168,0.15)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(58,110,168,0.35)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(58,110,168,0.15)"; }}
               >
                 {s.icon}
               </a>
@@ -127,19 +122,19 @@ export default function Footer() {
       </div>
 
       {/* ── Link columns ── */}
-      <div className="max-w-screen-xl mx-auto px-8 py-14">
+      <div className="max-w-screen-xl mx-auto px-8 py-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
           {COLS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-5">
+              <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#B5CDE8] mb-6">
                 {col.title}
               </h3>
-              <ul className="space-y-3.5">
+              <ul className="space-y-4">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-400 hover:text-white transition-colors"
+                      className="text-sm text-[#5C7E9C] hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -152,21 +147,21 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div className="border-t border-white/[0.06]">
-        <div className="max-w-screen-xl mx-auto px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs text-slate-600">
-            © {new Date().getFullYear()} Kurumsal, Ltd. Tüm hakları saklıdır.
+      <div style={{ borderTop: "1px solid rgba(181,205,232,0.08)" }}>
+        <div className="max-w-screen-xl mx-auto px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-xs text-[#3D5A73]">
+            © {new Date().getFullYear()} Kurumsal. Tüm hakları saklıdır.
           </span>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-6">
             {[
-              { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
+              { label: "Gizlilik", href: "/gizlilik-politikasi" },
               { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
               { label: "Çerezler", href: "/cerezler" },
             ].map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-xs text-slate-600 hover:text-slate-300 transition-colors"
+                className="text-xs text-[#3D5A73] hover:text-[#7A9AB8] transition-colors"
               >
                 {link.label}
               </Link>
