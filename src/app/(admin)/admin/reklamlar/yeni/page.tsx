@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, Megaphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,7 @@ export default function YeniReklamPage() {
 
   const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     const res = await fetch('/api/reklamlar', {
@@ -101,7 +101,7 @@ export default function YeniReklamPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Reklam Kodu (AdSense vb.)</label>
           <textarea value={form.adCode} onChange={(e) => set('adCode', e.target.value)}
             rows={4} className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="&lt;ins class=\"adsbygoogle\"..." />
+            placeholder="&lt;ins class=&quot;adsbygoogle&quot;..." />
         </div>
 
         <div className="grid grid-cols-4 gap-4">
