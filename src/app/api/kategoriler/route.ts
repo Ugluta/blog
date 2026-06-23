@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { hasRole } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { slugify } from '@/lib/utils'
+import { slug as slugify } from '@/lib/utils'
 
 export async function GET() {
   const categories = await db.category.findMany({
@@ -22,7 +22,6 @@ export async function GET() {
     orderBy: { sortOrder: 'asc' },
   })
 
-  // flatten _count.files -> fileCount for easier consumption
   function mapCat(cat: typeof categories[number]): unknown {
     return {
       id:        cat.id,
