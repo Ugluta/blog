@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
-import { Pagination } from '@/components/ui/Pagination'
+import { Pagination } from '@/components/ui/pagination'
 import { Users2, Globe, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'

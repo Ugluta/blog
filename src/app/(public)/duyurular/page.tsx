@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { db } from '@/lib/db';
 import { formatDate } from '@/lib/utils';
-import { Pagination } from '@/components/ui/Pagination';
+import { Pagination } from '@/components/ui/pagination';
 import { Megaphone, Calendar } from 'lucide-react';
 import type { Metadata } from 'next';
 

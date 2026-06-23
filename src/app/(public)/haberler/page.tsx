@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
-import { Pagination } from '@/components/ui/Pagination'
+import { Pagination } from '@/components/ui/pagination'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import type { Metadata } from 'next'

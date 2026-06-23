@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { db } from '@/lib/db';
 import { SCHOOL_TYPE_LABELS } from '@/lib/utils';
-import { Pagination } from '@/components/ui/Pagination';
+import { Pagination } from '@/components/ui/pagination';
 import Link from 'next/link';
 import { Library, Download, Eye, BookOpen, Filter } from 'lucide-react';
 import type { Metadata } from 'next';
