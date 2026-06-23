@@ -1,69 +1,70 @@
-'use client';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import Link from 'next/link'
 
 interface PaginationProps {
-  page: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  className?: string;
+  currentPage: number
+  totalPages: number
+  baseUrl: string
+  searchParams?: Record<string, string>
 }
 
-export function Pagination({ page, totalPages, onPageChange, className }: PaginationProps) {
-  if (totalPages <= 1) return null;
+export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {} }: PaginationProps) {
+  if (totalPages <= 1) return null
 
-  const pages = [];
-  const delta = 2;
-  for (let i = Math.max(1, page - delta); i <= Math.min(totalPages, page + delta); i++) {
-    pages.push(i);
+  function buildUrl(page: number) {
+    const params = new URLSearchParams({ ...searchParams, sayfa: String(page) })
+    return `${baseUrl}?${params}`
+  }
+
+  const pages: (number | '...')[] = []
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i)
+  } else {
+    pages.push(1)
+    if (currentPage > 3) pages.push('...')
+    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+      pages.push(i)
+    }
+    if (currentPage < totalPages - 2) pages.push('...')
+    pages.push(totalPages)
   }
 
   return (
-    <div className={cn('flex items-center justify-center gap-1', className)}>
-      <button
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
-        className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </button>
-
-      {pages[0] > 1 && (
-        <>
-          <button onClick={() => onPageChange(1)} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-sm hover:bg-gray-50">1</button>
-          {pages[0] > 2 && <span className="px-1 text-gray-400">...</span>}
-        </>
-      )}
-
-      {pages.map((p) => (
-        <button
-          key={p}
-          onClick={() => onPageChange(p)}
-          className={cn(
-            'w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium border transition-colors',
-            p === page
-              ? 'bg-blue-600 text-white border-blue-600'
-              : 'border-gray-200 hover:bg-gray-50'
-          )}
+    <nav className="flex items-center justify-center gap-1 mt-8">
+      {currentPage > 1 && (
+        <Link
+          href={buildUrl(currentPage - 1)}
+          className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
         >
-          {p}
-        </button>
-      ))}
-
-      {pages[pages.length - 1] < totalPages && (
-        <>
-          {pages[pages.length - 1] < totalPages - 1 && <span className="px-1 text-gray-400">...</span>}
-          <button onClick={() => onPageChange(totalPages)} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-sm hover:bg-gray-50">{totalPages}</button>
-        </>
+          &laquo;
+        </Link>
       )}
-
-      <button
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
-        className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
-      >
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-  );
+      {pages.map((p, i) =>
+        p === '...' ? (
+          <span key={`ellipsis-${i}`} className="px-3 py-2 text-sm text-gray-400">
+            ...
+          </span>
+        ) : (
+          <Link
+            key={p}
+            href={buildUrl(p)}
+            className={`px-3 py-2 rounded-md text-sm font-medium ${
+              p === currentPage
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            {p}
+          </Link>
+        )
+      )}
+      {currentPage < totalPages && (
+        <Link
+          href={buildUrl(currentPage + 1)}
+          className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+        >
+          &raquo;
+        </Link>
+      )}
+    </nav>
+  )
 }
