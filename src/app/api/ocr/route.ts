@@ -5,9 +5,11 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const PROMPTS = {
   extract: 'Bu görseldeki tüm metni olduğu gibi çıkar. Orijinal satır düzenini koru. Sadece metni döndür, açıklama ekleme.',
-  clean:   'Bu görseldeki metni çıkar, ardından Türkçe imla kurallarına göre düzenle ve paragrafları düzgün biçimlendir. Sadece düzenlenmiş metni döndür.',
+  clean:   'Bu görseldeki metni çıkar, ardından Türkçe imla kurallarına göre düzenle ve paragrafları düzgün biçimlendir. Sadece düzenlemiş metni döndür.',
   summary: 'Bu görseldeki belgenin içeriğini 3-5 cümleyle Türkçe olarak özetle. Belgenin türünü, konusunu ve önemli bilgileri belirt.',
 }
+
+type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,11 +27,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Geçersiz görüntü formatı' }, { status: 400 })
     }
 
-    const mediaType = matches[1] as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+    const rawMediaType: string = matches[1]
     const base64Data = matches[2]
 
-    // PDF: extract text prompt differently
-    const isPdf = mediaType === 'application/pdf'
+    const isPdf = rawMediaType === 'application/pdf'
+    const mediaType = rawMediaType as ImageMediaType
 
     const msg = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
