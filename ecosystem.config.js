@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'egitimportal',
     script: 'node_modules/.bin/next',
-    args: 'start',
+    args: 'start -p 3002',
     cwd: './',
     instances: 1,
     autorestart: true,
@@ -10,7 +10,7 @@ module.exports = {
     max_memory_restart: '512M',
     env: {
       NODE_ENV: 'production',
-      PORT: 3000,
+      PORT: 3002,
     },
   }],
 }
