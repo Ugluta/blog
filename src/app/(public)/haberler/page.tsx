@@ -49,8 +49,8 @@ export default async function HaberlerPage({
               {featured.map((item) => (
                 <Link key={item.id} href={`/haberler/${item.slug}`}
                   className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow group">
-                  {item.coverImage
-                    ? <img src={item.coverImage} alt={item.title} className="w-full h-48 object-cover" />
+                  {item.image
+                    ? <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
                     : <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-blue-700" />}
                   <div className="p-5">
                     <h2 className="font-bold text-gray-900 text-lg leading-snug group-hover:text-blue-600 transition-colors">{item.title}</h2>
@@ -66,8 +66,8 @@ export default async function HaberlerPage({
             {rest.map((item) => (
               <Link key={item.id} href={`/haberler/${item.slug}`}
                 className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-sm hover:border-blue-200 transition-all group">
-                {item.coverImage && (
-                  <img src={item.coverImage} alt={item.title} className="w-full h-32 object-cover" />
+                {item.image && (
+                  <img src={item.image} alt={item.title} className="w-full h-32 object-cover" />
                 )}
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>

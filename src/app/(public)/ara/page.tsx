@@ -158,8 +158,8 @@ export default function AraPage() {
               {tab === 'haberler' && (results.haberler as Record<string,unknown>[]).map((n) => (
                 <Link key={n.id as string} href={`/haberler/${n.slug}`}
                   className="flex gap-4 bg-white border border-gray-100 rounded-xl p-4 hover:border-blue-200 hover:shadow-sm transition-all">
-                  {!!n.coverImage && (
-                    <img src={n.coverImage as string} alt="" className="w-16 h-14 object-cover rounded-lg shrink-0" />
+                  {!!(n.image) && (
+                    <img src={n.image as string} alt="" className="w-16 h-14 object-cover rounded-lg shrink-0" />
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-gray-900 line-clamp-2">{n.title as string}</p>

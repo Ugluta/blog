@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const news = await db.news.findUnique({
     where: { slug, status: 'PUBLISHED' },
-    select: { title: true, excerpt: true, coverImage: true },
+    select: { title: true, excerpt: true, image: true },
   })
   if (!news) return { title: 'Haber Bulunamadı' }
   return {
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: news.title,
       description: news.excerpt ?? undefined,
-      images: news.coverImage ? [news.coverImage] : [],
+      images: news.image ? [news.image] : [],
     },
   }
 }
@@ -47,7 +47,7 @@ export default async function HaberDetayPage({ params }: Props) {
     where: { type: news.type, status: 'PUBLISHED', id: { not: news.id } },
     orderBy: { publishedAt: 'desc' },
     take: 4,
-    select: { id: true, title: true, slug: true, publishedAt: true, coverImage: true },
+    select: { id: true, title: true, slug: true, publishedAt: true, image: true },
   })
 
   const typeLabel: Record<string, string> = {
@@ -73,8 +73,8 @@ export default async function HaberDetayPage({ params }: Props) {
           </nav>
 
           <article className="bg-white rounded-xl shadow-sm overflow-hidden max-w-4xl">
-            {news.coverImage && (
-              <img src={news.coverImage} alt={news.title} className="w-full h-64 md:h-96 object-cover" />
+            {news.image && (
+              <img src={news.image} alt={news.title} className="w-full h-64 md:h-96 object-cover" />
             )}
             <div className="p-6 md:p-10">
               <div className="flex items-center gap-3 mb-4">
@@ -131,8 +131,8 @@ export default async function HaberDetayPage({ params }: Props) {
                 {related.map((item) => (
                   <Link key={item.id} href={`/haberler/${item.slug}`}
                     className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow flex gap-3">
-                    {item.coverImage && (
-                      <img src={item.coverImage} alt={item.title} className="w-20 h-16 object-cover rounded flex-shrink-0" />
+                    {item.image && (
+                      <img src={item.image} alt={item.title} className="w-20 h-16 object-cover rounded flex-shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-gray-900 text-sm line-clamp-2 mb-1">{item.title}</h3>
