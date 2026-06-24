@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
-import { hasRole } from '@/lib/auth'
+import { getSessionUser, hasRole } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { slug as slugify } from '@/lib/utils'
 
@@ -41,9 +40,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  const userRole = session?.user && 'role' in session.user ? (session.user as { role?: string }).role : undefined
-  if (!session?.user || !hasRole(userRole, 'EDITOR')) {
+  const user = await getSessionUser()
+  if (!user || !hasRole(user.role, 'EDITOR')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

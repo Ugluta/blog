@@ -5,6 +5,18 @@ import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { Role } from '@prisma/client';
 
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      name: string | null;
+      image: string | null;
+      role: Role;
+    };
+  }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: 'jwt' },
@@ -63,10 +75,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export function hasRole(userRole: Role, requiredRole: Role): boolean {
+export function hasRole(userRole: Role | undefined, requiredRole: Role): boolean {
+  if (!userRole) return false;
   const hierarchy: Role[] = [
-    Role.GUEST, Role.MEMBER, Role.TEACHER, Role.ADMIN_STAFF,
-    Role.MODERATOR, Role.EDITOR, Role.ADMIN, Role.SUPER_ADMIN,
-  ];
+    'GUEST', 'MEMBER', 'TEACHER', 'ADMIN_STAFF',
+    'MODERATOR', 'EDITOR', 'ADMIN', 'SUPER_ADMIN',
+  ] as Role[];
   return hierarchy.indexOf(userRole) >= hierarchy.indexOf(requiredRole);
+}
+
+export async function getSessionUser() {
+  const session = await auth();
+  if (!session?.user) return null;
+  return session.user as { id: string; email: string; name: string | null; image: string | null; role: Role };
 }
