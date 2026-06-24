@@ -22,7 +22,7 @@ export async function GET() {
     orderBy: { sortOrder: 'asc' },
   })
 
-  function mapCat(cat: typeof categories[number]): unknown {
+  function mapCat(cat: any): unknown {
     return {
       id:        cat.id,
       name:      cat.name,
@@ -30,7 +30,7 @@ export async function GET() {
       icon:      cat.icon,
       color:     cat.color,
       fileCount: cat._count.files,
-      children:  cat.children?.map(mapCat) ?? [],
+      children:  cat.children ? cat.children.map(mapCat) : [],
     }
   }
 
