@@ -35,7 +35,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const session = await auth();
   const allowedRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR'];
-  if (!session?.user || !allowedRoles.includes((session.user as { role?: string }).role || '')) {
+  if (!session?.user || !allowedRoles.includes((session.user as { role?: string }).role || '') || !session.user.id) {
     return NextResponse.json({ error: 'Yetkisiz' }, { status: 403 });
   }
 
