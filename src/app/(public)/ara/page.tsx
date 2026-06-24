@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Search, FileText, Newspaper, HelpCircle, Loader2 } from 'lucide-react'
@@ -16,7 +16,7 @@ const FILE_BADGE: Record<string, { bg: string; text: string }> = {
   OTHER: { bg: 'bg-gray-100',  text: 'text-gray-600' },
 }
 
-export default function AraPage() {
+function AraContent() {
   const sp = useSearchParams()
   const router = useRouter()
   const [query, setQuery] = useState(sp.get('q') || '')
@@ -184,5 +184,17 @@ export default function AraPage() {
       </main>
       <Footer />
     </>
+  )
+}
+
+export default function AraPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+      </div>
+    }>
+      <AraContent />
+    </Suspense>
   )
 }
