@@ -10,12 +10,7 @@ export async function GET() {
     include: {
       _count: { select: { files: true } },
       children: {
-        include: {
-          _count: { select: { files: true } },
-          children: {
-            include: { _count: { select: { files: true } } },
-          },
-        },
+        include: { _count: { select: { files: true } } },
         orderBy: { sortOrder: 'asc' },
       },
     },
@@ -30,7 +25,15 @@ export async function GET() {
       icon:      cat.icon,
       color:     cat.color,
       fileCount: cat._count.files,
-      children:  cat.children ? cat.children.map(mapCat) : [],
+      children:  (cat.children || []).map((child: any) => ({
+        id:        child.id,
+        name:      child.name,
+        slug:      child.slug,
+        icon:      child.icon,
+        color:     child.color,
+        fileCount: child._count.files,
+        children:  [],
+      })),
     }
   }
 
