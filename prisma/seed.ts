@@ -119,7 +119,7 @@ async function main() {
     });
   }
 
-  // Categories
+  // Categories — Eğitim materyalleri
   const categoryData = [
     { name: 'Sınav Soruları', slug: 'sinav-sorulari', icon: '📝', color: '#3b82f6' },
     { name: 'Yıllık Planlar', slug: 'yillik-planlar', icon: '📅', color: '#22c55e' },
@@ -136,6 +136,69 @@ async function main() {
       where: { slug: cat.slug },
       update: {},
       create: { ...cat, sortOrder: i },
+    });
+  }
+
+  // Öğretmen hakları kategorileri — ana başlıklar
+  const ozlukHaklari = await prisma.category.upsert({
+    where: { slug: 'ozluk-haklari' },
+    update: {},
+    create: { name: 'Özlük Hakları', slug: 'ozluk-haklari', icon: '⚖️', color: '#6366f1', sortOrder: 10,
+      description: 'Öğretmen ve idarecilerin özlük hakları, mevzuat ve yönetmelikler' },
+  });
+
+  const mahkemeKararlari = await prisma.category.upsert({
+    where: { slug: 'mahkeme-kararlari' },
+    update: {},
+    create: { name: 'Mahkeme Kararları', slug: 'mahkeme-kararlari', icon: '🏛️', color: '#dc2626', sortOrder: 11,
+      description: 'Danıştay, Bölge İdare Mahkemesi ve Anayasa Mahkemesi emsal kararları' },
+  });
+
+  await prisma.category.upsert({
+    where: { slug: 'genelgeler-yonergeler' },
+    update: {},
+    create: { name: 'Genelgeler & Yönergeler', slug: 'genelgeler-yonergeler', icon: '📢', color: '#0891b2', sortOrder: 12,
+      description: 'MEB genelgeleri, yönergeler ve tebliğler' },
+  });
+
+  await prisma.category.upsert({
+    where: { slug: 'meb-yazilari' },
+    update: {},
+    create: { name: 'MEB Yazıları & Açıklamalar', slug: 'meb-yazilari', icon: '📬', color: '#15803d', sortOrder: 13,
+      description: 'Bakanlık yazıları, açıklamalar ve duyurular' },
+  });
+
+  // Özlük hakları alt kategorileri
+  const ozlukAlt = [
+    { name: 'İzin Mevzuatı', slug: 'izin-mevzuati', icon: '🗓️', color: '#6366f1', sortOrder: 0 },
+    { name: 'Atama & Nakil', slug: 'atama-nakil', icon: '🔄', color: '#6366f1', sortOrder: 1 },
+    { name: 'Ücret & Ek Ders', slug: 'ucret-ek-ders', icon: '💰', color: '#6366f1', sortOrder: 2 },
+    { name: 'Disiplin Mevzuatı', slug: 'disiplin-mevzuati', icon: '📜', color: '#6366f1', sortOrder: 3 },
+    { name: 'Emeklilik', slug: 'emeklilik', icon: '🏖️', color: '#6366f1', sortOrder: 4 },
+    { name: 'Sağlık & Raporlar', slug: 'saglik-raporlar', icon: '🏥', color: '#6366f1', sortOrder: 5 },
+  ];
+
+  for (const cat of ozlukAlt) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: { ...cat, parentId: ozlukHaklari.id },
+    });
+  }
+
+  // Mahkeme kararları alt kategorileri
+  const mahkemeAlt = [
+    { name: 'Danıştay Kararları', slug: 'danistay-kararlari', icon: '⚖️', color: '#dc2626', sortOrder: 0 },
+    { name: 'Bölge İdare Mahkemesi', slug: 'bolge-idare-mahkemesi', icon: '🏛️', color: '#dc2626', sortOrder: 1 },
+    { name: 'Anayasa Mahkemesi', slug: 'anayasa-mahkemesi', icon: '📖', color: '#dc2626', sortOrder: 2 },
+    { name: 'İdare Mahkemesi', slug: 'idare-mahkemesi', icon: '⚖️', color: '#dc2626', sortOrder: 3 },
+  ];
+
+  for (const cat of mahkemeAlt) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: { ...cat, parentId: mahkemeKararlari.id },
     });
   }
 
