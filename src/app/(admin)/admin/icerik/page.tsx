@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import ContentManagementClient from './ContentManagementClient';
@@ -8,7 +8,7 @@ export default async function IcerikPage() {
   if (!session?.user) redirect('/giris');
 
   const [news, accounts] = await Promise.all([
-    prisma.news.findMany({
+    db.news.findMany({
       orderBy: { createdAt: 'desc' },
       take: 100,
       select: {
@@ -20,7 +20,7 @@ export default async function IcerikPage() {
         },
       },
     }),
-    prisma.socialAccount.findMany({
+    db.socialAccount.findMany({
       where: { isActive: true },
       select: { id: true, platform: true, accountName: true },
     }),

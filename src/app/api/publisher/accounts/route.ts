@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 import { SocialPlatform } from '@prisma/client';
 
 export async function GET() {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: 'Yetkisiz' }, { status: 401 });
 
-  const accounts = await prisma.socialAccount.findMany({
+  const accounts = await db.socialAccount.findMany({
     orderBy: { createdAt: 'desc' },
     select: {
       id: true, platform: true, accountName: true, accountId: true,
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'platform, accountName ve accessToken zorunlu' }, { status: 400 });
   }
 
-  const account = await prisma.socialAccount.upsert({
+  const account = await db.socialAccount.upsert({
     where: { platform_accountId: { platform, accountId: accountId ?? accountName } },
     create: {
       platform,
@@ -68,6 +68,6 @@ export async function DELETE(req: Request) {
   const id = searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id zorunlu' }, { status: 400 });
 
-  await prisma.socialAccount.delete({ where: { id } });
+  await db.socialAccount.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }

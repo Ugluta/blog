@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 
 export async function GET(req: Request) {
   const session = await auth();
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
   const newsId = searchParams.get('newsId');
   const platform = searchParams.get('platform');
 
-  const jobs = await prisma.publisherJob.findMany({
+  const jobs = await db.publisherJob.findMany({
     where: {
       ...(newsId ? { newsId } : {}),
       ...(platform ? { platform: platform as never } : {}),

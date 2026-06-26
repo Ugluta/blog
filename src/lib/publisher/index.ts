@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 import { SocialPlatform } from '@prisma/client';
 import { postToTwitter, buildTweetText } from './twitter';
 import { postToFacebook, buildFacebookText } from './facebook';
@@ -9,13 +9,13 @@ export async function publishNewsToSocial(
   accountIds: string[],
   siteUrl: string
 ) {
-  const news = await prisma.news.findUnique({
+  const news = await db.news.findUnique({
     where: { id: newsId },
     select: { id: true, title: true, slug: true, excerpt: true, image: true, tags: true },
   });
   if (!news) throw new Error('Haber bulunamadi');
 
-  const accounts = await prisma.socialAccount.findMany({
+  const accounts = await db.socialAccount.findMany({
     where: { id: { in: accountIds }, isActive: true },
   });
 
@@ -23,7 +23,7 @@ export async function publishNewsToSocial(
   const results = [];
 
   for (const account of accounts) {
-    const job = await prisma.publisherJob.create({
+    const job = await db.publisherJob.create({
       data: {
         newsId,
         socialAccountId: account.id,
@@ -61,7 +61,7 @@ export async function publishNewsToSocial(
         postUrl = res.url;
       }
 
-      await prisma.publisherJob.update({
+      await db.publisherJob.update({
         where: { id: job.id },
         data: { status: 'PUBLISHED', postId, postUrl, publishedAt: new Date() },
       });
@@ -69,7 +69,7 @@ export async function publishNewsToSocial(
 
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      await prisma.publisherJob.update({
+      await db.publisherJob.update({
         where: { id: job.id },
         data: { status: 'FAILED', error: message },
       });
