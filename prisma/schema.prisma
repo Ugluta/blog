@@ -115,6 +115,21 @@ enum DocumentStatus {
   ARCHIVED
 }
 
+enum SocialPlatform {
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+  YOUTUBE
+  LINKEDIN
+}
+
+enum PublishStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+  CANCELLED
+}
+
 // ==================== AUTH & USERS ====================
 
 model User {
@@ -369,32 +384,33 @@ model Favorite {
 // ==================== NEWS & CONTENT ====================
 
 model News {
-  id            String        @id @default(cuid())
+  id            String         @id @default(cuid())
   title         String
-  slug          String        @unique
-  excerpt       String?       @db.Text
-  content       String        @db.Text
+  slug          String         @unique
+  excerpt       String?        @db.Text
+  content       String         @db.Text
   image         String?
   images        String[]
-  type          ContentType   @default(NEWS)
-  status        ContentStatus @default(DRAFT)
+  type          ContentType    @default(NEWS)
+  status        ContentStatus  @default(DRAFT)
   authorId      String
-  isAiGenerated Boolean       @default(false)
+  isAiGenerated Boolean        @default(false)
   sourceUrl     String?
   sourceName    String?
   tags          String[]
   category      String?
   metaTitle     String?
   metaDesc      String?
-  viewCount     Int           @default(0)
-  isFeatured    Boolean       @default(false)
-  isPinned      Boolean       @default(false)
+  viewCount     Int            @default(0)
+  isFeatured    Boolean        @default(false)
+  isPinned      Boolean        @default(false)
   scheduledAt   DateTime?
   publishedAt   DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
-  author        User          @relation(fields: [authorId], references: [id])
+  author        User           @relation(fields: [authorId], references: [id])
+  publisherJobs PublisherJob[]
 
   @@map("news")
 }
@@ -435,6 +451,47 @@ model ScraperJob {
   source     ScraperSource @relation(fields: [sourceId], references: [id])
 
   @@map("scraper_jobs")
+}
+
+// ==================== SOCIAL PUBLISHER ====================
+
+model SocialAccount {
+  id           String         @id @default(cuid())
+  platform     SocialPlatform
+  accountName  String
+  accountId    String?
+  accessToken  String         @db.Text
+  refreshToken String?        @db.Text
+  tokenExpiry  DateTime?
+  metadata     Json?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  jobs         PublisherJob[]
+
+  @@unique([platform, accountId])
+  @@map("social_accounts")
+}
+
+model PublisherJob {
+  id              String        @id @default(cuid())
+  newsId          String
+  socialAccountId String
+  platform        SocialPlatform
+  status          PublishStatus @default(PENDING)
+  postId          String?
+  postUrl         String?
+  content         String        @db.Text
+  error           String?       @db.Text
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime      @default(now())
+
+  news            News          @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id])
+
+  @@map("publisher_jobs")
 }
 
 // ==================== DOCUMENTS ====================
