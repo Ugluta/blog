@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { formatDate, ROLE_LABELS, SCHOOL_TYPE_LABELS } from '@/lib/utils'
+import { UsageWidget } from '@/components/UsageWidget'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Profilim' }
@@ -97,6 +98,11 @@ export default async function ProfilPage() {
                 <p className="text-sm text-gray-500 mt-1">Belge</p>
               </div>
             </div>
+          </div>
+
+          {/* Quota Usage */}
+          <div className="mb-6">
+            <UsageWidget />
           </div>
 
           {/* Recent Files */}
