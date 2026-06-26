@@ -8,15 +8,15 @@ const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://egitimportal.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ikie.net'),
   title: {
-    default: 'EğitimPortal - Öğretmenler için Her Şey',
-    template: '%s | EğitimPortal',
+    default: 'Blog - Öğretmenler için Her Şey',
+    template: '%s | Blog',
   },
   description: 'Öğretmen ve idareciler için materyal, evrak, soru bankası ve doküman platformu. Ücretsiz dosya indirme, yıllık plan, ders planı ve daha fazlası.',
   keywords: ['öğretmen', 'evrak', 'materyal', 'yıllık plan', 'ders planı', 'sınav sorusu', 'meb', 'eğitim'],
-  authors: [{ name: 'EğitimPortal' }],
-  creator: 'EğitimPortal',
+  authors: [{ name: 'Blog' }],
+  creator: 'Blog',
   robots: {
     index: true,
     follow: true,
@@ -25,11 +25,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    siteName: 'EğitimPortal',
+    siteName: 'Blog',
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@egitimportal',
   },
 };
 

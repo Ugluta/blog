@@ -106,7 +106,7 @@ export function Header() {
               <path d="M8 10h14M8 15h9M8 20h11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
             </svg>
             <span className="text-[17px] font-semibold tracking-tight text-gray-900 leading-none">
-              Eğitim<span className="text-blue-600">Portal</span>
+              Blog
             </span>
           </Link>
 
@@ -158,7 +158,6 @@ export function Header() {
 
           {/* Right Actions */}
           <div className="hidden md:flex items-center gap-1 ml-auto">
-            {/* Search */}
             {searchOpen ? (
               <form onSubmit={handleSearch} className="relative">
                 <input
