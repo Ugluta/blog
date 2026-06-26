@@ -5,31 +5,23 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Menu, X, Bell, ChevronDown, Heart, LogOut,
-  User, ScanText, Sparkles, CreditCard, Upload, FileText,
+  User, Sparkles, CreditCard, FileText,
 } from 'lucide-react';
 
 const navItems = [
-  {
-    label: 'Dosyalar',
-    href: '/dosyalar',
-    children: [
-      { label: 'Tüm Dosyalar', href: '/dosyalar' },
-      { label: 'Yıllık Planlar', href: '/dosyalar?kategori=yillik-planlar' },
-      { label: 'Ders Planları', href: '/dosyalar?kategori=ders-planlari' },
-      { label: 'Sınav Soruları', href: '/dosyalar?kategori=sinav-sorulari' },
-      { label: 'Çalışma Kağıtları', href: '/dosyalar?kategori=calisma-kagitlari' },
-      { label: 'Dosya Yükle', href: '/dosyalar/yukle' },
-    ],
-  },
-  { label: 'Haberler', href: '/haberler' },
-  { label: 'Gruplar', href: '/gruplar' },
-  { label: 'Soru Bankası', href: '/sorular' },
+  { label: 'Blog', href: '/haberler' },
+  { label: 'Projeler', href: '/projeler' },
+  { label: 'Kod', href: '/kod' },
+  { label: 'Galeri', href: '/galeri' },
+  { label: 'Hizmetler', href: '/hizmetler' },
   {
     label: 'Araçlar',
     href: '/ocr',
     children: [
       { label: 'OCR — Görüntüden Metin', href: '/ocr' },
       { label: 'AI Belge Oluştur', href: '/belge-olustur' },
+      { label: 'Dosyalar', href: '/dosyalar' },
+      { label: 'Soru Bankası', href: '/sorular' },
     ],
   },
 ];
@@ -196,14 +188,6 @@ export function Header() {
                   )}
                 </Link>
 
-                <Link
-                  href="/dosyalar/yukle"
-                  className="ml-1 flex items-center gap-1.5 h-9 px-4 text-[13.5px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-                >
-                  <Upload className="w-3.5 h-3.5" />
-                  Yükle
-                </Link>
-
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setShowUserMenu((v) => !v)}
@@ -218,11 +202,9 @@ export function Header() {
                         <p className="text-[12px] text-gray-400 truncate">{session.user.email}</p>
                       </div>
                       {[
-                        { href: '/dosyalar/yukle', Icon: Upload, label: 'Dosya Yükle' },
-                        { href: '/dosyalarim', Icon: FileText, label: 'Dosyalarım' },
+                        { href: '/admin', Icon: FileText, label: 'Yönetim Paneli' },
                         { href: '/favorilerim', Icon: Heart, label: 'Favorilerim' },
                         { href: '/bildirimler', Icon: Bell, label: 'Bildirimler' },
-                        { href: '/ocr', Icon: ScanText, label: 'OCR Aracı' },
                         { href: '/belge-olustur', Icon: Sparkles, label: 'AI Belge Oluştur' },
                         { href: '/uyelik', Icon: CreditCard, label: 'Üyelik Paketleri' },
                         { href: '/profil', Icon: User, label: 'Profilim' },
@@ -320,22 +302,13 @@ export function Header() {
             ))}
             <div className="flex gap-2 pt-4 mt-2 border-t border-gray-100">
               {status === 'authenticated' ? (
-                <>
-                  <Link
-                    href="/dosyalar/yukle"
-                    className="flex-1 h-10 flex items-center justify-center gap-1.5 text-[13.5px] font-semibold text-white bg-blue-600 rounded-lg"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <Upload className="w-4 h-4" /> Yükle
-                  </Link>
-                  <Link
-                    href="/profil"
-                    className="flex-1 h-10 flex items-center justify-center text-[13.5px] font-medium text-gray-700 border border-gray-200 rounded-lg"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    Profilim
-                  </Link>
-                </>
+                <Link
+                  href="/profil"
+                  className="flex-1 h-10 flex items-center justify-center text-[13.5px] font-medium text-gray-700 border border-gray-200 rounded-lg"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Profilim
+                </Link>
               ) : (
                 <>
                   <Link

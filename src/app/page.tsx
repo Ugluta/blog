@@ -1,280 +1,152 @@
 import Link from 'next/link';
+import { db } from '@/lib/db';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Download, Users, FileText, TrendingUp, BookOpen, ArrowRight, Star, Shield, Zap, ChevronRight, ScanText, Sparkles, Users2 } from 'lucide-react';
+import {
+  ArrowRight, Code2, FolderGit2, Image as ImageIcon, Briefcase,
+  Newspaper, Sparkles, Github, Mail,
+} from 'lucide-react';
 
-const schoolTypes = [
-  { label: 'Anaokulu', href: '/dosyalar?okul=ANAOKULU', emoji: '🌱', color: 'bg-green-50 border-green-100 hover:bg-green-100' },
-  { label: 'İlkokul', href: '/dosyalar?okul=ILKOKUL', emoji: '📖', color: 'bg-blue-50 border-blue-100 hover:bg-blue-100' },
-  { label: 'Ortaokul', href: '/dosyalar?okul=ORTAOKUL', emoji: '🏫', color: 'bg-indigo-50 border-indigo-100 hover:bg-indigo-100' },
-  { label: 'Lise', href: '/dosyalar?okul=LISE', emoji: '🎓', color: 'bg-purple-50 border-purple-100 hover:bg-purple-100' },
-  { label: 'İmam Hatip', href: '/dosyalar?okul=IMAM_HATIP', emoji: '🕌', color: 'bg-teal-50 border-teal-100 hover:bg-teal-100' },
-  { label: 'Meslek Lisesi', href: '/dosyalar?okul=MESLEK_LISESI', emoji: '🔧', color: 'bg-orange-50 border-orange-100 hover:bg-orange-100' },
+export const dynamic = 'force-dynamic';
+
+const sections = [
+  { title: 'Blog', desc: 'Güncel yazılar, notlar ve düşünceler', href: '/haberler', Icon: Newspaper, color: 'from-blue-500 to-blue-600' },
+  { title: 'Projeler', desc: 'Üzerinde çalıştığım ürün ve uygulamalar', href: '/projeler', Icon: FolderGit2, color: 'from-emerald-500 to-emerald-600' },
+  { title: 'Kod', desc: 'Kod parçaları, ipuçları ve çözümler', href: '/kod', Icon: Code2, color: 'from-violet-500 to-violet-600' },
+  { title: 'Galeri', desc: 'Görseller, tasarımlar ve çalışmalar', href: '/galeri', Icon: ImageIcon, color: 'from-pink-500 to-rose-600' },
+  { title: 'Hizmetler', desc: 'Sunduğum ürün ve hizmetler', href: '/hizmetler', Icon: Briefcase, color: 'from-amber-500 to-orange-600' },
 ];
 
-const subjects = [
-  { name: 'Türkçe', icon: '📖', color: 'text-red-500 bg-red-50', href: '/dosyalar?ders=turkce' },
-  { name: 'Matematik', icon: '🔢', color: 'text-blue-500 bg-blue-50', href: '/dosyalar?ders=matematik' },
-  { name: 'Fen Bilimleri', icon: '🔬', color: 'text-green-500 bg-green-50', href: '/dosyalar?ders=fen-bilimleri' },
-  { name: 'Sosyal Bilgiler', icon: '🌍', color: 'text-amber-500 bg-amber-50', href: '/dosyalar?ders=sosyal-bilgiler' },
-  { name: 'İngilizce', icon: '🇬🇧', color: 'text-purple-500 bg-purple-50', href: '/dosyalar?ders=ingilizce' },
-  { name: 'Fizik', icon: '⚛️', color: 'text-indigo-500 bg-indigo-50', href: '/dosyalar?ders=fizik' },
-  { name: 'Kimya', icon: '🧪', color: 'text-pink-500 bg-pink-50', href: '/dosyalar?ders=kimya' },
-  { name: 'Biyoloji', icon: '🧬', color: 'text-teal-500 bg-teal-50', href: '/dosyalar?ders=biyoloji' },
-  { name: 'Tarih', icon: '🏗️', color: 'text-orange-500 bg-orange-50', href: '/dosyalar?ders=tarih' },
-  { name: 'Coğrafya', icon: '🗺️', color: 'text-lime-500 bg-lime-50', href: '/dosyalar?ders=cografya' },
-  { name: 'Müzik', icon: '🎵', color: 'text-violet-500 bg-violet-50', href: '/dosyalar?ders=muzik' },
-  { name: 'Beden Eğitimi', icon: '⚽', color: 'text-cyan-500 bg-cyan-50', href: '/dosyalar?ders=beden-egitimi' },
-];
+export default async function HomePage() {
+  let posts: { id: string; title: string; slug: string; excerpt: string | null; image: string | null; createdAt: Date }[] = [];
+  try {
+    posts = await db.news.findMany({
+      where: { status: 'PUBLISHED' },
+      orderBy: { publishedAt: 'desc' },
+      take: 6,
+      select: { id: true, title: true, slug: true, excerpt: true, image: true, createdAt: true },
+    });
+  } catch {
+    posts = [];
+  }
 
-const categories = [
-  { name: 'Yıllık Planlar', icon: '📅', count: '2.4K', href: '/dosyalar?kategori=yillik-planlar', color: 'bg-blue-600' },
-  { name: 'Ders Planları', icon: '📋', count: '5.1K', href: '/dosyalar?kategori=ders-planlari', color: 'bg-green-600' },
-  { name: 'Sınav Soruları', icon: '📝', count: '8.7K', href: '/dosyalar?kategori=sinav-sorulari', color: 'bg-purple-600' },
-  { name: 'Çalışma Kağıtları', icon: '📄', count: '3.2K', href: '/dosyalar?kategori=calisma-kagitlari', color: 'bg-orange-500' },
-  { name: 'Sunumlar', icon: '📊', count: '1.8K', href: '/dosyalar?kategori=sunumlar', color: 'bg-red-500' },
-  { name: 'Evrak Örnekleri', icon: '📁', count: '4.3K', href: '/dosyalar?kategori=evrak-ornekleri', color: 'bg-teal-600' },
-];
-
-const features = [
-  { icon: Zap, title: 'Hızlı Erişim', desc: 'CDN destekli altyapı ile saniyeler içinde yükle ve indir.' },
-  { icon: Shield, title: 'Güvenli Platform', desc: 'SSL şifrelemesi ve gizlilik politikamız ile verileriniz güvende.' },
-  { icon: TrendingUp, title: 'SEO Optimize', desc: 'Arama motorlarında üst sıralarda yer alan içerikler.' },
-  { icon: Star, title: 'Kaliteli İçerik', desc: 'Uzman eğitimciler tarafından hazırlanmış ve denetlenmiş materyaller.' },
-];
-
-const quickSearches = ['Yıllık Plan', 'Sınav Sorusu', 'Kazanım Testi', 'MEB Evrak'];
-
-export default function HomePage() {
   return (
     <>
       <Header />
       <main>
         {/* HERO */}
-        <section className="gradient-hero text-white py-20 md:py-28">
-          <div className="container-custom text-center">
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 rounded-full px-4 py-1.5 text-sm mb-6">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Türkiye&apos;nin en kapsamlı eğitim platformu
+        <section className="relative overflow-hidden bg-slate-950 text-white">
+          <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(59,130,246,0.25),transparent)]" />
+          <div className="relative max-w-5xl mx-auto px-5 lg:px-8 py-24 md:py-32 text-center">
+            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-sm mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+              İçerik üret, paylaş, dağıt
             </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4 text-balance">
-              Öğretmenler için<br />
-              <span className="text-blue-300">Her Materyal Burada</span>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-5">
+              Fikirler, projeler ve<br />
+              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                kod tek yerde
+              </span>
             </h1>
-            <p className="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-              Yıllık plan, ders planı, sınav sorusu, evrak örneği ve daha fazlası.
-              Hepsi tek platformda, ücretsiz.
+            <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+              Blog yazıları, projeler, kod paylaşımları, galeri ve hizmetler.
+              Hepsi bu platformda bir araya geliyor.
             </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/haberler"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-slate-900 font-semibold rounded-xl hover:bg-slate-100 transition-colors">
+                Yazıları Oku <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/projeler"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/5 border border-white/15 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors">
+                Projeleri Gör
+              </Link>
+            </div>
+          </div>
+        </section>
 
-            {/* Search Bar — GET form so it works without JS */}
-            <div className="max-w-2xl mx-auto">
-              <form method="GET" action="/ara">
-                <div className="flex gap-2 bg-white/10 border border-white/20 rounded-2xl p-2 backdrop-blur-sm">
-                  <div className="flex-1 flex items-center gap-3 bg-white rounded-xl px-4">
-                    <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input
-                      type="search"
-                      name="q"
-                      placeholder="Yıllık plan, ders sorusu, evrak ara..."
-                      className="w-full py-3 text-gray-800 bg-transparent outline-none placeholder:text-gray-400"
-                    />
+        {/* SECTIONS GRID */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-5 lg:px-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Keşfet</h2>
+            <p className="text-gray-500 mb-8">Bölümlere göz at</p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {sections.map(({ title, desc, href, Icon, color }) => (
+                <Link key={title} href={href}
+                  className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-4`}>
+                    <Icon className="w-5 h-5 text-white" />
                   </div>
-                  <button type="submit" className="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-xl transition-colors shrink-0">
-                    Ara
-                  </button>
-                </div>
-              </form>
-              <div className="flex flex-wrap gap-2 mt-3 justify-center">
-                {quickSearches.map((q) => (
-                  <Link key={q} href={`/ara?q=${encodeURIComponent(q)}`}
-                    className="text-xs bg-white/10 border border-white/20 hover:bg-white/20 rounded-full px-3 py-1 transition-colors">
-                    {q}
+                  <h3 className="font-bold text-gray-900 mb-1">{title}</h3>
+                  <p className="text-sm text-gray-500 leading-snug">{desc}</p>
+                  <ArrowRight className="w-4 h-4 text-gray-300 mt-4 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* LATEST POSTS */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-5 lg:px-8">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Son Yazılar</h2>
+                <p className="text-gray-500 mt-1">Bloga eklenen son içerikler</p>
+              </div>
+              <Link href="/haberler" className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:gap-2 transition-all">
+                Tümü <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {posts.length > 0 ? (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {posts.map((post) => (
+                  <Link key={post.id} href={`/haberler/${post.slug}`}
+                    className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+                    <div className="aspect-[16/9] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+                      {post.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-300">
+                          <Newspaper className="w-10 h-10" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">{post.title}</h3>
+                      {post.excerpt && <p className="text-sm text-gray-500 mt-2 line-clamp-2">{post.excerpt}</p>}
+                      <p className="text-xs text-gray-400 mt-3">{new Date(post.createdAt).toLocaleDateString('tr-TR')}</p>
+                    </div>
                   </Link>
                 ))}
               </div>
-            </div>
-
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-8 mt-12">
-              {[
-                { icon: FileText, value: '25.000+', label: 'Dosya' },
-                { icon: Users, value: '150.000+', label: 'Kullanıcı' },
-                { icon: Download, value: '1.2M+', label: 'İndirme' },
-                { icon: BookOpen, value: '15+', label: 'Ders' },
-              ].map(({ icon: Icon, value, label }) => (
-                <div key={label} className="flex items-center gap-2">
-                  <Icon className="w-5 h-5 text-blue-300" />
-                  <div>
-                    <p className="font-bold text-lg">{value}</p>
-                    <p className="text-blue-200 text-xs">{label}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SCHOOL TYPES */}
-        <section className="py-12 bg-gray-50">
-          <div className="container-custom">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="section-title">Okul Türüne Göre</h2>
-                <p className="section-subtitle">Okul türünü seçerek ilgili materyallere ulaş</p>
+            ) : (
+              <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-12 text-center">
+                <Newspaper className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500">Henüz yazı yok. Admin panelinden içerik ekleyebilir veya scraper çalıştırabilirsin.</p>
+                <Link href="/admin/icerik" className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 mt-4 hover:gap-2 transition-all">
+                  İçerik Yönetimi <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <Link href="/dosyalar" className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
-                Tümü <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {schoolTypes.map((s) => (
-                <Link key={s.label} href={s.href}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${s.color} transition-all duration-200 card-hover`}>
-                  <span className="text-3xl">{s.emoji}</span>
-                  <span className="text-sm font-semibold text-gray-800">{s.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CATEGORIES */}
-        <section className="py-12">
-          <div className="container-custom">
-            <h2 className="section-title">Popüler Kategoriler</h2>
-            <p className="section-subtitle">En çok aranan dosya kategorileri</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {categories.map((cat) => (
-                <Link key={cat.name} href={cat.href}
-                  className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 bg-white">
-                  <div className={`w-12 h-12 ${cat.color} rounded-xl flex items-center justify-center text-2xl`}>
-                    {cat.icon}
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-semibold text-gray-800 group-hover:text-blue-600">{cat.name}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">{cat.count} dosya</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SUBJECTS */}
-        <section className="py-12 bg-gray-50">
-          <div className="container-custom">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="section-title">Derslere Göre</h2>
-                <p className="section-subtitle">Ders seçerek ilgili materyallere eriş</p>
-              </div>
-              <Link href="/dosyalar" className="flex items-center gap-1 text-sm text-blue-600 hover:underline">
-                Tüm Dersler <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
-              {subjects.map((s) => (
-                <Link key={s.name} href={s.href}
-                  className={`flex flex-col items-center gap-2 p-3 rounded-xl ${s.color} hover:shadow-md transition-all duration-200 hover:-translate-y-0.5`}>
-                  <span className="text-2xl">{s.icon}</span>
-                  <span className="text-xs font-medium text-center leading-tight">{s.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* AI TOOLS */}
-        <section className="py-16">
-          <div className="container-custom">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Yapay Zeka Araçları</h2>
-              <p className="text-gray-500 max-w-xl mx-auto">OCR ve AI ile işinizi çok daha hızlı halledin.</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-              <Link href="/ocr"
-                className="group flex flex-col gap-4 p-6 rounded-2xl border border-purple-100 bg-purple-50 hover:bg-purple-100 hover:shadow-md transition-all">
-                <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center">
-                  <ScanText className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-1">OCR — Görüntüden Metin</h3>
-                  <p className="text-sm text-gray-600">Fotograf veya taranmış belgelerden metni otomatik çıkarın.</p>
-                </div>
-                <span className="text-sm font-medium text-purple-700 flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Kullan <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-
-              <Link href="/belge-olustur"
-                className="group flex flex-col gap-4 p-6 rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-blue-50 hover:shadow-md transition-all">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-1">AI Belge Oluştur</h3>
-                  <p className="text-sm text-gray-600">Ders planı, sınav, dilekçe ve daha fazlasını AI ile saniyeler içinde yazın.</p>
-                </div>
-                <span className="text-sm font-medium text-purple-700 flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Dene <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-
-              <Link href="/gruplar"
-                className="group flex flex-col gap-4 p-6 rounded-2xl border border-blue-100 bg-blue-50 hover:bg-blue-100 hover:shadow-md transition-all">
-                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
-                  <Users2 className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 mb-1">Topluluk Grupları</h3>
-                  <p className="text-sm text-gray-600">Aynı ilgi alanından öğretmenlerle bir araya gelin ve deneyim paylaşın.</p>
-                </div>
-                <span className="text-sm font-medium text-blue-700 flex items-center gap-1 group-hover:gap-2 transition-all">
-                  Keşfet <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURES */}
-        <section className="py-16 bg-gray-50">
-          <div className="container-custom">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Neden ÖğretmenEvrak?</h2>
-              <p className="text-gray-500 max-w-xl mx-auto">Hız, güvenlik, SEO ve tasarım odaklı platform.</p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map(({ icon: Icon, title, desc }) => (
-                <div key={title} className="p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all">
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
+            )}
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-16 gradient-primary text-white">
-          <div className="container-custom text-center">
-            <h2 className="text-3xl font-bold mb-4">Hemen Üye Ol, Ücretsiz Kullan</h2>
-            <p className="text-blue-100 mb-8 max-w-xl mx-auto">
-              150.000+ öğretmen ve idareci kullanıyor. Sen de katıl.
-            </p>
+        <section className="py-20 bg-slate-950 text-white">
+          <div className="max-w-3xl mx-auto px-5 text-center">
+            <h2 className="text-3xl font-bold mb-4">İşbirliği mi düşünüyorsun?</h2>
+            <p className="text-slate-400 mb-8">Projeler, hizmetler veya içerik üretimi için bana ulaş.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/kayit"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors">
-                Ücretsiz Başla <ArrowRight className="w-5 h-5" />
+              <Link href="/iletisim"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white text-slate-900 font-semibold rounded-xl hover:bg-slate-100 transition-colors">
+                <Mail className="w-4 h-4" /> İletişime Geç
               </Link>
-              <Link href="/uyelik"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500/30 border border-white/20 text-white font-semibold rounded-xl hover:bg-blue-500/40 transition-colors">
-                Paketleri Gör
+              <Link href="/hizmetler"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/5 border border-white/15 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors">
+                <Briefcase className="w-4 h-4" /> Hizmetler
               </Link>
             </div>
           </div>
