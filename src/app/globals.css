@@ -96,6 +96,50 @@
   .data-table tr:hover td {
     @apply bg-gray-50;
   }
+
+  /* Zengin makale içeriği tipografisi */
+  .article-content {
+    @apply text-[16.5px] leading-[1.85] text-gray-700;
+  }
+  .article-content h2 {
+    @apply text-2xl font-bold text-gray-900 mt-9 mb-3 scroll-mt-24;
+  }
+  .article-content h3 {
+    @apply text-xl font-semibold text-gray-900 mt-7 mb-2;
+  }
+  .article-content p {
+    @apply mb-5;
+  }
+  .article-content ul {
+    @apply list-disc pl-6 mb-5 space-y-2;
+  }
+  .article-content ol {
+    @apply list-decimal pl-6 mb-5 space-y-2;
+  }
+  .article-content li {
+    @apply leading-relaxed;
+  }
+  .article-content a {
+    @apply text-blue-600 underline underline-offset-2 hover:text-blue-700;
+  }
+  .article-content strong {
+    @apply font-semibold text-gray-900;
+  }
+  .article-content blockquote {
+    @apply border-l-4 border-blue-200 bg-blue-50/50 pl-4 py-2 my-5 italic text-gray-600 rounded-r-lg;
+  }
+  .article-content img {
+    @apply rounded-xl my-6 w-full;
+  }
+  .article-content code {
+    @apply bg-gray-100 text-pink-600 px-1.5 py-0.5 rounded text-[0.9em] font-mono;
+  }
+  .article-content pre {
+    @apply bg-slate-950 text-slate-100 p-4 rounded-xl overflow-x-auto my-6 text-sm;
+  }
+  .article-content pre code {
+    @apply bg-transparent text-slate-100 p-0;
+  }
 }
 
 @layer utilities {
