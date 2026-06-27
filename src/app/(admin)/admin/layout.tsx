@@ -1,4 +1,4 @@
-import { AdminSidebar } from '@/components/layout/AdminSidebar';
+import { AdminShell } from '@/components/layout/AdminShell';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -10,17 +10,17 @@ export const metadata: Metadata = {
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
+  const role = (session?.user as { role?: string })?.role;
   const allowedRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'MODERATOR'];
-  if (!session?.user || !allowedRoles.includes((session.user as { role?: string }).role || '')) {
+  if (!session?.user || !allowedRoles.includes(role || '')) {
     redirect('/giris');
   }
 
-  return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      <main className="flex-1 overflow-auto">
-        <div className="p-6 max-w-[1400px]">{children}</div>
-      </main>
-    </div>
-  );
+  const user = {
+    name: session.user.name ?? null,
+    email: session.user.email ?? '',
+    role: role ?? '',
+  };
+
+  return <AdminShell user={user}>{children}</AdminShell>;
 }
