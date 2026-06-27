@@ -90,8 +90,8 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      {/* Nav — tek kaydırma alanı */}
-      <nav className="flex-1 overflow-y-auto py-4 px-2.5 space-y-5 scrollbar-hide">
+      {/* Nav — tek kaydırma alanı, görünür ince kaydırıcı */}
+      <nav className="flex-1 min-h-0 overflow-y-auto py-4 px-2.5 space-y-5 [scrollbar-width:thin] [scrollbar-color:#475569_transparent]">
         {NAV_GROUPS.map((group, gi) => (
           <div key={group.label ?? `g${gi}`}>
             {group.label && (
