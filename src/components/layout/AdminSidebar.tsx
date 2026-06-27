@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import {
   LayoutDashboard, FolderOpen, Newspaper, FileText, HelpCircle, Archive,
   Users, Shield, CreditCard, Megaphone, BarChart3, Bot, Palette, Settings,
   Users2, MessageSquare, Tag, ScanText, FolderGit2, Code2,
-  Image as ImageIcon, Briefcase, Share2,
+  Image as ImageIcon, Briefcase, Share2, ChevronDown,
 } from 'lucide-react'
 
 const NAV_GROUPS = [
@@ -73,9 +74,20 @@ const NAV_GROUPS = [
 
 export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
-
   const isActive = (href: string, exact = false) =>
     exact ? pathname === href : pathname.startsWith(href)
+
+  // Aktif grubu açık başlat, diğerleri kapalı (ağaç menü)
+  const [open, setOpen] = useState<Record<string, boolean>>(() => {
+    const init: Record<string, boolean> = {}
+    for (const g of NAV_GROUPS) {
+      if (!g.label) continue
+      init[g.label] = g.items.some((it) => pathname.startsWith(it.href))
+    }
+    return init
+  })
+
+  const toggle = (label: string) => setOpen((p) => ({ ...p, [label]: !p[label] }))
 
   return (
     <div className="flex flex-col h-full bg-slate-900 text-slate-300">
@@ -90,38 +102,61 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      {/* Nav — tek kaydırma alanı, görünür ince kaydırıcı */}
-      <nav className="flex-1 min-h-0 overflow-y-auto py-4 px-2.5 space-y-5 [scrollbar-width:thin] [scrollbar-color:#475569_transparent]">
-        {NAV_GROUPS.map((group, gi) => (
-          <div key={group.label ?? `g${gi}`}>
-            {group.label && (
-              <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                {group.label}
-              </p>
-            )}
-            <div className="space-y-0.5">
-              {group.items.map((item) => {
-                const active = isActive(item.href, item.exact)
-                const Icon = item.icon
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onNavigate}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                      active
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium shadow-sm shadow-blue-900/40'
-                        : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                    }`}
-                  >
-                    <Icon className="w-[18px] h-[18px] shrink-0" />
-                    {item.label}
-                  </Link>
-                )
-              })}
+      {/* Ağaç menü — gruplar açılır/kapanır */}
+      <nav className="flex-1 min-h-0 overflow-y-auto py-3 px-2.5 space-y-1 [scrollbar-width:thin] [scrollbar-color:#475569_transparent]">
+        {NAV_GROUPS.map((group, gi) => {
+          // Etiketsiz grup (Dashboard) — her zaman görünür
+          if (!group.label) {
+            return (
+              <div key={`g${gi}`} className="mb-1">
+                {group.items.map((item) => {
+                  const active = isActive(item.href, item.exact)
+                  const Icon = item.icon
+                  return (
+                    <Link key={item.href} href={item.href} onClick={onNavigate}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                        active ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                      }`}>
+                      <Icon className="w-[18px] h-[18px] shrink-0" />
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </div>
+            )
+          }
+
+          const isOpen = open[group.label]
+          const hasActive = group.items.some((it) => isActive(it.href))
+          return (
+            <div key={group.label}>
+              <button onClick={() => toggle(group.label!)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[11px] font-bold uppercase tracking-widest transition-colors ${
+                  hasActive ? 'text-blue-300' : 'text-slate-500 hover:text-slate-300'
+                }`}>
+                <span>{group.label}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isOpen && (
+                <div className="space-y-0.5 mt-0.5 mb-1">
+                  {group.items.map((item) => {
+                    const active = isActive(item.href)
+                    const Icon = item.icon
+                    return (
+                      <Link key={item.href} href={item.href} onClick={onNavigate}
+                        className={`flex items-center gap-3 pl-5 pr-3 py-2 rounded-lg text-sm transition-colors ${
+                          active ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                        }`}>
+                        <Icon className="w-[18px] h-[18px] shrink-0" />
+                        {item.label}
+                      </Link>
+                    )
+                  })}
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          )
+        })}
       </nav>
     </div>
   )
