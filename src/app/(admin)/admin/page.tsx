@@ -1,8 +1,9 @@
 import { db } from '@/lib/db';
 import { DashboardChart } from '@/components/admin/DashboardChart';
+import { PageHeader } from '@/components/admin/PageHeader';
 import {
   Users, FolderGit2, Code2, Image as ImageIcon, Briefcase, Newspaper,
-  Share2, Bot, ArrowUpRight, Plus, Clock, Activity,
+  Share2, Bot, ArrowUpRight, Clock, Activity,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
@@ -32,31 +33,19 @@ export default async function AdminDashboardPage() {
     db.publisherJob.count({ where: { status: 'PUBLISHED' } }),
     db.scraperJob.count(),
     db.user.count({ where: { createdAt: { gte: today } } }),
-    db.news.findMany({
-      orderBy: { createdAt: 'desc' }, take: 6,
-      select: { id: true, title: true, status: true, createdAt: true },
-    }),
-    db.project.findMany({
-      orderBy: { createdAt: 'desc' }, take: 4,
-      select: { id: true, title: true, isActive: true, createdAt: true },
-    }),
+    db.news.findMany({ orderBy: { createdAt: 'desc' }, take: 6, select: { id: true, title: true, status: true, createdAt: true } }),
+    db.project.findMany({ orderBy: { createdAt: 'desc' }, take: 4, select: { id: true, title: true, isActive: true, createdAt: true } }),
     db.news.findMany({ where: { createdAt: { gte: weekAgo } }, select: { createdAt: true } }),
     db.project.findMany({ where: { createdAt: { gte: weekAgo } }, select: { createdAt: true } }),
   ]);
 
-  // Son 7 gün grafik verisi
   const chart = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekAgo);
     d.setDate(d.getDate() + i);
     const next = new Date(d);
     next.setDate(next.getDate() + 1);
-    const inDay = (arr: { createdAt: Date }[]) =>
-      arr.filter((x) => x.createdAt >= d && x.createdAt < next).length;
-    return {
-      label: DAY_LABELS[(d.getDay() + 6) % 7],
-      yazi: inDay(weekNews),
-      proje: inDay(weekProjects),
-    };
+    const inDay = (arr: { createdAt: Date }[]) => arr.filter((x) => x.createdAt >= d && x.createdAt < next).length;
+    return { label: DAY_LABELS[(d.getDay() + 6) % 7], yazi: inDay(weekNews), proje: inDay(weekProjects) };
   });
 
   const bigCards = [
@@ -73,30 +62,15 @@ export default async function AdminDashboardPage() {
     { label: 'Scraper Çalışma', value: scraperRuns, href: '/admin/scraper', Icon: Bot, color: 'text-fuchsia-600 bg-fuchsia-50' },
   ];
 
-  const dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
-
   return (
-    <div className="space-y-6">
-      {/* Welcome banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white p-6 md:p-8">
-        <div className="absolute inset-0 bg-[radial-gradient(50%_80%_at_100%_0%,rgba(59,130,246,0.3),transparent)]" />
-        <div className="relative flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold">Kontrol Paneli</h1>
-            <p className="text-slate-300 text-sm mt-1">{dateStr} — platform durumu</p>
-          </div>
-          <Link href="/admin/projeler"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-slate-900 text-sm font-semibold rounded-xl hover:bg-slate-100 transition-colors">
-            <Plus className="w-4 h-4" /> Yeni Proje
-          </Link>
-        </div>
-      </div>
+    <div>
+      <PageHeader title="Dashboard" breadcrumb={[{ label: 'Genel Bakış' }]} />
 
       {/* Big gradient cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         {bigCards.map(({ label, value, href, Icon, grad }) => (
           <Link key={label} href={href}
-            className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${grad} text-white p-5 hover:shadow-xl transition-all`}>
+            className={`group relative overflow-hidden rounded-xl bg-gradient-to-br ${grad} text-white p-5 hover:shadow-xl transition-all`}>
             <div className="flex items-start justify-between">
               <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
                 <Icon className="w-5 h-5" />
@@ -110,10 +84,9 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Small stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {smallCards.map(({ label, value, sub, href, Icon, color }) => (
-          <Link key={label} href={href}
-            className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-all">
+          <Link key={label} href={href} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${color}`}>
               <Icon className="w-5 h-5" />
             </div>
@@ -124,9 +97,9 @@ export default async function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Chart + activity */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-6">
+      {/* Chart + quick actions */}
+      <div className="grid lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4 text-blue-600" />
@@ -140,8 +113,7 @@ export default async function AdminDashboardPage() {
           <DashboardChart data={chart} />
         </div>
 
-        {/* Quick actions */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="font-semibold text-gray-900 mb-4">Hızlı İşlemler</h2>
           <div className="space-y-2">
             {[
@@ -151,8 +123,7 @@ export default async function AdminDashboardPage() {
               { label: 'İçerik & Yayın', href: '/admin/icerik', emoji: '🚀' },
               { label: 'Scraper Çalıştır', href: '/admin/scraper', emoji: '🔄' },
             ].map((a) => (
-              <Link key={a.label} href={a.href}
-                className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all">
+              <Link key={a.label} href={a.href} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all">
                 <span className="text-lg">{a.emoji}</span>
                 <span className="text-sm font-medium text-gray-700">{a.label}</span>
                 <ArrowUpRight className="w-4 h-4 text-gray-300 ml-auto" />
@@ -164,7 +135,7 @@ export default async function AdminDashboardPage() {
 
       {/* Recent content */}
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Newspaper className="w-4 h-4 text-blue-600" />
@@ -179,9 +150,7 @@ export default async function AdminDashboardPage() {
               {recentNews.map((n) => (
                 <div key={n.id} className="flex items-center justify-between py-3">
                   <p className="text-sm font-medium text-gray-800 truncate pr-3">{n.title}</p>
-                  <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full shrink-0 ${
-                    n.status === 'PUBLISHED' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
-                  }`}>
+                  <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full shrink-0 ${n.status === 'PUBLISHED' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
                     {n.status === 'PUBLISHED' ? 'Yayında' : 'Taslak'}
                   </span>
                 </div>
@@ -190,7 +159,7 @@ export default async function AdminDashboardPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-emerald-600" />
@@ -205,9 +174,7 @@ export default async function AdminDashboardPage() {
               {recentProjects.map((p) => (
                 <div key={p.id} className="flex items-center justify-between py-3">
                   <p className="text-sm font-medium text-gray-800 truncate pr-3">{p.title}</p>
-                  <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full shrink-0 ${
-                    p.isActive ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
-                  }`}>
+                  <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full shrink-0 ${p.isActive ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
                     {p.isActive ? 'Aktif' : 'Pasif'}
                   </span>
                 </div>
