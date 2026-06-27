@@ -7,7 +7,7 @@ import {
   LayoutDashboard, FolderOpen, Newspaper, FileText, HelpCircle, Archive,
   Users, Shield, CreditCard, Megaphone, BarChart3, Bot, Palette, Settings,
   ChevronDown, ChevronRight, Upload, Plus, Zap, Bell, Users2, MessageSquare,
-  Tag, ScanText,
+  Tag, ScanText, FolderGit2, Code2, Image as ImageIcon, Briefcase, Share2,
 } from 'lucide-react'
 
 const NAV_GROUPS = [
@@ -18,13 +18,30 @@ const NAV_GROUPS = [
     ],
   },
   {
+    label: 'Portföy',
+    items: [
+      { href: '/admin/projeler',  label: 'Projeler',  icon: FolderGit2 },
+      { href: '/admin/kod',       label: 'Kod',       icon: Code2 },
+      { href: '/admin/galeri',    label: 'Galeri',    icon: ImageIcon },
+      { href: '/admin/hizmetler', label: 'Hizmetler', icon: Briefcase },
+    ],
+  },
+  {
     label: 'İçerik',
     items: [
+      { href: '/admin/icerik',    label: 'İçerik & Yayın', icon: Share2 },
+      { href: '/admin/haberler',  label: 'Blog / Haberler', icon: Newspaper },
       { href: '/admin/dosyalar',  label: 'Dosyalar',   icon: FolderOpen },
-      { href: '/admin/haberler',  label: 'Haberler',   icon: Newspaper },
       { href: '/admin/belgeler',  label: 'Belgeler',   icon: FileText },
       { href: '/admin/sorular',   label: 'Sorular',    icon: HelpCircle },
       { href: '/admin/arsiv',     label: 'Arşiv',      icon: Archive },
+    ],
+  },
+  {
+    label: 'Dağıtım',
+    items: [
+      { href: '/admin/scraper',      label: 'AI Scraper',     icon: Bot },
+      { href: '/admin/sosyal-medya', label: 'Sosyal Medya',   icon: Share2 },
     ],
   },
   {
@@ -53,7 +70,6 @@ const NAV_GROUPS = [
     label: 'Araçlar',
     items: [
       { href: '/admin/ocr',         label: 'OCR — Görüntüden Metin', icon: ScanText },
-      { href: '/admin/scraper',     label: 'AI Scraper',              icon: Bot },
       { href: '/admin/kategoriler', label: 'Kategoriler',             icon: Tag },
       { href: '/admin/tema',        label: 'Tema & Menü',            icon: Palette },
       { href: '/admin/ayarlar',     label: 'Ayarlar',                 icon: Settings },
@@ -62,12 +78,11 @@ const NAV_GROUPS = [
 ]
 
 const SHORTCUTS = [
-  { href: '/admin/dosyalar/yukle',                 label: 'Dosya Yükle',       icon: Upload,   color: 'text-blue-400' },
-  { href: '/admin/haberler/yeni',                  label: 'Yeni Haber',        icon: Plus,     color: 'text-green-400' },
-  { href: '/admin/sorular',                        label: 'Soru Oluştur (AI)', icon: Zap,      color: 'text-yellow-400' },
-  { href: '/admin/belgeler',                       label: 'Belge Oluştur (AI)',icon: Zap,      color: 'text-purple-400' },
-  { href: '/admin/ocr',                            label: 'OCR Tarama',        icon: ScanText, color: 'text-pink-400' },
-  { href: '/admin/haberler/yeni?tur=ANNOUNCEMENT', label: 'Duyuru Yayınla',   icon: Bell,     color: 'text-orange-400' },
+  { href: '/admin/projeler',       label: 'Yeni Proje',        icon: Plus,     color: 'text-emerald-400' },
+  { href: '/admin/icerik',         label: 'İçerik & Yayın',     icon: Share2,   color: 'text-blue-400' },
+  { href: '/admin/haberler/yeni',  label: 'Yeni Yazı',         icon: Newspaper, color: 'text-green-400' },
+  { href: '/admin/scraper',        label: 'Scraper Çalıştır',  icon: Bot,      color: 'text-yellow-400' },
+  { href: '/admin/ocr',            label: 'OCR Tarama',        icon: ScanText, color: 'text-pink-400' },
 ]
 
 export function AdminSidebar() {
@@ -96,9 +111,9 @@ export function AdminSidebar() {
       <div className="h-14 flex items-center justify-between px-4 border-b border-slate-800 shrink-0">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-blue-500 transition-colors">
-            E
+            B
           </div>
-          <span className="font-semibold text-white text-sm">EğitimPortal</span>
+          <span className="font-semibold text-white text-sm">Blog</span>
         </Link>
         <Link
           href="/bildirimler"
@@ -155,7 +170,7 @@ export function AdminSidebar() {
         ))}
       </nav>
 
-      {/* KİSAYOLLAR */}
+      {/* KISAYOLLAR */}
       <div className="border-t border-slate-800 py-3 shrink-0">
         <p className="px-4 pb-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kısayollar</p>
         <div className="px-2">

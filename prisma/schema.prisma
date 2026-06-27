@@ -688,6 +688,73 @@ model Archive {
   @@map("archives")
 }
 
+// ==================== PORTFOLIO ====================
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  content     String?  @db.Text
+  coverImage  String?
+  tags        String[]
+  liveUrl     String?
+  repoUrl     String?
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model CodeSnippet {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?  @db.Text
+  language    String   @default("text")
+  code        String   @db.Text
+  tags        String[]
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("code_snippets")
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String
+  description String?  @db.Text
+  category    String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  features    String[]
+  price       String?
+  icon        String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
 // ==================== SETTINGS ====================
 
 model Setting {

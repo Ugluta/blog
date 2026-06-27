@@ -1,21 +1,21 @@
+import { db } from '@/lib/db';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { FolderGit2, ExternalLink, Github } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Projeler' };
+export const dynamic = 'force-dynamic';
 
-type Project = {
-  title: string;
-  desc: string;
-  tags: string[];
-  url?: string;
-  repo?: string;
-};
+export default async function ProjelerPage() {
+  let projects: { id: string; title: string; description: string; coverImage: string | null; tags: string[]; liveUrl: string | null; repoUrl: string | null }[] = [];
+  try {
+    projects = await db.project.findMany({
+      where: { isActive: true },
+      orderBy: [{ isFeatured: 'desc' }, { sortOrder: 'asc' }, { createdAt: 'desc' }],
+    });
+  } catch { projects = []; }
 
-const projects: Project[] = [];
-
-export default function ProjelerPage() {
   return (
     <>
       <Header />
@@ -29,20 +29,28 @@ export default function ProjelerPage() {
           {projects.length > 0 ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {projects.map((p) => (
-                <div key={p.title} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all">
-                  <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
-                    <FolderGit2 className="w-5 h-5 text-emerald-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900">{p.title}</h3>
-                  <p className="text-sm text-gray-500 mt-2">{p.desc}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {p.tags.map((t) => (
-                      <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
-                    ))}
-                  </div>
-                  <div className="flex gap-3 mt-4">
-                    {p.url && <a href={p.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"><ExternalLink className="w-3.5 h-3.5" /> Site</a>}
-                    {p.repo && <a href={p.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-gray-600 hover:underline"><Github className="w-3.5 h-3.5" /> Kod</a>}
+                <div key={p.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+                  {p.coverImage && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={p.coverImage} alt={p.title} className="w-full aspect-[16/9] object-cover" />
+                  )}
+                  <div className="p-6">
+                    {!p.coverImage && (
+                      <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <FolderGit2 className="w-5 h-5 text-emerald-600" />
+                      </div>
+                    )}
+                    <h3 className="font-bold text-gray-900">{p.title}</h3>
+                    <p className="text-sm text-gray-500 mt-2 line-clamp-3">{p.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-4">
+                      {p.tags.map((t) => (
+                        <span key={t} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{t}</span>
+                      ))}
+                    </div>
+                    <div className="flex gap-3 mt-4">
+                      {p.liveUrl && <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"><ExternalLink className="w-3.5 h-3.5" /> Site</a>}
+                      {p.repoUrl && <a href={p.repoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-gray-600 hover:underline"><Github className="w-3.5 h-3.5" /> Kod</a>}
+                    </div>
                   </div>
                 </div>
               ))}

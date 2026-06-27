@@ -1,14 +1,21 @@
+import { db } from '@/lib/db';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Image as ImageIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Galeri' };
+export const dynamic = 'force-dynamic';
 
-type GalleryItem = { title: string; image: string };
-const items: GalleryItem[] = [];
+export default async function GaleriPage() {
+  let items: { id: string; title: string; imageUrl: string; description: string | null }[] = [];
+  try {
+    items = await db.galleryItem.findMany({
+      where: { isActive: true },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+    });
+  } catch { items = []; }
 
-export default function GaleriPage() {
   return (
     <>
       <Header />
@@ -22,9 +29,9 @@ export default function GaleriPage() {
           {items.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {items.map((it) => (
-                <div key={it.title} className="group relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
+                <div key={it.id} className="group relative aspect-square rounded-2xl overflow-hidden bg-gray-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={it.image} alt={it.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <img src={it.imageUrl} alt={it.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
                     <span className="text-white text-sm font-medium">{it.title}</span>
                   </div>
