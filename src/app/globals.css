@@ -85,16 +85,24 @@
     @apply bg-white rounded-xl border border-gray-100 p-5 shadow-sm;
   }
 
+  /* ——— Ortak admin tablo stili: zebra + ferah boşluk + hover ——— */
+  .data-table {
+    @apply border-collapse;
+  }
   .data-table th {
-    @apply px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50;
+    @apply px-5 py-3.5 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider bg-gray-50 border-b border-gray-200;
   }
-
   .data-table td {
-    @apply px-4 py-3 text-sm text-gray-700 border-t border-gray-50;
+    @apply px-5 py-3.5 text-sm text-gray-700;
   }
-
-  .data-table tr:hover td {
-    @apply bg-gray-50;
+  .data-table tbody tr {
+    @apply border-t border-gray-100 transition-colors;
+  }
+  .data-table tbody tr:nth-child(even) {
+    @apply bg-gray-50/60;
+  }
+  .data-table tbody tr:hover {
+    @apply bg-blue-50/60;
   }
 
   /* Zengin makale içeriği tipografisi */
