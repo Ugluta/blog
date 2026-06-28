@@ -4,10 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
-  LayoutDashboard, FolderOpen, Newspaper, FileText, HelpCircle, Archive,
-  Users, Shield, CreditCard, Megaphone, BarChart3, Bot, Palette, Settings,
-  Users2, MessageSquare, Tag, ScanText, FolderGit2, Code2,
-  Image as ImageIcon, Briefcase, Share2, ChevronDown,
+  LayoutDashboard, Newspaper, Users, Shield, CreditCard, Megaphone,
+  BarChart3, Bot, Palette, Settings, ScanText, FolderGit2, Code2,
+  Image as ImageIcon, Briefcase, Share2, Send, ChevronDown,
 } from 'lucide-react'
 
 const NAV_GROUPS = [
@@ -29,12 +28,8 @@ const NAV_GROUPS = [
   {
     label: 'İçerik',
     items: [
-      { href: '/admin/icerik',    label: 'İçerik & Yayın',   icon: Share2 },
-      { href: '/admin/haberler',  label: 'Blog / Haberler', icon: Newspaper },
-      { href: '/admin/dosyalar',  label: 'Dosyalar',        icon: FolderOpen },
-      { href: '/admin/belgeler',  label: 'Belgeler',        icon: FileText },
-      { href: '/admin/sorular',   label: 'Sorular',         icon: HelpCircle },
-      { href: '/admin/arsiv',     label: 'Arşiv',           icon: Archive },
+      { href: '/admin/icerik',   label: 'İçerik & Yayın',   icon: Send },
+      { href: '/admin/haberler', label: 'Blog / Haberler', icon: Newspaper },
     ],
   },
   {
@@ -42,13 +37,6 @@ const NAV_GROUPS = [
     items: [
       { href: '/admin/scraper',      label: 'AI Scraper',   icon: Bot },
       { href: '/admin/sosyal-medya', label: 'Sosyal Medya', icon: Share2 },
-    ],
-  },
-  {
-    label: 'Topluluk',
-    items: [
-      { href: '/admin/gruplar', label: 'Gruplar', icon: Users2 },
-      { href: '/admin/pano',    label: 'Pano',    icon: MessageSquare },
     ],
   },
   {
@@ -65,7 +53,6 @@ const NAV_GROUPS = [
       { href: '/admin/reklamlar',     label: 'Reklamlar',     icon: Megaphone },
       { href: '/admin/istatistikler', label: 'İstatistikler',  icon: BarChart3 },
       { href: '/admin/ocr',           label: 'OCR Aracı',      icon: ScanText },
-      { href: '/admin/kategoriler',   label: 'Kategoriler',   icon: Tag },
       { href: '/admin/tema',          label: 'Tema & Menü',   icon: Palette },
       { href: '/admin/ayarlar',       label: 'Ayarlar',       icon: Settings },
     ],
@@ -77,7 +64,6 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const isActive = (href: string, exact = false) =>
     exact ? pathname === href : pathname.startsWith(href)
 
-  // Aktif grubu açık başlat, diğerleri kapalı (ağaç menü)
   const [open, setOpen] = useState<Record<string, boolean>>(() => {
     const init: Record<string, boolean> = {}
     for (const g of NAV_GROUPS) {
@@ -102,10 +88,9 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      {/* Ağaç menü — gruplar açılır/kapanır */}
+      {/* Ağaç menü */}
       <nav className="flex-1 min-h-0 overflow-y-auto py-3 px-2.5 space-y-1 [scrollbar-width:thin] [scrollbar-color:#475569_transparent]">
         {NAV_GROUPS.map((group, gi) => {
-          // Etiketsiz grup (Dashboard) — her zaman görünür
           if (!group.label) {
             return (
               <div key={`g${gi}`} className="mb-1">
