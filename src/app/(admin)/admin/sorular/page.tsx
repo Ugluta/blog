@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import { HelpCircle, Plus, Bot, Sparkles, Trash2, Check, X } from 'lucide-react';
+import Link from 'next/link';
+import { HelpCircle, Plus, Bot, Sparkles, Trash2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -72,6 +73,8 @@ export default function AdminSorularPage() {
     loadQuestions();
   };
 
+  const approvedCount = questions.filter((q) => q.isApproved).length;
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -79,13 +82,16 @@ export default function AdminSorularPage() {
           <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <HelpCircle className="w-5 h-5" /> Soru Bankası
           </h1>
-          <p className="text-gray-500 text-sm">{questions.length} soru</p>
+          <p className="text-gray-500 text-sm">{questions.length} soru · {approvedCount} onaylı</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => setShowAI(!showAI)}>
             <Sparkles className="w-4 h-4" /> AI ile Oluştur
           </Button>
-          <Button size="sm"><Plus className="w-4 h-4" /> Soru Ekle</Button>
+          <Link href="/admin/sorular/yeni"
+            className="inline-flex items-center justify-center gap-1.5 h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+            <Plus className="w-4 h-4" /> Soru Ekle
+          </Link>
         </div>
       </div>
 
@@ -151,8 +157,12 @@ export default function AdminSorularPage() {
       )}
 
       <div className="space-y-4">
-        {questions.map((q) => (
-          <div key={q.id} className="bg-white rounded-xl border border-gray-100 p-5">
+        {questions.length === 0 ? (
+          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400">
+            Henüz soru yok. “Soru Ekle” veya “AI ile Oluştur” ile başla.
+          </div>
+        ) : questions.map((q) => (
+          <div key={q.id} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-sm transition-shadow">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
                 <div className="flex flex-wrap gap-2 mb-2">
@@ -170,10 +180,10 @@ export default function AdminSorularPage() {
               </div>
               <div className="flex gap-2 shrink-0">
                 {!q.isApproved && (
-                  <button onClick={() => approve(q.id, true)}
+                  <button onClick={() => approve(q.id, true)} title="Onayla"
                     className="p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100"><Check className="w-4 h-4" /></button>
                 )}
-                <button onClick={() => remove(q.id)}
+                <button onClick={() => remove(q.id)} title="Sil"
                   className="p-1.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
