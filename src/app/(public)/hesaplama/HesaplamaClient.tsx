@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Calculator, TrendingUp, Target, Info } from 'lucide-react';
+import { TrendingUp, Target, Info } from 'lucide-react';
 
 type Mode = 'kar' | 'satis';
 type Unit = 'percent' | 'amount';
@@ -55,17 +55,15 @@ function UnitInput({
 export function HesaplamaClient() {
   const [mode, setMode] = useState<Mode>('kar');
 
-  // ortak girdiler
-  const [alis, setAlis] = useState('100');
-  const [komisyon, setKomisyon] = useState('20');
+  // boş başlar — kullanıcı kendi rakamlarını girer
+  const [alis, setAlis] = useState('');
+  const [komisyon, setKomisyon] = useState('');
   const [komisyonU, setKomisyonU] = useState<Unit>('percent');
-  const [kargo, setKargo] = useState('50');
-  const [ekstra, setEkstra] = useState('10');
+  const [kargo, setKargo] = useState('');
+  const [ekstra, setEkstra] = useState('');
   const [ekstraU, setEkstraU] = useState<Unit>('percent');
-
-  // moda özel
-  const [satis, setSatis] = useState('400');     // kâr modu
-  const [hedefKar, setHedefKar] = useState('50'); // satış modu
+  const [satis, setSatis] = useState('');
+  const [hedefKar, setHedefKar] = useState('');
 
   const A = num(alis), K = num(kargo);
 
@@ -73,7 +71,7 @@ export function HesaplamaClient() {
   const S = num(satis);
   const komF = komisyonU === 'percent' ? S * num(komisyon) / 100 : num(komisyon);
   const ekF = ekstraU === 'percent' ? S * num(ekstra) / 100 : num(ekstra);
-  const netKar = S - A - komF - K - ekF;
+  const netKar = S - komF - A - K - ekF;
   const karMarji = S > 0 ? (netKar / S) * 100 : 0;
   const roi = A > 0 ? (netKar / A) * 100 : 0;
 
@@ -90,7 +88,6 @@ export function HesaplamaClient() {
     <div className="grid lg:grid-cols-2 gap-8">
       {/* GIRDILER */}
       <div>
-        {/* Mod seçimi */}
         <div className="flex gap-2 p-1 bg-gray-100 rounded-xl mb-6">
           <button onClick={() => setMode('kar')} className={`flex-1 flex items-center justify-center gap-2 h-11 rounded-lg text-sm font-semibold transition-colors ${mode === 'kar' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500'}`}>
             <TrendingUp className="w-4 h-4" /> Kâr Hesapla
@@ -108,12 +105,12 @@ export function HesaplamaClient() {
             : <UnitInput label="Hedef Net Kâr" value={hedefKar} onValue={setHedefKar} allowUnit={false} />}
 
           <UnitInput label="Komisyon" value={komisyon} onValue={setKomisyon} unit={komisyonU} onUnit={setKomisyonU} />
-          <UnitInput label="Kargo Ücreti" value={kargo} onValue={setKargo} allowUnit={false} />
-          <UnitInput label="Ekstra Maliyet (paketleme, kesinti vb.)" value={ekstra} onValue={setEkstra} unit={ekstraU} onUnit={setEkstraU} />
+          <UnitInput label="Kargo Maliyeti" value={kargo} onValue={setKargo} allowUnit={false} />
+          <UnitInput label="Ekstra Maliyet (paketleme vb.)" value={ekstra} onValue={setEkstra} unit={ekstraU} onUnit={setEkstraU} />
 
           <p className="flex items-start gap-2 text-xs text-gray-400 pt-1">
             <Info className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-            Komisyon ve ekstra “%” seçiliyse <strong className="font-semibold text-gray-500">satış fiyatı</strong> üzerinden hesaplanır.
+            Komisyon ve ekstra “%” seçiliyse <strong className="font-semibold text-gray-500">satış fiyatı</strong> üzerinden hesaplanır ve satıştan düşülür.
           </p>
         </div>
       </div>
@@ -132,8 +129,8 @@ export function HesaplamaClient() {
             </div>
             <div className="p-6">
               <Row label="Satış Fiyatı" value={tl(S)} />
-              <Row label="Alış Fiyatı" value={'− ' + tl(A)} color="text-rose-600" />
               <Row label={`Komisyon${komisyonU === 'percent' ? ` (%${num(komisyon)})` : ''}`} value={'− ' + tl(komF)} color="text-rose-600" />
+              <Row label="Alış Fiyatı" value={'− ' + tl(A)} color="text-rose-600" />
               <Row label="Kargo" value={'− ' + tl(K)} color="text-rose-600" />
               <Row label={`Ekstra${ekstraU === 'percent' ? ` (%${num(ekstra)})` : ''}`} value={'− ' + tl(ekF)} color="text-rose-600" />
               <Row label="Net Kâr" value={tl(netKar)} strong color={netKar >= 0 ? 'text-emerald-600' : 'text-rose-600'} />
@@ -144,7 +141,7 @@ export function HesaplamaClient() {
             <div className="p-6 text-center bg-gradient-to-br from-blue-600 to-violet-600 text-white">
               <p className="text-sm text-white/80">Önerilen Satış Fiyatı</p>
               <p className="text-4xl font-extrabold mt-1">{gecersiz ? '—' : tl(gerekenSatis)}</p>
-              <p className="text-sm text-white/80 mt-2">{num(hedefKar) >= 0 ? `${tl(num(hedefKar))} net kâr için` : ''}</p>
+              <p className="text-sm text-white/80 mt-2">{P > 0 ? `${tl(P)} net kâr için` : ''}</p>
             </div>
             <div className="p-6">
               {gecersiz ? (
@@ -152,11 +149,11 @@ export function HesaplamaClient() {
               ) : (
                 <>
                   <Row label="Önerilen Satış Fiyatı" value={tl(gerekenSatis)} strong color="text-blue-600" />
-                  <Row label="Alış Fiyatı" value={'− ' + tl(A)} color="text-rose-600" />
                   <Row label={`Komisyon${komisyonU === 'percent' ? ` (%${num(komisyon)})` : ''}`} value={'− ' + tl(sKom)} color="text-rose-600" />
+                  <Row label="Alış Fiyatı" value={'− ' + tl(A)} color="text-rose-600" />
                   <Row label="Kargo" value={'− ' + tl(K)} color="text-rose-600" />
                   <Row label={`Ekstra${ekstraU === 'percent' ? ` (%${num(ekstra)})` : ''}`} value={'− ' + tl(sEk)} color="text-rose-600" />
-                  <Row label="Kalan Net Kâr" value={tl(num(hedefKar))} strong color="text-emerald-600" />
+                  <Row label="Kalan Net Kâr" value={tl(P)} strong color="text-emerald-600" />
                 </>
               )}
             </div>
