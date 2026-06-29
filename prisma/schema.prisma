@@ -1,0 +1,836 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  MODERATOR
+  TEACHER
+  ADMIN_STAFF
+  MEMBER
+  GUEST
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+enum SchoolType {
+  ANAOKULU
+  ILKOKUL
+  ORTAOKUL
+  LISE
+  IMAM_HATIP
+  MESLEK_LISESI
+  OZEL_EGITIM
+  UNIVERSITE
+  GENEL
+}
+
+enum FileStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DRAFT
+}
+
+enum FileType {
+  PDF
+  WORD
+  EXCEL
+  POWERPOINT
+  IMAGE
+  VIDEO
+  AUDIO
+  ZIP
+  OTHER
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+enum ContentType {
+  NEWS
+  ANNOUNCEMENT
+  LEGISLATION
+  BLOG
+  PAGE
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SHORT_ANSWER
+  ESSAY
+  FILL_BLANK
+  MATCHING
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum AdPosition {
+  HEADER
+  SIDEBAR_LEFT
+  SIDEBAR_RIGHT
+  CONTENT_TOP
+  CONTENT_BOTTOM
+  FOOTER
+  POPUP
+  BETWEEN_CONTENT
+}
+
+enum ArchiveType {
+  CURRICULUM
+  ANNUAL_PLAN
+  UNIT_PLAN
+  LESSON_PLAN
+  TEMPLATE
+  GUIDE
+}
+
+enum DocumentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum SocialPlatform {
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+  YOUTUBE
+  LINKEDIN
+}
+
+enum PublishStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+  CANCELLED
+}
+
+// ==================== AUTH & USERS ====================
+
+model User {
+  id               String           @id @default(cuid())
+  name             String?
+  email            String           @unique
+  emailVerified    DateTime?
+  image            String?
+  password         String?
+  username         String?          @unique
+  phone            String?
+  role             Role             @default(MEMBER)
+  membershipStatus MembershipStatus @default(ACTIVE)
+  membershipPlanId String?
+  membershipExpiry DateTime?
+  bio              String?          @db.Text
+  school           String?
+  schoolType       SchoolType?
+  city             String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  membershipPlan   MembershipPlan?  @relation(fields: [membershipPlanId], references: [id])
+  accounts         Account[]
+  sessions         Session[]
+  files            File[]
+  news             News[]
+  documents        Document[]
+  questions        Question[]
+  groups           GroupMember[]
+  permissions      UserPermission[]
+  downloads        Download[]
+  notifications    Notification[]
+  boardPosts       BoardPost[]
+  favorites        Favorite[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ==================== MEMBERSHIP ====================
+
+model MembershipPlan {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  description   String?  @db.Text
+  price         Float
+  duration      Int
+  features      Json
+  downloadLimit Int?
+  uploadLimit   Int?
+  storageLimit  BigInt?
+  isActive      Boolean  @default(true)
+  isFeatured    Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  users         User[]
+
+  @@map("membership_plans")
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  slug        String           @unique
+  description String?
+  module      String
+
+  userPerms   UserPermission[]
+
+  @@map("permissions")
+}
+
+model UserPermission {
+  id           String     @id @default(cuid())
+  userId       String
+  permissionId String
+  granted      Boolean    @default(true)
+
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, permissionId])
+  @@map("user_permissions")
+}
+
+// ==================== CATEGORIES ====================
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  icon        String?
+  color       String?
+  image       String?
+  parentId    String?
+  sortOrder   Int        @default(0)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  files       File[]
+
+  @@map("categories")
+}
+
+model Grade {
+  id          String       @id @default(cuid())
+  name        String
+  level       Int
+  schoolTypes SchoolType[]
+  sortOrder   Int          @default(0)
+
+  files       File[]
+  questions   Question[]
+
+  @@map("grades")
+}
+
+model Subject {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  icon        String?
+  color       String?
+  schoolTypes SchoolType[]
+  sortOrder   Int          @default(0)
+  isActive    Boolean      @default(true)
+
+  files       File[]
+  questions   Question[]
+
+  @@map("subjects")
+}
+
+// ==================== FILES ====================
+
+model File {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  description   String?      @db.Text
+  fileName      String
+  filePath      String
+  fileSize      Int
+  fileType      FileType
+  mimeType      String
+  thumbnail     String?
+  categoryId    String?
+  subjectId     String?
+  gradeId       String?
+  schoolTypes   SchoolType[]
+  tags          String[]
+  authorId      String
+  status        FileStatus   @default(PENDING)
+  viewCount     Int          @default(0)
+  downloadCount Int          @default(0)
+  likeCount     Int          @default(0)
+  metaTitle     String?
+  metaDesc      String?
+  isFeatured    Boolean      @default(false)
+  isPremium     Boolean      @default(false)
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  publishedAt   DateTime?
+
+  author        User         @relation(fields: [authorId], references: [id])
+  category      Category?    @relation(fields: [categoryId], references: [id])
+  subject       Subject?     @relation(fields: [subjectId], references: [id])
+  grade         Grade?       @relation(fields: [gradeId], references: [id])
+  downloads     Download[]
+  favorites     Favorite[]
+
+  @@map("files")
+}
+
+model Download {
+  id        String   @id @default(cuid())
+  fileId    String
+  userId    String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  file      File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("downloads")
+}
+
+// ==================== FAVORITES ====================
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  fileId    String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  file      File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fileId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+// ==================== NEWS & CONTENT ====================
+
+model News {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  excerpt       String?        @db.Text
+  content       String         @db.Text
+  image         String?
+  images        String[]
+  type          ContentType    @default(NEWS)
+  status        ContentStatus  @default(DRAFT)
+  authorId      String
+  isAiGenerated Boolean        @default(false)
+  sourceUrl     String?
+  sourceName    String?
+  tags          String[]
+  category      String?
+  metaTitle     String?
+  metaDesc      String?
+  viewCount     Int            @default(0)
+  isFeatured    Boolean        @default(false)
+  isPinned      Boolean        @default(false)
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  author        User           @relation(fields: [authorId], references: [id])
+  publisherJobs PublisherJob[]
+
+  @@map("news")
+}
+
+// ==================== SCRAPER ====================
+
+model ScraperSource {
+  id            String        @id @default(cuid())
+  name          String
+  url           String
+  selector      String?
+  titleSelector String?
+  imageSelector String?
+  isActive      Boolean       @default(true)
+  autoPublish   Boolean       @default(false)
+  contentType   ContentType   @default(NEWS)
+  cronSchedule  String?
+  lastScraped   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  jobs          ScraperJob[]
+
+  @@map("scraper_sources")
+}
+
+model ScraperJob {
+  id         String        @id @default(cuid())
+  sourceId   String
+  status     String        @default("pending")
+  itemsFound Int           @default(0)
+  itemsSaved Int           @default(0)
+  error      String?       @db.Text
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime      @default(now())
+
+  source     ScraperSource @relation(fields: [sourceId], references: [id])
+
+  @@map("scraper_jobs")
+}
+
+// ==================== SOCIAL PUBLISHER ====================
+
+model SocialAccount {
+  id           String         @id @default(cuid())
+  platform     SocialPlatform
+  accountName  String
+  accountId    String?
+  accessToken  String         @db.Text
+  refreshToken String?        @db.Text
+  tokenExpiry  DateTime?
+  metadata     Json?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  jobs         PublisherJob[]
+
+  @@unique([platform, accountId])
+  @@map("social_accounts")
+}
+
+model PublisherJob {
+  id              String        @id @default(cuid())
+  newsId          String
+  socialAccountId String
+  platform        SocialPlatform
+  status          PublishStatus @default(PENDING)
+  postId          String?
+  postUrl         String?
+  content         String        @db.Text
+  error           String?       @db.Text
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime      @default(now())
+
+  news            News          @relation(fields: [newsId], references: [id], onDelete: Cascade)
+  socialAccount   SocialAccount @relation(fields: [socialAccountId], references: [id])
+
+  @@map("publisher_jobs")
+}
+
+// ==================== DOCUMENTS ====================
+
+model Document {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  content       String         @db.Text
+  template      String?
+  isAiGenerated Boolean        @default(false)
+  aiPrompt      String?        @db.Text
+  authorId      String
+  status        DocumentStatus @default(DRAFT)
+  tags          String[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  publishedAt   DateTime?
+
+  author        User           @relation(fields: [authorId], references: [id])
+
+  @@map("documents")
+}
+
+// ==================== QUESTIONS ====================
+
+model Question {
+  id            String       @id @default(cuid())
+  content       String       @db.Text
+  type          QuestionType @default(MULTIPLE_CHOICE)
+  difficulty    Difficulty   @default(MEDIUM)
+  options       Json?
+  answer        String?      @db.Text
+  explanation   String?      @db.Text
+  subjectId     String?
+  gradeId       String?
+  schoolTypes   SchoolType[]
+  tags          String[]
+  authorId      String
+  isAiGenerated Boolean      @default(false)
+  isPublic      Boolean      @default(true)
+  isApproved    Boolean      @default(false)
+  useCount      Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  author        User         @relation(fields: [authorId], references: [id])
+  subject       Subject?     @relation(fields: [subjectId], references: [id])
+  grade         Grade?       @relation(fields: [gradeId], references: [id])
+  exams         ExamQuestion[]
+
+  @@map("questions")
+}
+
+model Exam {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  duration    Int?
+  totalMarks  Int?
+  authorId    String
+  isPublic    Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  questions   ExamQuestion[]
+
+  @@map("exams")
+}
+
+model ExamQuestion {
+  id         String   @id @default(cuid())
+  examId     String
+  questionId String
+  order      Int
+  marks      Int      @default(1)
+
+  exam       Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([examId, questionId])
+  @@map("exam_questions")
+}
+
+// ==================== ADVERTISEMENTS ====================
+
+model Advertisement {
+  id         String      @id @default(cuid())
+  title      String
+  imageUrl   String?
+  linkUrl    String?
+  htmlCode   String?     @db.Text
+  adCode     String?     @db.Text
+  position   AdPosition
+  width      Int?
+  height     Int?
+  isActive   Boolean     @default(true)
+  startDate  DateTime?
+  endDate    DateTime?
+  viewCount  Int         @default(0)
+  clickCount Int         @default(0)
+  sortOrder  Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@map("advertisements")
+}
+
+// ==================== GROUPS & BOARDS ====================
+
+model Group {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  description String?
+  image       String?
+  isPublic    Boolean       @default(true)
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  members     GroupMember[]
+  posts       BoardPost[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String   @id @default(cuid())
+  groupId  String
+  userId   String
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+
+  group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+model BoardPost {
+  id        String       @id @default(cuid())
+  title     String
+  content   String       @db.Text
+  groupId   String?
+  authorId  String
+  isPinned  Boolean      @default(false)
+  viewCount Int          @default(0)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  group     Group?       @relation(fields: [groupId], references: [id])
+  author    User         @relation(fields: [authorId], references: [id])
+  replies   BoardReply[]
+
+  @@map("board_posts")
+}
+
+model BoardReply {
+  id        String    @id @default(cuid())
+  content   String    @db.Text
+  postId    String
+  authorId  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  post      BoardPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("board_replies")
+}
+
+// ==================== ARCHIVE / LIBRARY ====================
+
+model Archive {
+  id            String      @id @default(cuid())
+  title         String
+  slug          String      @unique
+  description   String?     @db.Text
+  type          ArchiveType
+  content       String?     @db.Text
+  fileUrl       String?
+  schoolTypes   SchoolType[]
+  gradeLevel    String?
+  subject       String?
+  year          Int?
+  isTemplate    Boolean     @default(false)
+  viewCount     Int         @default(0)
+  downloadCount Int         @default(0)
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("archives")
+}
+
+// ==================== PORTFOLIO ====================
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  content     String?  @db.Text
+  coverImage  String?
+  tags        String[]
+  liveUrl     String?
+  repoUrl     String?
+  isFeatured  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model CodeSnippet {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?  @db.Text
+  language    String   @default("text")
+  code        String   @db.Text
+  tags        String[]
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("code_snippets")
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  imageUrl    String
+  description String?  @db.Text
+  category    String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text
+  features    String[]
+  price       String?
+  icon        String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+// ==================== SETTINGS ====================
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  group     String   @default("general")
+  type      String   @default("string")
+  label     String?
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ==================== MENU ====================
+
+model MenuItem {
+  id        String     @id @default(cuid())
+  label     String
+  url       String
+  icon      String?
+  parentId  String?
+  location  String     @default("header")
+  target    String     @default("_self")
+  sortOrder Int        @default(0)
+  isActive  Boolean    @default(true)
+  roles     Role[]
+  createdAt DateTime   @default(now())
+
+  parent    MenuItem?  @relation("MenuTree", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuTree")
+
+  @@map("menu_items")
+}
+
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// ==================== ANALYTICS ====================
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?
+  ipAddress String?
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+model SiteStats {
+  id             String   @id @default(cuid())
+  date           DateTime @unique
+  totalViews     Int      @default(0)
+  uniqueVisitors Int      @default(0)
+  totalDownloads Int      @default(0)
+  newUsers       Int      @default(0)
+  newFiles       Int      @default(0)
+
+  @@map("site_stats")
+}
