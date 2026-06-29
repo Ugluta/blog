@@ -4,9 +4,13 @@ import { formatDate } from '@/lib/utils'
 import { Pagination } from '@/components/ui/pagination'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { PageHero } from '@/components/public/PageHero'
+import { ArtThumb } from '@/components/public/ArtThumb'
+import { ArrowRight, Newspaper } from 'lucide-react'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Haberler' }
+export const metadata: Metadata = { title: 'Blog' }
+export const dynamic = 'force-dynamic'
 
 export default async function HaberlerPage({
   searchParams,
@@ -19,66 +23,54 @@ export default async function HaberlerPage({
 
   const [news, total] = await Promise.all([
     db.news.findMany({
-      where: { type: 'NEWS', status: 'PUBLISHED' },
+      where: { status: 'PUBLISHED' },
       orderBy: { publishedAt: 'desc' },
       skip: (page - 1) * perPage,
       take: perPage,
-      include: { author: { select: { name: true } } },
+      select: { id: true, title: true, slug: true, excerpt: true, image: true, category: true, publishedAt: true, createdAt: true },
     }),
-    db.news.count({ where: { type: 'NEWS', status: 'PUBLISHED' } }),
+    db.news.count({ where: { status: 'PUBLISHED' } }),
   ])
 
   const totalPages = Math.ceil(total / perPage)
-  const featured = page === 1 ? news.slice(0, 2) : []
-  const rest = page === 1 ? news.slice(2) : news
 
   return (
     <>
       <Header />
       <main className="min-h-screen bg-gray-50">
-        <div className="bg-white border-b border-gray-200">
-          <div className="container-custom py-8">
-            <h1 className="text-2xl font-bold text-gray-900">Haberler</h1>
-            <p className="text-gray-500 text-sm mt-1">{total.toLocaleString('tr-TR')} haber</p>
-          </div>
-        </div>
+        <PageHero eyebrow="Blog" title="Yazılar & İçerikler" subtitle="Güncel yazılar, notlar ve teknik içerikler." />
 
-        <div className="container-custom py-8">
-          {featured.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-              {featured.map((item) => (
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 py-12">
+          {news.length === 0 ? (
+            <div className="bg-white rounded-2xl border border-dashed border-gray-200 p-16 text-center">
+              <Newspaper className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-500">Henüz yazı yok.</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {news.map((item, i) => (
                 <Link key={item.id} href={`/haberler/${item.slug}`}
-                  className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow group">
+                  className="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
                   {item.image
-                    ? <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
-                    : <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-blue-700" />}
+                    ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.image} alt={item.title} className="w-full aspect-[16/9] object-cover" />
+                    )
+                    : <ArtThumb i={i} label={item.category ?? 'blog'} />}
                   <div className="p-5">
-                    <h2 className="font-bold text-gray-900 text-lg leading-snug group-hover:text-blue-600 transition-colors">{item.title}</h2>
-                    {item.excerpt && <p className="text-gray-500 text-sm mt-2 line-clamp-2">{item.excerpt}</p>}
-                    <p className="text-xs text-gray-400 mt-3">{formatDate(item.publishedAt ?? item.createdAt)}</p>
+                    {item.category && (
+                      <span className="inline-block text-[11px] font-semibold uppercase tracking-wide text-blue-600 mb-2">{item.category}</span>
+                    )}
+                    <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>
+                    {item.excerpt && <p className="text-sm text-gray-500 mt-2 line-clamp-2">{item.excerpt}</p>}
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-xs text-gray-400">{formatDate(item.publishedAt ?? item.createdAt)}</span>
+                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 group-hover:gap-2 transition-all">Devamını oku <ArrowRight className="w-4 h-4" /></span>
+                    </div>
                   </div>
                 </Link>
               ))}
             </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {rest.map((item) => (
-              <Link key={item.id} href={`/haberler/${item.slug}`}
-                className="bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-sm hover:border-blue-200 transition-all group">
-                {item.image && (
-                  <img src={item.image} alt={item.title} className="w-full h-32 object-cover" />
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-blue-600 transition-colors">{item.title}</h3>
-                  <p className="text-xs text-gray-400 mt-2">{formatDate(item.publishedAt ?? item.createdAt)}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {news.length === 0 && (
-            <div className="text-center py-16 text-gray-400">Henüz haber yok</div>
           )}
 
           <Pagination currentPage={page} totalPages={totalPages} baseUrl="/haberler" />
