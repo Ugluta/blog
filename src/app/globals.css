@@ -29,10 +29,17 @@
     box-sizing: border-box;
   }
 
+  /* Microsoft Segoe UI font ailesi — sistem yığını (Windows'ta birebir) */
+  html, body {
+    font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system,
+      'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   html {
