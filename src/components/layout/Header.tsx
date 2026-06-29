@@ -14,14 +14,13 @@ const navItems = [
   { label: 'Kod', href: '/kod' },
   { label: 'Galeri', href: '/galeri' },
   { label: 'Hizmetler', href: '/hizmetler' },
-  { label: 'Hesaplama', href: '/hesaplama' },
   {
     label: 'Araçlar',
-    href: '/ocr',
+    href: '/hesaplama',
     children: [
+      { label: 'Maliyet & Kâr Hesaplama', href: '/hesaplama' },
       { label: 'OCR — Görüntüden Metin', href: '/ocr' },
       { label: 'AI Belge Oluştur', href: '/belge-olustur' },
-      { label: 'Maliyet & Kâr Hesaplama', href: '/hesaplama' },
     ],
   },
 ];
