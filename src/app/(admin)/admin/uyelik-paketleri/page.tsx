@@ -1,10 +1,13 @@
 import { db } from '@/lib/db';
 import Link from 'next/link';
-import { CreditCard, Plus, Users, Check } from 'lucide-react';
+import { Plus, Users, Check, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { PageHeader } from '@/components/admin/PageHeader';
+import { DeleteButton } from '@/components/admin/DeleteButton';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Üyelik Paketleri' };
+export const dynamic = 'force-dynamic';
 
 export default async function UyelikPaketleriPage() {
   const plans = await db.membershipPlan.findMany({
@@ -13,26 +16,19 @@ export default async function UyelikPaketleriPage() {
   });
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-          <CreditCard className="w-5 h-5" /> Üyelik Paketleri
-        </h1>
-        <Link href="/admin/uyelik-paketleri/yeni"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
-          <Plus className="w-4 h-4" /> Paket Ekle
-        </Link>
-      </div>
+    <div>
+      <PageHeader title="Üyelik Paketleri" breadcrumb={[{ label: 'Kullanıcılar' }, { label: 'Paketler' }]}
+        action={
+          <Link href="/admin/uyelik-paketleri/yeni" className="inline-flex items-center gap-1.5 h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg">
+            <Plus className="w-4 h-4" /> Paket Ekle
+          </Link>
+        } />
 
       <div className="grid md:grid-cols-3 gap-5">
         {plans.map((plan) => (
-          <div key={plan.id} className={`bg-white rounded-xl border p-5 relative ${
-            plan.isFeatured ? 'border-blue-300 shadow-md shadow-blue-50' : 'border-gray-100'
-          }`}>
+          <div key={plan.id} className={`bg-white rounded-xl border p-5 relative ${plan.isFeatured ? 'border-blue-300 shadow-md shadow-blue-50' : 'border-gray-200'}`}>
             {plan.isFeatured && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Badge variant="default">⭐ Önerilen</Badge>
-              </div>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2"><Badge variant="default">⭐ Önerilen</Badge></div>
             )}
             <div className="text-center mb-5">
               <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
@@ -45,7 +41,7 @@ export default async function UyelikPaketleriPage() {
 
             <div className="flex items-center gap-2 mb-4 text-sm text-gray-600">
               <Users className="w-4 h-4 text-blue-600" />
-              <span>{plan._count.users.toLocaleString()} aktif üye</span>
+              <span>{plan._count.users.toLocaleString('tr-TR')} aktif üye</span>
             </div>
 
             <ul className="space-y-2 mb-5">
@@ -56,12 +52,12 @@ export default async function UyelikPaketleriPage() {
               ))}
             </ul>
 
-            <div className="flex gap-2">
-              <Link href={`/admin/uyelik-paketleri/${plan.id}`}
-                className="flex-1 py-2 text-center text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg">Düzenle</Link>
-              <Badge variant={plan.isActive ? 'success' : 'secondary'} className="py-2 px-3">
-                {plan.isActive ? 'Aktif' : 'Pasif'}
-              </Badge>
+            <div className="flex items-center gap-2">
+              <Link href={`/admin/uyelik-paketleri/${plan.id}`} className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 rounded-lg">
+                <Pencil className="w-3.5 h-3.5" /> Düzenle
+              </Link>
+              <Badge variant={plan.isActive ? 'success' : 'secondary'} className="py-2 px-3">{plan.isActive ? 'Aktif' : 'Pasif'}</Badge>
+              <DeleteButton endpoint={`/api/uyelik-paketleri/${plan.id}`} confirmText="Paket silinsin mi? Üyeler ücretsize düşer." />
             </div>
           </div>
         ))}

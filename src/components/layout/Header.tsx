@@ -20,8 +20,6 @@ const navItems = [
     children: [
       { label: 'OCR — Görüntüden Metin', href: '/ocr' },
       { label: 'AI Belge Oluştur', href: '/belge-olustur' },
-      { label: 'Dosyalar', href: '/dosyalar' },
-      { label: 'Soru Bankası', href: '/sorular' },
     ],
   },
 ];
@@ -80,14 +78,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Gradient accent strip */}
       <div className="h-1 bg-gradient-to-r from-blue-600 via-violet-500 to-pink-500" />
 
       <div className="bg-white/90 backdrop-blur-md border-b border-gray-200/70">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <div className="flex items-center h-16 gap-6">
 
-            {/* Logo */}
             <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
               <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:shadow-blue-600/40 transition-shadow">
                 <span className="text-white font-mono font-bold text-sm">&lt;/&gt;</span>
@@ -98,7 +94,6 @@ export function Header() {
               </div>
             </Link>
 
-            {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-1 flex-1">
               {navItems.map((item) => {
                 const active = isActive(item.href);
@@ -142,7 +137,6 @@ export function Header() {
               })}
             </nav>
 
-            {/* Right Actions */}
             <div className="hidden md:flex items-center gap-2 ml-auto">
               {searchOpen ? (
                 <form onSubmit={handleSearch} className="relative">
@@ -217,14 +211,12 @@ export function Header() {
               )}
             </div>
 
-            {/* Mobile toggle */}
             <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 ml-auto" aria-label="Menü">
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden border-t border-gray-100 bg-white">
             <div className="max-w-7xl mx-auto px-5 py-4 space-y-0.5">
