@@ -82,15 +82,15 @@ export default function MedyaPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Medya Kütüphanesi</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <h1 className="text-2xl font-bold text-[#111111]">Medya Kütüphanesi</h1>
+          <p className="text-sm text-[#666666] mt-1">
             {files.length} dosya • {fmtSize(totalSize)} kullanılıyor
           </p>
         </div>
         <button
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors disabled:opacity-50"
+          className="px-5 py-2 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors disabled:opacity-50"
         >
           {uploading ? "Yükleniyor…" : "+ Dosya Yükle"}
         </button>
@@ -104,25 +104,25 @@ export default function MedyaPage() {
           { label: "Video", count: videoFiles.length, icon: "🎬" },
           { label: "Görsel", count: imageFiles.length, icon: "🖼️" },
         ].map((s) => (
-          <div key={s.label} className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-center">
+          <div key={s.label} className="bg-white border border-[#E7E2D8] rounded-xl p-4 text-center">
             <div className="text-2xl mb-1">{s.icon}</div>
-            <div className="text-xl font-black text-white">{s.count}</div>
-            <div className="text-xs text-slate-500">{s.label}</div>
+            <div className="text-xl font-black text-[#111111]">{s.count}</div>
+            <div className="text-xs text-[#666666]">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* Files */}
       {loading ? (
-        <div className="text-center py-16 text-slate-500">Yükleniyor…</div>
+        <div className="text-center py-16 text-[#666666]">Yükleniyor…</div>
       ) : files.length === 0 ? (
-        <div className="text-center py-16 bg-slate-800/40 rounded-2xl border border-slate-700/50 border-dashed">
+        <div className="text-center py-16 bg-white rounded-2xl border border-[#E7E2D8] border-dashed">
           <div className="text-4xl mb-3">📁</div>
-          <p className="text-slate-400 font-medium">Henüz dosya yok</p>
-          <p className="text-slate-500 text-sm mt-1 mb-5">Ses, video veya görsel dosyalarınızı yükleyin.</p>
+          <p className="text-[#666666] font-medium">Henüz dosya yok</p>
+          <p className="text-[#666666] text-sm mt-1 mb-5">Ses, video veya görsel dosyalarınızı yükleyin.</p>
           <button
             onClick={() => fileRef.current?.click()}
-            className="inline-block px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm"
+            className="inline-block px-5 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm"
           >
             Dosya Yükle
           </button>
@@ -132,7 +132,7 @@ export default function MedyaPage() {
           {files.map((f) => (
             <div
               key={f.id}
-              className="bg-slate-800/50 border border-slate-700/50 rounded-xl overflow-hidden group"
+              className="bg-white border border-[#E7E2D8] rounded-xl overflow-hidden group"
             >
               {f.mimeType.startsWith("image/") ? (
                 <div className="aspect-square relative">
@@ -144,17 +144,17 @@ export default function MedyaPage() {
                   />
                 </div>
               ) : (
-                <div className="aspect-square bg-slate-900 flex items-center justify-center text-5xl">
+                <div className="aspect-square bg-[#F8F6F1] flex items-center justify-center text-5xl">
                   {getIcon(f.mimeType)}
                 </div>
               )}
               <div className="p-3">
-                <p className="text-xs text-slate-200 truncate font-medium">{f.originalName}</p>
+                <p className="text-xs text-[#111111] truncate font-medium">{f.originalName}</p>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-[10px] text-slate-500">{fmtSize(f.size)}</span>
+                  <span className="text-[10px] text-[#666666]">{fmtSize(f.size)}</span>
                   <button
                     onClick={() => setDeleteId(f.id)}
-                    className="text-[10px] text-slate-600 hover:text-red-400 transition-colors"
+                    className="text-[10px] text-[#666666] hover:text-red-600 transition-colors"
                   >
                     Sil
                   </button>
@@ -168,14 +168,14 @@ export default function MedyaPage() {
       {/* Delete confirm */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 w-full max-w-sm p-6">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] w-full max-w-sm p-6">
             <div className="text-3xl mb-3">🗑️</div>
-            <h3 className="font-bold text-white text-lg mb-2">Dosyayı Sil?</h3>
-            <p className="text-sm text-slate-400 mb-5">Bu dosya kalıcı olarak silinecek.</p>
+            <h3 className="font-bold text-[#111111] text-lg mb-2">Dosyayı Sil?</h3>
+            <p className="text-sm text-[#666666] mb-5">Bu dosya kalıcı olarak silinecek.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 border border-slate-600 text-slate-300 py-2 rounded-lg text-sm hover:bg-slate-700"
+                className="flex-1 border border-[#E7E2D8] text-[#444444] py-2 rounded-lg text-sm hover:bg-[#EBF2FA]"
               >
                 İptal
               </button>

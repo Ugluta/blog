@@ -22,7 +22,7 @@ const PLATFORMS = [
   { id: "linkedin",       name: "LinkedIn",        icon: "💼", color: "from-blue-600/20 to-cyan-500/10",  border: "border-blue-600/30",   desc: "Profesyonel içerik",       envKey: "LINKEDIN_CLIENT_ID" },
   { id: "pinterest",      name: "Pinterest",       icon: "📌", color: "from-red-500/20 to-rose-500/10",   border: "border-red-500/30",    desc: "Pin + Board",              envKey: "PINTEREST_APP_ID" },
   { id: "reddit",         name: "Reddit",          icon: "🤖", color: "from-orange-500/20 to-red-500/10", border: "border-orange-500/30", desc: "Subreddit paylaşımı",      envKey: "REDDIT_CLIENT_ID" },
-  { id: "medium",         name: "Medium",          icon: "✍️", color: "from-slate-500/20 to-slate-600/10", border: "border-slate-500/30", desc: "Blog yazıları",            envKey: "MEDIUM_CLIENT_ID" },
+  { id: "medium",         name: "Medium",          icon: "✍️", color: "from-[#E7E2D8] to-[#E7E2D8]", border: "border-[#E7E2D8]", desc: "Blog yazıları",            envKey: "MEDIUM_CLIENT_ID" },
 ];
 
 const PLATFORM_LABEL: Record<string, string> = {
@@ -102,35 +102,35 @@ export default function SocialAccountsPage() {
       </Suspense>
       {/* Toast */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-lg transition-all ${toast.type === "success" ? "bg-green-500/20 border border-green-500/40 text-green-300" : "bg-red-500/20 border border-red-500/40 text-red-300"}`}>
+        <div className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-lg transition-all ${toast.type === "success" ? "bg-green-500/20 border border-green-500/40 text-green-600" : "bg-red-500/20 border border-red-500/40 text-red-600"}`}>
           {toast.type === "success" ? "✓ " : "✕ "}{toast.text}
         </div>
       )}
 
       <div>
-        <h1 className="text-2xl font-bold text-white">Sosyal Hesaplar</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <h1 className="text-2xl font-bold text-[#111111]">Sosyal Hesaplar</h1>
+        <p className="text-sm text-[#666666] mt-1">
           Platformları bağlayın ve içeriklerinizi otomatik paylaşın.
-          <span className="text-amber-400 ml-1">Ücretsiz planda 1 hesap</span>
+          <span className="text-[#3A6EA8] ml-1">Ücretsiz planda 1 hesap</span>
         </p>
       </div>
 
       {/* Limit bar */}
-      <div className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-4 flex items-center justify-between">
+      <div className="bg-white rounded-xl border border-[#E7E2D8] p-4 flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-white">
+          <p className="text-sm font-semibold text-[#111111]">
             Bağlı Hesap: {loading ? "…" : accounts.length} / {MAX_FREE_ACCOUNTS}
           </p>
-          <p className="text-xs text-slate-500 mt-0.5">Daha fazla hesap için Başlangıç planına geçin</p>
+          <p className="text-xs text-[#666666] mt-0.5">Daha fazla hesap için Başlangıç planına geçin</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+          <div className="w-24 h-2 bg-[#EBF2FA] rounded-full overflow-hidden">
             <div
-              className="h-full bg-amber-500 rounded-full transition-all"
+              className="h-full bg-[#3A6EA8] rounded-full transition-all"
               style={{ width: `${Math.min((accounts.length / MAX_FREE_ACCOUNTS) * 100, 100)}%` }}
             />
           </div>
-          <a href="/fiyatlandirma" className="text-xs text-amber-400 hover:text-amber-300 whitespace-nowrap">
+          <a href="/fiyatlandirma" className="text-xs text-[#3A6EA8] hover:text-[#2D5A8E] whitespace-nowrap">
             Yükselt →
           </a>
         </div>
@@ -139,11 +139,11 @@ export default function SocialAccountsPage() {
       {/* Connected accounts */}
       {accounts.length > 0 && (
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Bağlı Hesaplar</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#666666] mb-3">Bağlı Hesaplar</h2>
           <div className="space-y-2">
             {accounts.map((account) => {
               const p = PLATFORMS.find((pl) => pl.id === account.platform.toLowerCase()) ??
-                { color: "from-slate-500/20 to-slate-600/10", border: "border-slate-500/30" };
+                { color: "from-[#E7E2D8] to-[#E7E2D8]", border: "border-[#E7E2D8]" };
               const icon = PLATFORM_ICON[account.platform] ?? "📋";
               const label = PLATFORM_LABEL[account.platform] ?? account.platform;
               return (
@@ -154,18 +154,18 @@ export default function SocialAccountsPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{icon}</span>
                     <div>
-                      <p className="text-sm font-semibold text-white">{label}</p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-sm font-semibold text-[#111111]">{label}</p>
+                      <p className="text-xs text-[#666666]">
                         {account.username ? `@${account.username}` : account.displayName} · Bağlandı
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">✓ Aktif</span>
+                    <span className="text-xs bg-green-500/20 text-green-600 px-2 py-0.5 rounded-full">✓ Aktif</span>
                     <button
                       onClick={() => disconnect(account.id)}
                       disabled={disconnecting === account.id}
-                      className="text-xs text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded disabled:opacity-50"
+                      className="text-xs text-[#666666] hover:text-red-600 transition-colors px-2 py-1 rounded disabled:opacity-50"
                     >
                       {disconnecting === account.id ? "…" : "Bağlantıyı Kes"}
                     </button>
@@ -181,7 +181,7 @@ export default function SocialAccountsPage() {
       {loading && (
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 rounded-xl bg-slate-800/40 animate-pulse" />
+            <div key={i} className="h-16 rounded-xl bg-white animate-pulse" />
           ))}
         </div>
       )}
@@ -189,31 +189,31 @@ export default function SocialAccountsPage() {
       {/* Available platforms */}
       {!loading && (
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Kullanılabilir Platformlar</h2>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#666666] mb-3">Kullanılabilir Platformlar</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {availablePlatforms.map((platform) => (
               <div
                 key={platform.id}
-                className={`flex items-center justify-between p-4 rounded-xl border bg-[#1E293B] ${platform.border} hover:bg-slate-700/30 transition-colors`}
+                className={`flex items-center justify-between p-4 rounded-xl border bg-white ${platform.border} hover:bg-[#EBF2FA] transition-colors`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{platform.icon}</span>
                   <div>
-                    <p className="text-sm font-semibold text-slate-200">{platform.name}</p>
-                    <p className="text-xs text-slate-500">{platform.desc}</p>
+                    <p className="text-sm font-semibold text-[#111111]">{platform.name}</p>
+                    <p className="text-xs text-[#666666]">{platform.desc}</p>
                   </div>
                 </div>
                 {atLimit ? (
                   <a
                     href="/fiyatlandirma"
-                    className="text-xs text-amber-400 hover:text-amber-300 transition-colors whitespace-nowrap px-3 py-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10"
+                    className="text-xs text-[#3A6EA8] hover:text-[#2D5A8E] transition-colors whitespace-nowrap px-3 py-1.5 rounded-lg border border-[#3A6EA8]/30 bg-[#EBF2FA]"
                   >
                     Yükselt
                   </a>
                 ) : (
                   <a
                     href={`/api/social/connect/${platform.id}`}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white transition-colors whitespace-nowrap"
+                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8] transition-colors whitespace-nowrap"
                   >
                     Bağla
                   </a>
@@ -224,7 +224,7 @@ export default function SocialAccountsPage() {
         </div>
       )}
 
-      <p className="text-xs text-slate-600">
+      <p className="text-xs text-[#666666]">
         OAuth 2.0 ile güvenli bağlantı. Şifreniz hiçbir zaman saklanmaz. Her platformun geliştirici hesabı ve API anahtarı gereklidir.
       </p>
     </div>

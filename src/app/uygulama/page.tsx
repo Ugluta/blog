@@ -39,13 +39,13 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  PUBLISHED: "text-green-400",
-  DRAFT: "text-slate-400",
-  REVIEW: "text-yellow-400",
-  ARCHIVED: "text-slate-500",
-  published: "text-green-400",
-  draft: "text-yellow-400",
-  rejected: "text-red-400",
+  PUBLISHED: "text-green-600",
+  DRAFT: "text-[#666666]",
+  REVIEW: "text-yellow-600",
+  ARCHIVED: "text-[#666666]",
+  published: "text-green-600",
+  draft: "text-yellow-600",
+  rejected: "text-red-600",
 };
 
 function timeAgo(iso: string) {
@@ -78,7 +78,7 @@ export default function AppDashboard() {
           icon: "📝",
           href: "/uygulama/yazilar",
           color: "from-blue-500/20 to-blue-600/5 border-blue-500/30",
-          iconBg: "bg-blue-500/20 text-blue-400",
+          iconBg: "bg-blue-500/20 text-blue-600",
         },
         {
           label: "İçerik Havuzu",
@@ -86,8 +86,8 @@ export default function AppDashboard() {
           sub: `${stats.contentItems.pending} onay bekliyor`,
           icon: "📥",
           href: "/uygulama/icerikler",
-          color: "from-amber-500/20 to-amber-600/5 border-amber-500/30",
-          iconBg: "bg-amber-500/20 text-amber-400",
+          color: "from-[#EBF2FA] to-[#F8F6F1] border-[#3A6EA8]/30",
+          iconBg: "bg-[#EBF2FA] text-[#3A6EA8]",
           alert: stats.contentItems.pending > 0,
         },
         {
@@ -97,7 +97,7 @@ export default function AppDashboard() {
           icon: "🗂️",
           href: "/uygulama/kategoriler",
           color: "from-purple-500/20 to-purple-600/5 border-purple-500/30",
-          iconBg: "bg-purple-500/20 text-purple-400",
+          iconBg: "bg-purple-500/20 text-purple-600",
         },
         {
           label: "Scraper Kaynağı",
@@ -106,7 +106,7 @@ export default function AppDashboard() {
           icon: "🤖",
           href: "/uygulama/scraper",
           color: "from-green-500/20 to-green-600/5 border-green-500/30",
-          iconBg: "bg-green-500/20 text-green-400",
+          iconBg: "bg-green-500/20 text-green-600",
         },
       ]
     : [];
@@ -116,19 +116,19 @@ export default function AppDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-sm text-slate-400 mt-0.5">İçerik yönetim sisteminize hoş geldiniz</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Dashboard</h1>
+          <p className="text-sm text-[#666666] mt-0.5">İçerik yönetim sisteminize hoş geldiniz</p>
         </div>
         <div className="flex gap-2">
           <Link
             href="/uygulama/icerikler"
-            className="px-4 py-2 rounded-xl border border-amber-500/40 text-amber-400 hover:bg-amber-500/10 text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-xl border border-[#3A6EA8]/40 text-[#3A6EA8] hover:bg-[#EBF2FA] text-sm font-medium transition-colors"
           >
             İçerik Havuzu
           </Link>
           <Link
             href="/uygulama/yazilar/yeni"
-            className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors"
+            className="px-5 py-2 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors"
           >
             + Yeni Yazı
           </Link>
@@ -139,7 +139,7 @@ export default function AppDashboard() {
       {loading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-5 animate-pulse h-28" />
+            <div key={i} className="bg-white rounded-2xl border border-[#E7E2D8] p-5 animate-pulse h-28" />
           ))}
         </div>
       ) : (
@@ -151,14 +151,14 @@ export default function AppDashboard() {
               className={`bg-gradient-to-br ${card.color} border rounded-2xl p-5 hover:scale-[1.02] transition-transform relative`}
             >
               {card.alert && (
-                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-[#3A6EA8] animate-pulse" />
               )}
               <div className={`w-9 h-9 rounded-xl ${card.iconBg} flex items-center justify-center text-lg mb-3`}>
                 {card.icon}
               </div>
-              <div className="text-3xl font-black text-white">{card.value}</div>
-              <div className="text-sm text-slate-300 font-medium mt-0.5">{card.label}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{card.sub}</div>
+              <div className="text-3xl font-black text-[#111111]">{card.value}</div>
+              <div className="text-sm text-[#444444] font-medium mt-0.5">{card.label}</div>
+              <div className="text-xs text-[#666666] mt-0.5">{card.sub}</div>
             </Link>
           ))}
         </div>
@@ -166,7 +166,7 @@ export default function AppDashboard() {
 
       {/* Quick actions */}
       <div>
-        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Hızlı Eylemler</h2>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-[#666666] mb-3">Hızlı Eylemler</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { icon: "✍️", label: "Yazı Yaz", href: "/uygulama/yazilar/yeni" },
@@ -178,10 +178,10 @@ export default function AppDashboard() {
               key={a.label}
               href={a.href}
               target={a.target}
-              className="bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 hover:border-slate-600 rounded-xl p-4 flex flex-col items-center gap-2 text-center transition-colors group"
+              className="bg-white hover:bg-[#EBF2FA] border border-[#E7E2D8] hover:border-[#B5CDE8] rounded-xl p-4 flex flex-col items-center gap-2 text-center transition-colors group"
             >
               <span className="text-2xl">{a.icon}</span>
-              <span className="text-xs text-slate-400 group-hover:text-slate-200 font-medium transition-colors">
+              <span className="text-xs text-[#666666] group-hover:text-[#111111] font-medium transition-colors">
                 {a.label}
               </span>
             </Link>
@@ -193,41 +193,41 @@ export default function AppDashboard() {
       {!loading && stats && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Posts */}
-          <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-700/50">
-              <h3 className="text-sm font-bold text-slate-200">Son Yazılar</h3>
-              <Link href="/uygulama/yazilar" className="text-xs text-amber-400 hover:text-amber-300">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[#E7E2D8]">
+              <h3 className="text-sm font-bold text-[#111111]">Son Yazılar</h3>
+              <Link href="/uygulama/yazilar" className="text-xs text-[#3A6EA8] hover:text-[#2D5A8E]">
                 Tümü →
               </Link>
             </div>
             {stats.recentPosts.length === 0 ? (
               <div className="px-5 py-8 text-center">
-                <p className="text-slate-500 text-sm">Henüz yazı yok</p>
+                <p className="text-[#666666] text-sm">Henüz yazı yok</p>
                 <Link
                   href="/uygulama/yazilar/yeni"
-                  className="mt-2 inline-block text-xs text-amber-400 hover:text-amber-300"
+                  className="mt-2 inline-block text-xs text-[#3A6EA8] hover:text-[#2D5A8E]"
                 >
                   İlk yazıyı oluştur →
                 </Link>
               </div>
             ) : (
-              <ul className="divide-y divide-slate-700/30">
+              <ul className="divide-y divide-[#E7E2D8]">
                 {stats.recentPosts.map((p) => (
                   <li key={p.id}>
                     <Link
                       href={`/uygulama/yazilar/${p.id}`}
-                      className="flex items-start gap-3 px-5 py-3 hover:bg-slate-700/30 transition-colors"
+                      className="flex items-start gap-3 px-5 py-3 hover:bg-[#EBF2FA] transition-colors"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-slate-200 font-medium truncate">{p.title}</p>
+                        <p className="text-sm text-[#111111] font-medium truncate">{p.title}</p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className={`text-xs font-medium ${STATUS_COLOR[p.status]}`}>
                             {STATUS_LABEL[p.status]}
                           </span>
                           {p.category && (
-                            <span className="text-xs text-slate-500">• {p.category.name}</span>
+                            <span className="text-xs text-[#666666]">• {p.category.name}</span>
                           )}
-                          <span className="text-xs text-slate-600">{timeAgo(p.createdAt)}</span>
+                          <span className="text-xs text-[#666666]">{timeAgo(p.createdAt)}</span>
                         </div>
                       </div>
                     </Link>
@@ -238,44 +238,44 @@ export default function AppDashboard() {
           </div>
 
           {/* Recent Content Items */}
-          <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-700/50">
-              <h3 className="text-sm font-bold text-slate-200">İçerik Havuzu</h3>
-              <Link href="/uygulama/icerikler" className="text-xs text-amber-400 hover:text-amber-300">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[#E7E2D8]">
+              <h3 className="text-sm font-bold text-[#111111]">İçerik Havuzu</h3>
+              <Link href="/uygulama/icerikler" className="text-xs text-[#3A6EA8] hover:text-[#2D5A8E]">
                 Tümü →
               </Link>
             </div>
             {stats.recentContentItems.length === 0 ? (
               <div className="px-5 py-8 text-center">
-                <p className="text-slate-500 text-sm">Henüz içerik yok</p>
+                <p className="text-[#666666] text-sm">Henüz içerik yok</p>
                 <Link
                   href="/uygulama/scraper"
-                  className="mt-2 inline-block text-xs text-amber-400 hover:text-amber-300"
+                  className="mt-2 inline-block text-xs text-[#3A6EA8] hover:text-[#2D5A8E]"
                 >
                   Scraper ekle →
                 </Link>
               </div>
             ) : (
-              <ul className="divide-y divide-slate-700/30">
+              <ul className="divide-y divide-[#E7E2D8]">
                 {stats.recentContentItems.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={`/uygulama/icerikler/${item.id}`}
-                      className="flex items-start gap-3 px-5 py-3 hover:bg-slate-700/30 transition-colors"
+                      className="flex items-start gap-3 px-5 py-3 hover:bg-[#EBF2FA] transition-colors"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-slate-200 font-medium truncate">{item.title}</p>
+                        <p className="text-sm text-[#111111] font-medium truncate">{item.title}</p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className={`text-xs font-medium ${STATUS_COLOR[item.status]}`}>
                             {STATUS_LABEL[item.status]}
                           </span>
                           {item.category && (
-                            <span className="text-xs text-slate-500">• {item.category.name}</span>
+                            <span className="text-xs text-[#666666]">• {item.category.name}</span>
                           )}
-                          <span className="text-xs text-slate-600">{timeAgo(item.createdAt)}</span>
+                          <span className="text-xs text-[#666666]">{timeAgo(item.createdAt)}</span>
                         </div>
                         {item.sourceUrl && (
-                          <p className="text-[10px] text-slate-600 truncate mt-0.5">
+                          <p className="text-[10px] text-[#666666] truncate mt-0.5">
                             {new URL(item.sourceUrl).hostname}
                           </p>
                         )}
@@ -291,18 +291,18 @@ export default function AppDashboard() {
 
       {/* Pending items alert */}
       {!loading && stats && stats.contentItems.pending > 0 && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 flex items-center justify-between gap-4">
+        <div className="bg-[#EBF2FA] border border-[#3A6EA8]/30 rounded-2xl p-5 flex items-center justify-between gap-4">
           <div>
-            <p className="text-amber-400 font-bold text-sm">
+            <p className="text-[#3A6EA8] font-bold text-sm">
               ⏳ {stats.contentItems.pending} içerik onay bekliyor
             </p>
-            <p className="text-slate-400 text-xs mt-0.5">
+            <p className="text-[#666666] text-xs mt-0.5">
               Scraper&apos;dan gelen içerikleri inceleyin, onaylayın veya yazıya dönüştürün.
             </p>
           </div>
           <Link
             href="/uygulama/icerikler"
-            className="flex-shrink-0 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors"
+            className="flex-shrink-0 px-4 py-2 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors"
           >
             İncele
           </Link>

@@ -234,12 +234,12 @@ export default function KategorilerPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Kategoriler</h1>
-          <p className="text-slate-400 text-sm mt-0.5">Sonsuz alt kategori destekli içerik sınıflandırması</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Kategoriler</h1>
+          <p className="text-[#666666] text-sm mt-0.5">Sonsuz alt kategori destekli içerik sınıflandırması</p>
         </div>
         <button
           onClick={() => openAdd()}
-          className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold rounded-xl transition-colors text-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold rounded-xl transition-colors text-sm"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -255,33 +255,33 @@ export default function KategorilerPage() {
           { label: "Ana Kategori", value: rootCats.length, icon: "📁" },
           { label: "Alt Kategori", value: categories.length - rootCats.length, icon: "📂" },
         ].map((s) => (
-          <div key={s.label} className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-4 flex items-center gap-3">
+          <div key={s.label} className="bg-white rounded-xl border border-[#E7E2D8] p-4 flex items-center gap-3">
             <span className="text-2xl">{s.icon}</span>
             <div>
-              <div className="text-xl font-bold text-white">{s.value}</div>
-              <div className="text-xs text-slate-400">{s.label}</div>
+              <div className="text-xl font-bold text-[#111111]">{s.value}</div>
+              <div className="text-xs text-[#666666]">{s.label}</div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Tree */}
-      <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E7E2D8] overflow-hidden">
         {/* Toolbar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50">
-          <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">Kategori Ağacı</span>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#E7E2D8]">
+          <span className="text-xs font-medium text-[#666666] uppercase tracking-wider">Kategori Ağacı</span>
           {flat.some((n) => n.children.length > 0) && (
             <div className="flex gap-2">
               <button
                 onClick={() => setCollapsed(new Set())}
-                className="text-xs text-slate-400 hover:text-amber-400 transition-colors"
+                className="text-xs text-[#666666] hover:text-[#3A6EA8] transition-colors"
               >
                 Tümünü Aç
               </button>
-              <span className="text-slate-600">·</span>
+              <span className="text-[#666666]">·</span>
               <button
                 onClick={() => setCollapsed(new Set(flat.filter((n) => n.children.length > 0).map((n) => n.id)))}
-                className="text-xs text-slate-400 hover:text-amber-400 transition-colors"
+                className="text-xs text-[#666666] hover:text-[#3A6EA8] transition-colors"
               >
                 Tümünü Kapat
               </button>
@@ -291,7 +291,7 @@ export default function KategorilerPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <svg className="w-6 h-6 animate-spin text-amber-400" fill="none" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 animate-spin text-[#3A6EA8]" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
             </svg>
@@ -299,11 +299,11 @@ export default function KategorilerPage() {
         ) : flat.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-4xl mb-4">🗂️</div>
-            <p className="text-slate-400 text-sm font-medium mb-1">Henüz kategori eklenmedi</p>
-            <p className="text-slate-500 text-xs mb-4">İçeriklerinizi organize etmek için kategori oluşturun</p>
+            <p className="text-[#666666] text-sm font-medium mb-1">Henüz kategori eklenmedi</p>
+            <p className="text-[#666666] text-xs mb-4">İçeriklerinizi organize etmek için kategori oluşturun</p>
             <button
               onClick={() => openAdd()}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500/15 border border-amber-500/30 text-amber-400 hover:bg-amber-500/25 rounded-xl text-sm transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EBF2FA] border border-[#3A6EA8]/30 text-[#3A6EA8] hover:bg-[#EBF2FA] rounded-xl text-sm transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -312,7 +312,7 @@ export default function KategorilerPage() {
             </button>
           </div>
         ) : (
-          <div className="divide-y divide-slate-700/30">
+          <div className="divide-y divide-[#E7E2D8]">
             {flat.map((node) => {
               if (isHidden(node)) return null;
               const isCollapsed = collapsed.has(node.id);
@@ -322,7 +322,7 @@ export default function KategorilerPage() {
               return (
                 <div
                   key={node.id}
-                  className="flex items-center gap-2 px-4 py-2.5 hover:bg-slate-700/20 transition-colors group"
+                  className="flex items-center gap-2 px-4 py-2.5 hover:bg-[#EBF2FA] transition-colors group"
                   style={{ paddingLeft: `${16 + node.depth * 24}px` }}
                 >
                   {/* Collapse toggle */}
@@ -330,7 +330,7 @@ export default function KategorilerPage() {
                     onClick={() => hasChildren && toggleCollapse(node.id)}
                     className={`w-5 h-5 flex-shrink-0 flex items-center justify-center rounded transition-colors ${
                       hasChildren
-                        ? "text-slate-500 hover:text-amber-400 hover:bg-amber-400/10"
+                        ? "text-[#666666] hover:text-[#3A6EA8] hover:bg-[#EBF2FA]"
                         : "invisible"
                     }`}
                   >
@@ -345,7 +345,7 @@ export default function KategorilerPage() {
                   {/* Tree indent line */}
                   {node.depth > 0 && (
                     <div className="w-4 flex-shrink-0 flex items-center justify-end">
-                      <div className="w-3 h-px bg-slate-600/50" />
+                      <div className="w-3 h-px bg-[#E7E2D8]" />
                     </div>
                   )}
 
@@ -354,19 +354,19 @@ export default function KategorilerPage() {
 
                   {/* Name + meta */}
                   <div className="flex-1 min-w-0 flex items-center gap-2">
-                    <span className={`text-sm font-medium truncate ${node.isActive ? "text-white" : "text-slate-500"}`}>
+                    <span className={`text-sm font-medium truncate ${node.isActive ? "text-[#111111]" : "text-[#666666]"}`}>
                       {node.name}
                     </span>
                     {!node.isActive && (
-                      <span className="text-[10px] bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded-md flex-shrink-0">Pasif</span>
+                      <span className="text-[10px] bg-[#EBF2FA] text-[#666666] px-1.5 py-0.5 rounded-md flex-shrink-0">Pasif</span>
                     )}
-                    <span className="text-xs text-slate-600 font-mono hidden sm:block truncate">/{node.slug}</span>
+                    <span className="text-xs text-[#666666] font-mono hidden sm:block truncate">/{node.slug}</span>
                   </div>
 
                   {/* Counts */}
                   <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
                     {hasChildren && (
-                      <span className="flex items-center gap-1 text-[11px] text-slate-500 bg-slate-700/40 px-2 py-0.5 rounded-full">
+                      <span className="flex items-center gap-1 text-[11px] text-[#666666] bg-[#EBF2FA] px-2 py-0.5 rounded-full">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
@@ -374,7 +374,7 @@ export default function KategorilerPage() {
                       </span>
                     )}
                     {totalContent > 0 && (
-                      <span className="flex items-center gap-1 text-[11px] text-slate-500 bg-slate-700/40 px-2 py-0.5 rounded-full">
+                      <span className="flex items-center gap-1 text-[11px] text-[#666666] bg-[#EBF2FA] px-2 py-0.5 rounded-full">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
@@ -388,7 +388,7 @@ export default function KategorilerPage() {
                     <button
                       onClick={() => openAdd(node.id)}
                       title="Alt kategori ekle"
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-amber-400/10 transition-colors"
+                      className="p-1.5 rounded-lg text-[#666666] hover:text-[#3A6EA8] hover:bg-[#EBF2FA] transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -397,7 +397,7 @@ export default function KategorilerPage() {
                     <button
                       onClick={() => openEdit(node)}
                       title="Düzenle"
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 transition-colors"
+                      className="p-1.5 rounded-lg text-[#666666] hover:text-blue-600 hover:bg-blue-400/10 transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -406,7 +406,7 @@ export default function KategorilerPage() {
                     <button
                       onClick={() => setDeleteConfirm(node)}
                       title="Sil"
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                      className="p-1.5 rounded-lg text-[#666666] hover:text-red-600 hover:bg-red-400/10 transition-colors"
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -423,17 +423,17 @@ export default function KategorilerPage() {
       {/* Add / Edit Modal */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50 flex-shrink-0">
-              <h2 className="font-bold text-white">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E7E2D8] flex-shrink-0">
+              <h2 className="font-bold text-[#111111]">
                 {modal === "add"
                   ? form.parentId
                     ? `Alt Kategori Ekle — ${categories.find((c) => c.id === form.parentId)?.name}`
                     : "Yeni Kategori"
                   : "Kategoriyi Düzenle"}
               </h2>
-              <button onClick={closeModal} className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-400 transition-colors">
+              <button onClick={closeModal} className="p-1.5 rounded-lg hover:bg-[#EBF2FA] text-[#666666] transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -443,14 +443,14 @@ export default function KategorilerPage() {
             {/* Modal Body */}
             <div className="overflow-y-auto flex-1 p-5 space-y-5">
               {error && (
-                <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">{error}</div>
+                <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm">{error}</div>
               )}
 
               {/* Icon + Color + Preview */}
               <div className="flex items-start gap-4">
                 {/* Preview */}
                 <div className="flex-shrink-0">
-                  <div className="text-xs font-medium text-slate-400 mb-2">Önizleme</div>
+                  <div className="text-xs font-medium text-[#666666] mb-2">Önizleme</div>
                   <div
                     className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg"
                     style={{
@@ -466,7 +466,7 @@ export default function KategorilerPage() {
                 <div className="flex-1 space-y-3">
                   {/* Icon input */}
                   <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Simge (Emoji)</label>
+                    <label className="block text-xs font-medium text-[#666666] mb-1.5">Simge (Emoji)</label>
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
@@ -474,7 +474,7 @@ export default function KategorilerPage() {
                         onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
                         placeholder="Emoji veya harf"
                         maxLength={4}
-                        className="w-24 bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-3 py-2 text-sm text-center focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                        className="w-24 bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-3 py-2 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                       />
                       <div className="flex flex-wrap gap-1">
                         {PRESET_ICONS.slice(0, 12).map((emoji) => (
@@ -482,7 +482,7 @@ export default function KategorilerPage() {
                             key={emoji}
                             type="button"
                             onClick={() => setForm((f) => ({ ...f, icon: emoji }))}
-                            className={`w-7 h-7 rounded-lg text-base hover:bg-slate-700/50 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
+                            className={`w-7 h-7 rounded-lg text-base hover:bg-[#EBF2FA] transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-[#EBF2FA] ring-1 ring-[#3A6EA8]/50" : "bg-[#EBF2FA]"}`}
                           >
                             {emoji}
                           </button>
@@ -496,7 +496,7 @@ export default function KategorilerPage() {
                           key={emoji}
                           type="button"
                           onClick={() => setForm((f) => ({ ...f, icon: emoji }))}
-                          className={`w-7 h-7 rounded-lg text-base hover:bg-slate-700/50 transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-amber-500/20 ring-1 ring-amber-500/50" : "bg-slate-700/50"}`}
+                          className={`w-7 h-7 rounded-lg text-base hover:bg-[#EBF2FA] transition-colors flex items-center justify-center ${form.icon === emoji ? "bg-[#EBF2FA] ring-1 ring-[#3A6EA8]/50" : "bg-[#EBF2FA]"}`}
                         >
                           {emoji}
                         </button>
@@ -506,13 +506,13 @@ export default function KategorilerPage() {
 
                   {/* Color */}
                   <div>
-                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Renk</label>
+                    <label className="block text-xs font-medium text-[#666666] mb-1.5">Renk</label>
                     <div className="flex items-center gap-2">
                       <input
                         type="color"
                         value={form.color}
                         onChange={(e) => setForm((f) => ({ ...f, color: e.target.value }))}
-                        className="w-8 h-8 rounded-lg border border-slate-700/50 bg-slate-900/50 cursor-pointer p-0.5"
+                        className="w-8 h-8 rounded-lg border border-[#E7E2D8] bg-[#F8F6F1] cursor-pointer p-0.5"
                       />
                       <div className="flex gap-1.5 flex-wrap">
                         {PRESET_COLORS.map((c) => (
@@ -520,7 +520,7 @@ export default function KategorilerPage() {
                             key={c}
                             type="button"
                             onClick={() => setForm((f) => ({ ...f, color: c }))}
-                            className={`w-5 h-5 rounded-full transition-transform hover:scale-125 ${form.color === c ? "ring-2 ring-offset-1 ring-offset-slate-900 ring-white" : ""}`}
+                            className={`w-5 h-5 rounded-full transition-transform hover:scale-125 ${form.color === c ? "ring-2 ring-offset-1 ring-offset-[#FFFFFF] ring-[#3A6EA8]" : ""}`}
                             style={{ backgroundColor: c }}
                           />
                         ))}
@@ -532,31 +532,31 @@ export default function KategorilerPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Kategori Adı *</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Kategori Adı *</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => updateName(e.target.value)}
                   placeholder="örn. Yapay Zeka"
                   autoFocus
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                 />
               </div>
 
               {/* Slug */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">
                   URL Slug
-                  <span className="ml-1 text-slate-500 font-normal">(otomatik oluşturulur)</span>
+                  <span className="ml-1 text-[#666666] font-normal">(otomatik oluşturulur)</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm select-none">/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666666] text-sm select-none">/</span>
                   <input
                     type="text"
                     value={form.slug}
                     onChange={(e) => setForm((f) => ({ ...f, slug: slugify(e.target.value), slugLocked: true }))}
                     placeholder="kategori-slug"
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl pl-6 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl pl-6 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                   />
                   <button
                     type="button"
@@ -566,7 +566,7 @@ export default function KategorilerPage() {
                         setForm((f) => ({ ...f, slug: slugify(f.name), slugLocked: false }));
                       }
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-amber-400 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#666666] hover:text-[#3A6EA8] transition-colors"
                   >
                     {form.slugLocked ? (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -583,32 +583,32 @@ export default function KategorilerPage() {
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Açıklama</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Açıklama</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Bu kategorinin içeriğini kısaca açıklayın..."
                   rows={3}
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors resize-none"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors resize-none"
                 />
               </div>
 
               {/* Cover Image */}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Kapak Görseli URL</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Kapak Görseli URL</label>
                 <input
                   type="url"
                   value={form.image}
                   onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
                   placeholder="https://..."
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                 />
                 {form.image && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={form.image}
                     alt="Önizleme"
-                    className="mt-2 w-full h-28 object-cover rounded-xl border border-slate-700/50"
+                    className="mt-2 w-full h-28 object-cover rounded-xl border border-[#E7E2D8]"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                   />
                 )}
@@ -617,11 +617,11 @@ export default function KategorilerPage() {
               {/* Parent + Order + Active */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Üst Kategori</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Üst Kategori</label>
                   <select
                     value={form.parentId}
                     onChange={(e) => setForm((f) => ({ ...f, parentId: e.target.value }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                   >
                     <option value="">— Kök —</option>
                     {flat
@@ -634,13 +634,13 @@ export default function KategorilerPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Sıra No</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Sıra No</label>
                   <input
                     type="number"
                     min="0"
                     value={form.order}
                     onChange={(e) => setForm((f) => ({ ...f, order: e.target.value }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 transition-colors"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 transition-colors"
                   />
                 </div>
               </div>
@@ -649,26 +649,26 @@ export default function KategorilerPage() {
               <label className="flex items-center gap-3 cursor-pointer">
                 <div
                   onClick={() => setForm((f) => ({ ...f, isActive: !f.isActive }))}
-                  className={`relative w-10 h-5 rounded-full transition-colors ${form.isActive ? "bg-amber-500" : "bg-slate-600"}`}
+                  className={`relative w-10 h-5 rounded-full transition-colors ${form.isActive ? "bg-[#3A6EA8]" : "bg-[#E7E2D8]"}`}
                 >
                   <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.isActive ? "translate-x-5" : ""}`} />
                 </div>
-                <span className="text-sm text-slate-300">Aktif kategori</span>
+                <span className="text-sm text-[#444444]">Aktif kategori</span>
               </label>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex gap-3 p-5 border-t border-slate-700/50 flex-shrink-0">
+            <div className="flex gap-3 p-5 border-t border-[#E7E2D8] flex-shrink-0">
               <button
                 onClick={closeModal}
-                className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl border border-[#E7E2D8] text-[#444444] hover:bg-[#EBF2FA] transition-colors text-sm"
               >
                 İptal
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition-colors text-sm disabled:opacity-50"
+                className="flex-1 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold transition-colors text-sm disabled:opacity-50"
               >
                 {saving ? "Kaydediliyor..." : modal === "add" ? "Kategori Ekle" : "Değişiklikleri Kaydet"}
               </button>
@@ -680,33 +680,33 @@ export default function KategorilerPage() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#1E293B] rounded-2xl border border-red-500/30 shadow-2xl w-full max-w-sm p-6">
+          <div className="bg-white rounded-2xl border border-red-500/30 shadow-2xl w-full max-w-sm p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-500/15 flex items-center justify-center">
-                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </div>
               <div>
-                <div className="font-semibold text-white">Kategori Silinsin mi?</div>
-                <div className="text-sm text-slate-400">{deleteConfirm.name}</div>
+                <div className="font-semibold text-[#111111]">Kategori Silinsin mi?</div>
+                <div className="text-sm text-[#666666]">{deleteConfirm.name}</div>
               </div>
             </div>
 
             {(deleteConfirm._count.children > 0 || deleteConfirm._count.posts + deleteConfirm._count.contentItems > 0) ? (
-              <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 text-sm mb-4">
+              <div className="p-3 bg-[#EBF2FA] border border-[#3A6EA8]/30 rounded-xl text-[#3A6EA8] text-sm mb-4">
                 {deleteConfirm._count.children > 0
                   ? `Bu kategorinin ${deleteConfirm._count.children} alt kategorisi var. Önce alt kategorileri silin.`
                   : `Bu kategoride ${deleteConfirm._count.posts + deleteConfirm._count.contentItems} içerik var. Önce içerikleri taşıyın veya silin.`}
               </div>
             ) : (
-              <p className="text-slate-400 text-sm mb-4">Bu işlem geri alınamaz. Devam etmek istiyor musunuz?</p>
+              <p className="text-[#666666] text-sm mb-4">Bu işlem geri alınamaz. Devam etmek istiyor musunuz?</p>
             )}
 
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-700/50 text-slate-300 hover:bg-slate-700/50 transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl border border-[#E7E2D8] text-[#444444] hover:bg-[#EBF2FA] transition-colors text-sm"
               >
                 İptal
               </button>
@@ -717,7 +717,7 @@ export default function KategorilerPage() {
                   deleteConfirm._count.children > 0 ||
                   deleteConfirm._count.posts + deleteConfirm._count.contentItems > 0
                 }
-                className="flex-1 py-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600/30 disabled:opacity-40 font-semibold transition-colors text-sm"
+                className="flex-1 py-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-600 hover:bg-red-600/30 disabled:opacity-40 font-semibold transition-colors text-sm"
               >
                 {deleteLoading ? "Siliniyor..." : "Evet, Sil"}
               </button>

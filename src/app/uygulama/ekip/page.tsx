@@ -29,11 +29,11 @@ const ROLE_LABEL: Record<string, string> = {
 };
 
 const ROLE_STYLE: Record<string, string> = {
-  SUPER_ADMIN: "bg-red-500/20 text-red-400",
-  ADMIN: "bg-amber-500/20 text-amber-400",
-  EDITOR: "bg-blue-500/20 text-blue-400",
-  PUBLISHER: "bg-purple-500/20 text-purple-400",
-  VIEWER: "bg-slate-600/30 text-slate-400",
+  SUPER_ADMIN: "bg-red-500/20 text-red-600",
+  ADMIN: "bg-[#EBF2FA] text-[#3A6EA8]",
+  EDITOR: "bg-blue-500/20 text-blue-600",
+  PUBLISHER: "bg-purple-500/20 text-purple-600",
+  VIEWER: "bg-[#E7E2D8] text-[#666666]",
 };
 
 const INVITE_ROLES = [
@@ -104,47 +104,47 @@ export default function EkipPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Ekip Yönetimi</h1>
-          <p className="text-sm text-slate-400 mt-1">Takım üyelerini yönetin ve yeni üye davet edin</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Ekip Yönetimi</h1>
+          <p className="text-sm text-[#666666] mt-1">Takım üyelerini yönetin ve yeni üye davet edin</p>
         </div>
         <button
           onClick={() => { setShowInvite(true); setError(""); setSuccess(""); }}
-          className="px-4 py-2 text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition-colors flex items-center gap-1.5"
+          className="px-4 py-2 text-sm font-semibold bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white rounded-lg transition-colors flex items-center gap-1.5"
         >
           + Üye Davet Et
         </button>
       </div>
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500/30 text-green-400 rounded-xl px-4 py-3 text-sm">
+        <div className="bg-green-500/10 border border-green-500/30 text-green-600 rounded-xl px-4 py-3 text-sm">
           ✓ {success}
         </div>
       )}
 
       {/* Members */}
       <div>
-        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Aktif Üyeler</h2>
+        <h2 className="text-xs font-bold uppercase tracking-widest text-[#666666] mb-3">Aktif Üyeler</h2>
         {loading ? (
           <div className="space-y-2">
-            {[1, 2, 3].map(i => <div key={i} className="h-14 bg-slate-800/40 rounded-xl animate-pulse" />)}
+            {[1, 2, 3].map(i => <div key={i} className="h-14 bg-white rounded-xl animate-pulse" />)}
           </div>
         ) : members.length === 0 ? (
-          <p className="text-slate-500 text-sm py-4 text-center">Henüz ekip üyesi yok</p>
+          <p className="text-[#666666] text-sm py-4 text-center">Henüz ekip üyesi yok</p>
         ) : (
           <div className="space-y-2">
             {members.map((m) => (
-              <div key={m.id} className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm flex-shrink-0">
+              <div key={m.id} className="bg-white border border-[#E7E2D8] rounded-xl px-4 py-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#EBF2FA] flex items-center justify-center text-[#3A6EA8] font-bold text-sm flex-shrink-0">
                   {m.image
                     ? <img src={m.image} alt="" className="w-9 h-9 rounded-full object-cover" />
                     : (m.name?.[0] ?? m.email[0]).toUpperCase()
                   }
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-100 truncate">{m.name ?? m.email}</p>
-                  {m.name && <p className="text-xs text-slate-500 truncate">{m.email}</p>}
+                  <p className="text-sm font-semibold text-[#111111] truncate">{m.name ?? m.email}</p>
+                  {m.name && <p className="text-xs text-[#666666] truncate">{m.email}</p>}
                 </div>
-                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${ROLE_STYLE[m.role] ?? "bg-slate-700 text-slate-400"}`}>
+                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${ROLE_STYLE[m.role] ?? "bg-[#EBF2FA] text-[#666666]"}`}>
                   {ROLE_LABEL[m.role] ?? m.role}
                 </span>
               </div>
@@ -156,19 +156,19 @@ export default function EkipPage() {
       {/* Pending Invites */}
       {(invites.length > 0 || !loading) && (
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Bekleyen Davetler</h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#666666] mb-3">Bekleyen Davetler</h2>
           {invites.length === 0 ? (
-            <p className="text-slate-600 text-sm py-3 text-center">Bekleyen davet yok</p>
+            <p className="text-[#666666] text-sm py-3 text-center">Bekleyen davet yok</p>
           ) : (
             <div className="space-y-2">
               {invites.map((inv) => (
-                <div key={inv.id} className="bg-slate-800/40 border border-slate-700/30 rounded-xl px-4 py-3 flex items-center gap-3 flex-wrap">
-                  <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-400 text-sm flex-shrink-0">
+                <div key={inv.id} className="bg-white border border-[#E7E2D8] rounded-xl px-4 py-3 flex items-center gap-3 flex-wrap">
+                  <div className="w-8 h-8 rounded-full bg-[#EBF2FA] flex items-center justify-center text-[#666666] text-sm flex-shrink-0">
                     ✉
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-slate-200 truncate">{inv.email}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-sm text-[#111111] truncate">{inv.email}</p>
+                    <p className="text-xs text-[#666666]">
                       {ROLE_LABEL[inv.role] ?? inv.role} · {inv.invitedBy.name ?? inv.invitedBy.email} tarafından ·{" "}
                       {new Date(inv.expiresAt).toLocaleDateString("tr-TR")} sona erer
                     </p>
@@ -176,13 +176,13 @@ export default function EkipPage() {
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     <button
                       onClick={() => copyLink(inv.token)}
-                      className="text-xs px-2.5 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors"
+                      className="text-xs px-2.5 py-1.5 bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#444444] rounded-lg transition-colors"
                     >
                       {copiedToken === inv.token ? "✓ Kopyalandı" : "🔗 Link"}
                     </button>
                     <button
                       onClick={() => revokeInvite(inv.id)}
-                      className="text-xs px-2.5 py-1.5 text-slate-500 hover:text-red-400 border border-slate-700/50 rounded-lg transition-colors"
+                      className="text-xs px-2.5 py-1.5 text-[#666666] hover:text-red-600 border border-[#E7E2D8] rounded-lg transition-colors"
                     >
                       İptal
                     </button>
@@ -198,35 +198,35 @@ export default function EkipPage() {
       {showInvite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60" onClick={() => setShowInvite(false)} />
-          <div className="relative bg-[#0F172A] border border-slate-700/50 rounded-2xl w-full max-w-sm shadow-2xl">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
-              <h3 className="font-bold text-white">Üye Davet Et</h3>
-              <button onClick={() => setShowInvite(false)} className="text-slate-400 hover:text-white text-xl">×</button>
+          <div className="relative bg-white border border-[#E7E2D8] rounded-2xl w-full max-w-sm shadow-2xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E7E2D8]">
+              <h3 className="font-bold text-[#111111]">Üye Davet Et</h3>
+              <button onClick={() => setShowInvite(false)} className="text-[#666666] hover:text-[#111111] text-xl">×</button>
             </div>
             <div className="p-5 space-y-4">
-              {error && <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>}
+              {error && <p className="text-xs text-red-600 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>}
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">E-posta *</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">E-posta *</label>
                 <input
                   type="email"
                   value={form.email}
                   onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
                   placeholder="ornek@sirket.com"
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+                  className="w-full bg-white border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Rol</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Rol</label>
                 <select
                   value={form.role}
                   onChange={e => setForm(p => ({ ...p, role: e.target.value }))}
-                  className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+                  className="w-full bg-white border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
                 >
                   {INVITE_ROLES.map(r => (
                     <option key={r.value} value={r.value}>{r.label}</option>
                   ))}
                 </select>
-                <p className="text-xs text-slate-600 mt-1">
+                <p className="text-xs text-[#666666] mt-1">
                   Editör: yazı oluşturabilir. Yayıncı: yayınlayabilir. Görüntüleyici: sadece okuyabilir.
                 </p>
               </div>
@@ -235,7 +235,7 @@ export default function EkipPage() {
               <button
                 onClick={sendInvite}
                 disabled={sending || !form.email}
-                className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-bold text-sm transition-colors"
+                className="w-full py-2.5 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-50 text-white font-bold text-sm transition-colors"
               >
                 {sending ? "Gönderiliyor…" : "Davet Gönder"}
               </button>

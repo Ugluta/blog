@@ -89,20 +89,20 @@ export default function UserAlbumPage() {
   return (
     <div className="p-4 lg:p-6 max-w-4xl space-y-6">
       {toast && (
-        <div className="fixed top-4 right-4 z-50 bg-slate-800 border border-amber-500/40 text-amber-400 px-4 py-2.5 rounded-xl text-sm shadow-xl">
+        <div className="fixed top-4 right-4 z-50 bg-white border border-[#3A6EA8]/40 text-[#3A6EA8] px-4 py-2.5 rounded-xl text-sm shadow-xl">
           {toast}
         </div>
       )}
 
       <div className="flex items-center gap-4">
-        <Link href="/uygulama/galeri" className="text-slate-400 hover:text-amber-400 text-sm">← Geri</Link>
+        <Link href="/uygulama/galeri" className="text-[#666666] hover:text-[#3A6EA8] text-sm">← Geri</Link>
         {album && (
           <div className="flex-1 flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-white">{album.title}</h1>
-              <p className="text-xs text-slate-500">{images.length} fotoğraf</p>
+              <h1 className="text-xl font-bold text-[#111111]">{album.title}</h1>
+              <p className="text-xs text-[#666666]">{images.length} fotoğraf</p>
             </div>
-            <Link href={`/galeri/${album.slug}`} target="_blank" className="text-xs text-amber-400 hover:text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg transition-colors">
+            <Link href={`/galeri/${album.slug}`} target="_blank" className="text-xs text-[#3A6EA8] hover:text-[#2D5A8E] border border-[#3A6EA8]/30 px-3 py-1.5 rounded-lg transition-colors">
               Önizle ↗
             </Link>
           </div>
@@ -113,22 +113,22 @@ export default function UserAlbumPage() {
       <div
         onDragOver={e => e.preventDefault()}
         onDrop={e => { e.preventDefault(); Array.from(e.dataTransfer.files).forEach(uploadFile); }}
-        className="border-2 border-dashed border-slate-700/50 hover:border-slate-600 rounded-2xl p-8 text-center transition-colors"
+        className="border-2 border-dashed border-[#E7E2D8] hover:border-[#B5CDE8] rounded-2xl p-8 text-center transition-colors"
       >
         {uploading ? (
-          <div className="flex items-center justify-center gap-3 text-amber-400">
-            <div className="w-5 h-5 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+          <div className="flex items-center justify-center gap-3 text-[#3A6EA8]">
+            <div className="w-5 h-5 border-2 border-[#3A6EA8]/30 border-t-[#3A6EA8] rounded-full animate-spin" />
             <span className="text-sm">Yükleniyor…</span>
           </div>
         ) : (
           <>
             <p className="text-2xl mb-2">📷</p>
-            <p className="text-slate-400 text-sm">Sürükle bırak veya</p>
+            <p className="text-[#666666] text-sm">Sürükle bırak veya</p>
             <div className="flex items-center justify-center gap-3 mt-3">
-              <button onClick={() => fileRef.current?.click()} className="px-4 py-2 text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition-colors">
+              <button onClick={() => fileRef.current?.click()} className="px-4 py-2 text-xs font-semibold bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white rounded-lg transition-colors">
                 Dosya Seç
               </button>
-              <button onClick={() => setShowUrl(!showUrl)} className="px-4 py-2 text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors">
+              <button onClick={() => setShowUrl(!showUrl)} className="px-4 py-2 text-xs font-semibold bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#111111] rounded-lg transition-colors">
                 URL Ekle
               </button>
             </div>
@@ -137,9 +137,9 @@ export default function UserAlbumPage() {
                 <input value={urlInput} onChange={e => setUrlInput(e.target.value)}
                   onKeyDown={e => { if (e.key === "Enter") { addImage(urlInput); setUrlInput(""); setShowUrl(false); } }}
                   placeholder="https://example.com/image.jpg"
-                  className="flex-1 bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-amber-500" />
+                  className="flex-1 bg-white border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#3A6EA8]" />
                 <button onClick={() => { addImage(urlInput); setUrlInput(""); setShowUrl(false); }}
-                  className="px-3 py-2 text-xs bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg font-semibold">Ekle</button>
+                  className="px-3 py-2 text-xs bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white rounded-lg font-semibold">Ekle</button>
               </div>
             )}
           </>
@@ -150,13 +150,13 @@ export default function UserAlbumPage() {
       {/* Images with drag-to-reorder */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[1,2,3,4,5,6].map(i => <div key={i} className="aspect-square rounded-xl bg-slate-800/40 animate-pulse" />)}
+          {[1,2,3,4,5,6].map(i => <div key={i} className="aspect-square rounded-xl bg-white animate-pulse" />)}
         </div>
       ) : images.length === 0 ? (
-        <p className="text-center text-slate-500 py-8">Henüz fotoğraf yok</p>
+        <p className="text-center text-[#666666] py-8">Henüz fotoğraf yok</p>
       ) : (
         <>
-          <p className="text-xs text-slate-600">Sıralamak için sürükleyin</p>
+          <p className="text-xs text-[#666666]">Sıralamak için sürükleyin</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {images.map(img => (
               <div
@@ -166,8 +166,8 @@ export default function UserAlbumPage() {
                 onDragEnter={() => handleDragEnter(img.id)}
                 onDragEnd={handleDragEnd}
                 onDragOver={e => e.preventDefault()}
-                className={`group relative aspect-square rounded-xl overflow-hidden bg-slate-800 cursor-grab active:cursor-grabbing transition-all ${
-                  overId === img.id && dragId !== img.id ? "ring-2 ring-amber-500 scale-95" : ""
+                className={`group relative aspect-square rounded-xl overflow-hidden bg-white cursor-grab active:cursor-grabbing transition-all ${
+                  overId === img.id && dragId !== img.id ? "ring-2 ring-[#3A6EA8] scale-95" : ""
                 } ${dragId === img.id ? "opacity-40" : ""}`}
               >
                 <img src={img.thumbnailUrl ?? img.url} alt={img.title ?? ""} className="w-full h-full object-cover pointer-events-none" />

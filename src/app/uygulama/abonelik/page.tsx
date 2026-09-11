@@ -34,14 +34,14 @@ function UsageBar({ used, total, label, unit = "" }: { used: number; total: numb
   return (
     <div>
       <div className="flex justify-between text-xs mb-1.5">
-        <span className="text-slate-400">{label}</span>
-        <span className={`font-medium ${danger ? "text-red-400" : warn ? "text-amber-400" : "text-slate-300"}`}>
+        <span className="text-[#666666]">{label}</span>
+        <span className={`font-medium ${danger ? "text-red-600" : warn ? "text-[#3A6EA8]" : "text-[#444444]"}`}>
           {total === -1 ? "Sınırsız" : `${used}${unit} / ${total}${unit}`}
         </span>
       </div>
-      <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+      <div className="h-2 bg-[#EBF2FA] rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all ${danger ? "bg-red-500" : warn ? "bg-amber-500" : "bg-green-500"}`}
+          className={`h-full rounded-full transition-all ${danger ? "bg-red-500" : warn ? "bg-[#3A6EA8]" : "bg-green-500"}`}
           style={{ width: total === -1 ? "5%" : `${pct}%` }}
         />
       </div>
@@ -124,39 +124,39 @@ export default function SubscriptionPage() {
   };
 
   const STATUS_COLOR: Record<string, string> = {
-    ACTIVE: "text-green-400",
-    TRIALING: "text-blue-400",
-    PAST_DUE: "text-red-400",
-    CANCELED: "text-slate-500",
-    EXPIRED: "text-slate-500",
-    PAUSED: "text-yellow-400",
+    ACTIVE: "text-green-600",
+    TRIALING: "text-blue-600",
+    PAST_DUE: "text-red-600",
+    CANCELED: "text-[#666666]",
+    EXPIRED: "text-[#666666]",
+    PAUSED: "text-yellow-600",
   };
 
   return (
     <div className="p-4 lg:p-6 max-w-5xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Abonelik Yönetimi</h1>
-        <p className="text-sm text-slate-400 mt-1">Mevcut planınız ve kullanım durumunuz</p>
+        <h1 className="text-2xl font-bold text-[#111111]">Abonelik Yönetimi</h1>
+        <p className="text-sm text-[#666666] mt-1">Mevcut planınız ve kullanım durumunuz</p>
       </div>
 
       {/* Current Plan Card */}
       {loadingData ? (
-        <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6 animate-pulse h-44" />
+        <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 animate-pulse h-44" />
       ) : (
-        <div className="bg-gradient-to-br from-amber-500/10 to-amber-600/5 border border-amber-500/30 rounded-2xl p-6">
+        <div className="bg-gradient-to-br from-[#EBF2FA] to-[#F8F6F1] border border-[#3A6EA8]/30 rounded-2xl p-6">
           <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-xs text-amber-400 font-bold uppercase tracking-wider">Mevcut Plan</p>
+                <p className="text-xs text-[#3A6EA8] font-bold uppercase tracking-wider">Mevcut Plan</p>
                 {data?.subscription && (
-                  <span className={`text-xs font-semibold ${STATUS_COLOR[data.subscription.status] ?? "text-slate-400"}`}>
+                  <span className={`text-xs font-semibold ${STATUS_COLOR[data.subscription.status] ?? "text-[#666666]"}`}>
                     • {STATUS_LABEL[data.subscription.status] ?? data.subscription.status}
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl font-black text-white">{currentPkgDef.name}</h2>
+              <h2 className="text-2xl font-black text-[#111111]">{currentPkgDef.name}</h2>
               {data?.subscription?.expiresAt && (
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-[#666666] mt-1">
                   {new Date(data.subscription.expiresAt) > new Date()
                     ? `Yenileme: ${new Date(data.subscription.expiresAt).toLocaleDateString("tr-TR")}`
                     : `Sona erdi: ${new Date(data.subscription.expiresAt).toLocaleDateString("tr-TR")}`}
@@ -164,15 +164,15 @@ export default function SubscriptionPage() {
               )}
             </div>
             <div className="text-right">
-              <p className="text-3xl font-black text-amber-400">
+              <p className="text-3xl font-black text-[#3A6EA8]">
                 ₺{currentPrice === 0 ? "0" : currentPrice}
               </p>
-              <p className="text-xs text-slate-500">/ay</p>
+              <p className="text-xs text-[#666666]">/ay</p>
               {data?.subscription && currentPlan !== "free" && (
                 <button
                   onClick={handlePortal}
                   disabled={portalLoading}
-                  className="mt-2 text-xs text-amber-400 hover:text-amber-300 border border-amber-500/30 px-3 py-1 rounded-lg transition-colors disabled:opacity-50"
+                  className="mt-2 text-xs text-[#3A6EA8] hover:text-[#2D5A8E] border border-[#3A6EA8]/30 px-3 py-1 rounded-lg transition-colors disabled:opacity-50"
                 >
                   {portalLoading ? "..." : "Faturayı Yönet"}
                 </button>
@@ -206,20 +206,20 @@ export default function SubscriptionPage() {
 
       {/* Plan selector */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-lg font-bold text-white">Plan Seçin</h2>
-        <div className="inline-flex items-center bg-slate-800 rounded-full p-1">
+        <h2 className="text-lg font-bold text-[#111111]">Plan Seçin</h2>
+        <div className="inline-flex items-center bg-white rounded-full p-1">
           <button
             onClick={() => setYearly(false)}
-            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${!yearly ? "bg-amber-500 text-slate-900" : "text-slate-400 hover:text-white"}`}
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${!yearly ? "bg-[#3A6EA8] text-white" : "text-[#666666] hover:text-[#111111]"}`}
           >
             Aylık
           </button>
           <button
             onClick={() => setYearly(true)}
-            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${yearly ? "bg-amber-500 text-slate-900" : "text-slate-400 hover:text-white"}`}
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${yearly ? "bg-[#3A6EA8] text-white" : "text-[#666666] hover:text-[#111111]"}`}
           >
             Yıllık{" "}
-            <span className="ml-1 text-[10px] bg-green-500/30 text-green-400 px-1.5 rounded-full">%20</span>
+            <span className="ml-1 text-[10px] bg-green-500/30 text-green-600 px-1.5 rounded-full">%20</span>
           </button>
         </div>
       </div>
@@ -240,8 +240,8 @@ export default function SubscriptionPage() {
                 ${isCurrent
                   ? "border-green-500/50 bg-green-500/5"
                   : isPopular
-                  ? "border-amber-500 bg-amber-500/5"
-                  : "border-slate-700/50 bg-[#1E293B] hover:border-slate-600"
+                  ? "border-[#3A6EA8] bg-[#EBF2FA]"
+                  : "border-[#E7E2D8] bg-white hover:border-[#B5CDE8]"
                 }`}
             >
               {/* Badge */}
@@ -251,21 +251,21 @@ export default function SubscriptionPage() {
                 </div>
               )}
               {!isCurrent && isPopular && (
-                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-900 text-[10px] font-black px-3 py-0.5 rounded-full uppercase whitespace-nowrap">
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#3A6EA8] text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase whitespace-nowrap">
                   En Popüler
                 </div>
               )}
 
-              <h3 className="font-bold text-white text-base">{pkg.name}</h3>
-              <p className="text-xs text-slate-500 mt-0.5 mb-3">{pkg.description}</p>
+              <h3 className="font-bold text-[#111111] text-base">{pkg.name}</h3>
+              <p className="text-xs text-[#666666] mt-0.5 mb-3">{pkg.description}</p>
 
               <div className="mb-4">
-                <span className={`text-3xl font-black ${isPopular && !isCurrent ? "text-amber-400" : "text-white"}`}>
+                <span className={`text-3xl font-black ${isPopular && !isCurrent ? "text-[#3A6EA8]" : "text-[#111111]"}`}>
                   {price === 0 ? "₺0" : `₺${price}`}
                 </span>
-                <span className="text-slate-500 text-xs">/ay</span>
+                <span className="text-[#666666] text-xs">/ay</span>
                 {yearly && pkg.yearlyPrice && pkg.price > 0 && (
-                  <p className="text-[10px] text-green-400 mt-0.5">
+                  <p className="text-[10px] text-green-600 mt-0.5">
                     Yıllık ₺{pkg.yearlyPrice}
                   </p>
                 )}
@@ -283,19 +283,19 @@ export default function SubscriptionPage() {
                   .filter(Boolean)
                   .slice(0, 5)
                   .map((f) => (
-                    <li key={f} className="flex items-center gap-1.5 text-slate-300">
-                      <span className="text-green-400 text-[10px] flex-shrink-0">✓</span>
+                    <li key={f} className="flex items-center gap-1.5 text-[#444444]">
+                      <span className="text-green-600 text-[10px] flex-shrink-0">✓</span>
                       {f}
                     </li>
                   ))}
               </ul>
 
               {isCurrent ? (
-                <div className="text-center text-xs text-green-400 font-semibold py-2.5 rounded-xl border border-green-500/30 bg-green-500/10">
+                <div className="text-center text-xs text-green-600 font-semibold py-2.5 rounded-xl border border-green-500/30 bg-green-500/10">
                   Mevcut Planınız
                 </div>
               ) : (pkg.price as number) === 0 ? (
-                <div className="text-center text-xs text-slate-500 py-2.5 rounded-xl border border-slate-700/50">
+                <div className="text-center text-xs text-[#666666] py-2.5 rounded-xl border border-[#E7E2D8]">
                   Ücretsiz
                 </div>
               ) : (
@@ -303,7 +303,7 @@ export default function SubscriptionPage() {
                   onClick={() => handleUpgrade(pkg.slug)}
                   disabled={!!isLoading}
                   className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-colors disabled:opacity-50
-                    ${isPopular ? "bg-amber-500 hover:bg-amber-400 text-slate-900" : "bg-slate-700 hover:bg-slate-600 text-white"}`}
+                    ${isPopular ? "bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white" : "bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8]"}`}
                 >
                   {isLoading
                     ? "Yönlendiriliyor…"
@@ -318,13 +318,13 @@ export default function SubscriptionPage() {
       </div>
 
       {/* Info box */}
-      <div className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 text-xs text-slate-400 flex items-start gap-3">
+      <div className="bg-white border border-[#E7E2D8] rounded-xl p-4 text-xs text-[#666666] flex items-start gap-3">
         <span className="text-lg flex-shrink-0">ℹ️</span>
         <div>
           <p>Plan değişikliği anında geçerli olur. Yıllık planlarda kalan süre orantılı olarak hesaplanır.</p>
           <p className="mt-1">Aboneliğinizi iptal etmek veya fatura geçmişinizi görmek için{" "}
             {currentPlan !== "free" ? (
-              <button onClick={handlePortal} className="text-amber-400 hover:text-amber-300 underline">
+              <button onClick={handlePortal} className="text-[#3A6EA8] hover:text-[#2D5A8E] underline">
                 Stripe Portalını
               </button>
             ) : (

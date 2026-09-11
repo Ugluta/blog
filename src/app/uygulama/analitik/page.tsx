@@ -19,11 +19,11 @@ const RANGES = [
 ];
 
 const STATUS_COLORS: Record<string, string> = {
-  SUCCESS: "text-green-400",
-  FAILED: "text-red-400",
-  PENDING: "text-amber-400",
-  PROCESSING: "text-blue-400",
-  QUEUED: "text-slate-400",
+  SUCCESS: "text-green-600",
+  FAILED: "text-red-600",
+  PENDING: "text-[#3A6EA8]",
+  PROCESSING: "text-blue-600",
+  QUEUED: "text-[#666666]",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -33,13 +33,13 @@ const STATUS_LABELS: Record<string, string> = {
 
 function StatCard({ label, value, sub, icon }: { label: string; value: number | string; sub?: string; icon: string }) {
   return (
-    <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5">
+    <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-slate-400 text-sm">{label}</span>
+        <span className="text-[#666666] text-sm">{label}</span>
         <span className="text-2xl">{icon}</span>
       </div>
-      <p className="text-3xl font-black text-white">{value.toLocaleString("tr-TR")}</p>
-      {sub && <p className="text-xs text-slate-500 mt-1">{sub}</p>}
+      <p className="text-3xl font-black text-[#111111]">{value.toLocaleString("tr-TR")}</p>
+      {sub && <p className="text-xs text-[#666666] mt-1">{sub}</p>}
     </div>
   );
 }
@@ -63,16 +63,16 @@ export default function AnalitikPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Analitik</h1>
-          <p className="text-sm text-slate-400 mt-0.5">İçerik ve yayın performansı</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Analitik</h1>
+          <p className="text-sm text-[#666666] mt-0.5">İçerik ve yayın performansı</p>
         </div>
-        <div className="flex gap-1 bg-slate-800/60 rounded-lg p-1 border border-slate-700/50">
+        <div className="flex gap-1 bg-white rounded-lg p-1 border border-[#E7E2D8]">
           {RANGES.map(r => (
             <button
               key={r.key}
               onClick={() => setRange(r.key)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                range === r.key ? "bg-amber-500 text-slate-900" : "text-slate-400 hover:text-white"
+                range === r.key ? "bg-[#3A6EA8] text-white" : "text-[#666666] hover:text-[#111111]"
               }`}
             >
               {r.label}
@@ -83,7 +83,7 @@ export default function AnalitikPage() {
 
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => <div key={i} className="h-28 rounded-2xl bg-slate-800/40 animate-pulse" />)}
+          {[1,2,3,4].map(i => <div key={i} className="h-28 rounded-2xl bg-white animate-pulse" />)}
         </div>
       ) : data ? (
         <>
@@ -102,22 +102,22 @@ export default function AnalitikPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {/* Top Posts */}
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5">
-              <h2 className="font-bold text-white mb-4">En Çok Okunan</h2>
+            <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5">
+              <h2 className="font-bold text-[#111111] mb-4">En Çok Okunan</h2>
               {data.topPosts.length === 0 ? (
-                <p className="text-slate-500 text-sm text-center py-6">Henüz veri yok</p>
+                <p className="text-[#666666] text-sm text-center py-6">Henüz veri yok</p>
               ) : (
                 <div className="space-y-3">
                   {data.topPosts.map((post, idx) => (
                     <div key={post.id} className="flex items-center gap-3">
-                      <span className="text-slate-600 font-bold text-sm w-5 flex-shrink-0">{idx + 1}</span>
+                      <span className="text-[#666666] font-bold text-sm w-5 flex-shrink-0">{idx + 1}</span>
                       <div className="flex-1 min-w-0">
                         <Link href={`/haberler/${post.slug}`} target="_blank"
-                          className="text-sm text-slate-200 hover:text-amber-400 transition-colors line-clamp-1">
+                          className="text-sm text-[#111111] hover:text-[#3A6EA8] transition-colors line-clamp-1">
                           {post.title}
                         </Link>
                       </div>
-                      <span className="text-xs text-amber-400 font-semibold flex-shrink-0">
+                      <span className="text-xs text-[#3A6EA8] font-semibold flex-shrink-0">
                         {post.viewCount.toLocaleString("tr-TR")} görüntülenme
                       </span>
                     </div>
@@ -127,22 +127,22 @@ export default function AnalitikPage() {
             </div>
 
             {/* Recent Posts */}
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5">
-              <h2 className="font-bold text-white mb-4">Son Yazılar</h2>
+            <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5">
+              <h2 className="font-bold text-[#111111] mb-4">Son Yazılar</h2>
               {data.recentPosts.length === 0 ? (
-                <p className="text-slate-500 text-sm text-center py-6">Henüz yazı yok</p>
+                <p className="text-[#666666] text-sm text-center py-6">Henüz yazı yok</p>
               ) : (
                 <div className="space-y-3">
                   {data.recentPosts.map(post => (
                     <div key={post.id} className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${post.status === "PUBLISHED" ? "bg-green-500" : "bg-slate-600"}`} />
+                      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${post.status === "PUBLISHED" ? "bg-green-500" : "bg-[#E7E2D8]"}`} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-slate-200 line-clamp-1">{post.title}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-sm text-[#111111] line-clamp-1">{post.title}</p>
+                        <p className="text-xs text-[#666666]">
                           {new Date(post.createdAt).toLocaleDateString("tr-TR", { day: "numeric", month: "short" })}
                         </p>
                       </div>
-                      <span className={`text-xs flex-shrink-0 ${post.status === "PUBLISHED" ? "text-green-400" : "text-slate-500"}`}>
+                      <span className={`text-xs flex-shrink-0 ${post.status === "PUBLISHED" ? "text-green-600" : "text-[#666666]"}`}>
                         {post.status === "PUBLISHED" ? "Yayında" : "Taslak"}
                       </span>
                     </div>
@@ -154,13 +154,13 @@ export default function AnalitikPage() {
 
           {/* Publish Stats */}
           {Object.keys(data.publishStats).length > 0 && (
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-5">
-              <h2 className="font-bold text-white mb-4">Paylaşım Durumu</h2>
+            <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5">
+              <h2 className="font-bold text-[#111111] mb-4">Paylaşım Durumu</h2>
               <div className="flex flex-wrap gap-6">
                 {Object.entries(data.publishStats).map(([status, count]) => (
                   <div key={status} className="text-center">
-                    <p className={`text-2xl font-black ${STATUS_COLORS[status] ?? "text-slate-400"}`}>{count}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{STATUS_LABELS[status] ?? status}</p>
+                    <p className={`text-2xl font-black ${STATUS_COLORS[status] ?? "text-[#666666]"}`}>{count}</p>
+                    <p className="text-xs text-[#666666] mt-0.5">{STATUS_LABELS[status] ?? status}</p>
                   </div>
                 ))}
               </div>

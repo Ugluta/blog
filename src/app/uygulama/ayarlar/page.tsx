@@ -78,18 +78,18 @@ export default function AyarlarPage() {
   return (
     <div className="p-4 lg:p-6 max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-white">Ayarlar</h1>
-        <p className="text-sm text-slate-400 mt-1">Hesap ve uygulama ayarlarını yönetin</p>
+        <h1 className="text-2xl font-bold text-[#111111]">Ayarlar</h1>
+        <p className="text-sm text-[#666666] mt-1">Hesap ve uygulama ayarlarını yönetin</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 bg-slate-800/50 rounded-xl p-1 overflow-x-auto">
+      <div className="flex items-center gap-1 bg-white rounded-xl p-1 overflow-x-auto">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors
-              ${tab === t.key ? "bg-slate-700 text-white" : "text-slate-400 hover:text-slate-200"}`}
+              ${tab === t.key ? "bg-[#EBF2FA] text-[#3A6EA8]" : "text-[#666666] hover:text-[#111111]"}`}
           >
             <span className="text-base">{t.icon}</span>
             {t.label}
@@ -99,52 +99,52 @@ export default function AyarlarPage() {
 
       {/* ── Profil ── */}
       {tab === "profil" && (
-        <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6 space-y-5">
+        <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 space-y-5">
           {/* Avatar */}
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-black text-2xl flex-shrink-0">
+            <div className="w-16 h-16 rounded-full bg-[#EBF2FA] flex items-center justify-center text-[#3A6EA8] font-black text-2xl flex-shrink-0">
               {name?.[0]?.toUpperCase() ?? "?"}
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">{name || "İsimsiz"}</p>
-              <p className="text-xs text-slate-400">{email}</p>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-sm font-semibold text-[#111111]">{name || "İsimsiz"}</p>
+              <p className="text-xs text-[#666666]">{email}</p>
+              <p className="text-xs text-[#666666] mt-0.5">
                 {session?.user?.role ?? "VIEWER"}
               </p>
             </div>
           </div>
 
-          <div className="border-t border-slate-700/50" />
+          <div className="border-t border-[#E7E2D8]" />
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Ad Soyad</label>
+            <label className="block text-sm font-medium text-[#444444] mb-1.5">Ad Soyad</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+              className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">E-posta</label>
+            <label className="block text-sm font-medium text-[#444444] mb-1.5">E-posta</label>
             <input
               type="email"
               value={email}
               disabled
-              className="w-full bg-slate-900/30 border border-slate-700/30 rounded-lg px-3 py-2.5 text-slate-500 text-sm cursor-not-allowed"
+              className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#666666] text-sm cursor-not-allowed"
             />
-            <p className="text-[10px] text-slate-600 mt-1">E-posta değiştirilemez.</p>
+            <p className="text-[10px] text-[#666666] mt-1">E-posta değiştirilemez.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Biyografi</label>
+            <label className="block text-sm font-medium text-[#444444] mb-1.5">Biyografi</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               rows={3}
               placeholder="Kendinizden kısaca bahsedin…"
-              className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none"
+              className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50 resize-none"
             />
           </div>
 
@@ -152,11 +152,11 @@ export default function AyarlarPage() {
             <button
               onClick={saveProfile}
               disabled={saving}
-              className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm disabled:opacity-50 transition-colors"
+              className="px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm disabled:opacity-50 transition-colors"
             >
               {saving ? "Kaydediliyor…" : "Kaydet"}
             </button>
-            {saved && <span className="text-xs text-green-400">✓ Değişiklikler kaydedildi</span>}
+            {saved && <span className="text-xs text-green-600">✓ Değişiklikler kaydedildi</span>}
           </div>
         </div>
       )}
@@ -164,59 +164,59 @@ export default function AyarlarPage() {
       {/* ── Güvenlik ── */}
       {tab === "guvenlik" && (
         <div className="space-y-4">
-          <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6 space-y-4">
-            <h2 className="text-base font-bold text-white">Şifre Değiştir</h2>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 space-y-4">
+            <h2 className="text-base font-bold text-[#111111]">Şifre Değiştir</h2>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Mevcut Şifre</label>
+              <label className="block text-sm font-medium text-[#444444] mb-1.5">Mevcut Şifre</label>
               <input
                 type="password"
                 value={currentPw}
                 onChange={(e) => setCurrentPw(e.target.value)}
-                className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Yeni Şifre</label>
+              <label className="block text-sm font-medium text-[#444444] mb-1.5">Yeni Şifre</label>
               <input
                 type="password"
                 value={newPw}
                 onChange={(e) => setNewPw(e.target.value)}
-                className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50"
               />
-              <p className="text-[10px] text-slate-500 mt-1">En az 8 karakter</p>
+              <p className="text-[10px] text-[#666666] mt-1">En az 8 karakter</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">Yeni Şifre Tekrar</label>
+              <label className="block text-sm font-medium text-[#444444] mb-1.5">Yeni Şifre Tekrar</label>
               <input
                 type="password"
                 value={confirmPw}
                 onChange={(e) => setConfirmPw(e.target.value)}
-                className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50"
               />
             </div>
 
-            {pwError && <p className="text-sm text-red-400">{pwError}</p>}
-            {pwOk && <p className="text-sm text-green-400">✓ Şifre başarıyla değiştirildi</p>}
+            {pwError && <p className="text-sm text-red-600">{pwError}</p>}
+            {pwOk && <p className="text-sm text-green-600">✓ Şifre başarıyla değiştirildi</p>}
 
             <button
               onClick={changePassword}
               disabled={pwSaving || !currentPw || !newPw || !confirmPw}
-              className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm disabled:opacity-50 transition-colors"
+              className="px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm disabled:opacity-50 transition-colors"
             >
               {pwSaving ? "Değiştiriliyor…" : "Şifreyi Değiştir"}
             </button>
           </div>
 
           {/* Session */}
-          <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6">
-            <h2 className="text-base font-bold text-white mb-3">Oturum</h2>
-            <p className="text-sm text-slate-400 mb-4">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6">
+            <h2 className="text-base font-bold text-[#111111] mb-3">Oturum</h2>
+            <p className="text-sm text-[#666666] mb-4">
               Tüm cihazlarda oturumunuzu kapatmak için aşağıdaki butona tıklayın.
             </p>
             <button
               onClick={() => signOut({ callbackUrl: "/giris" })}
-              className="px-5 py-2 rounded-lg bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 text-red-400 font-semibold text-sm transition-colors"
+              className="px-5 py-2 rounded-lg bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 text-red-600 font-semibold text-sm transition-colors"
             >
               Çıkış Yap
             </button>
@@ -226,8 +226,8 @@ export default function AyarlarPage() {
 
       {/* ── Bildirimler ── */}
       {tab === "bildirimler" && (
-        <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6">
-          <h2 className="text-base font-bold text-white mb-5">E-posta Bildirimleri</h2>
+        <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6">
+          <h2 className="text-base font-bold text-[#111111] mb-5">E-posta Bildirimleri</h2>
           <div className="space-y-4">
             {[
               { id: "content_approved", label: "İçerik onaylandı", desc: "Scraper'dan gelen içerik onaylandığında" },
@@ -237,17 +237,17 @@ export default function AyarlarPage() {
             ].map((n) => (
               <div key={n.id} className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-medium text-slate-200">{n.label}</p>
-                  <p className="text-xs text-slate-500">{n.desc}</p>
+                  <p className="text-sm font-medium text-[#111111]">{n.label}</p>
+                  <p className="text-xs text-[#666666]">{n.desc}</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" defaultChecked={n.id !== "scraper_error"} />
-                  <div className="w-10 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500" />
+                  <div className="w-10 h-5 bg-[#EBF2FA] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3A6EA8]" />
                 </label>
               </div>
             ))}
           </div>
-          <button className="mt-6 px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors">
+          <button className="mt-6 px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors">
             Tercihleri Kaydet
           </button>
         </div>
@@ -255,9 +255,9 @@ export default function AyarlarPage() {
 
       {/* ── API Keys ── */}
       {tab === "api" && (
-        <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6">
-          <h2 className="text-base font-bold text-white mb-2">API Anahtarları</h2>
-          <p className="text-sm text-slate-400 mb-6">
+        <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6">
+          <h2 className="text-base font-bold text-[#111111] mb-2">API Anahtarları</h2>
+          <p className="text-sm text-[#666666] mb-6">
             Üçüncü taraf uygulamalar için API anahtarlarınızı yönetin.
           </p>
           <div className="space-y-3">
@@ -267,21 +267,21 @@ export default function AyarlarPage() {
               { name: "Google Gemini Key", env: "GOOGLE_AI_API_KEY", placeholder: "AIza..." },
             ].map((k) => (
               <div key={k.env}>
-                <label className="block text-xs font-medium text-slate-400 mb-1">{k.name}</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1">{k.name}</label>
                 <div className="flex gap-2">
                   <input
                     type="password"
                     placeholder={k.placeholder}
-                    className="flex-1 bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500/50 font-mono"
+                    className="flex-1 bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2 text-sm text-[#444444] focus:outline-none focus:ring-2 focus:ring-[#3A6EA8]/50 font-mono"
                   />
-                  <button className="px-3 py-2 text-xs text-slate-400 border border-slate-700/50 rounded-lg hover:border-amber-500/30 hover:text-amber-400 transition-colors">
+                  <button className="px-3 py-2 text-xs text-[#666666] border border-[#E7E2D8] rounded-lg hover:border-[#3A6EA8]/30 hover:text-[#3A6EA8] transition-colors">
                     Kaydet
                   </button>
                 </div>
               </div>
             ))}
           </div>
-          <p className="text-xs text-slate-600 mt-4">
+          <p className="text-xs text-[#666666] mt-4">
             Bu anahtarlar şifreli olarak saklanır ve yalnızca sunucu tarafında kullanılır.
           </p>
         </div>

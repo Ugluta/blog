@@ -9,8 +9,8 @@ import { slugify } from "@/lib/slugify";
 const RichEditor = dynamic(() => import("@/components/editor/RichEditor"), {
   ssr: false,
   loading: () => (
-    <div className="bg-slate-800/50 border border-slate-600 rounded-2xl h-[460px] flex items-center justify-center">
-      <svg className="w-6 h-6 animate-spin text-amber-400" fill="none" viewBox="0 0 24 24">
+    <div className="bg-white border border-[#E7E2D8] rounded-2xl h-[460px] flex items-center justify-center">
+      <svg className="w-6 h-6 animate-spin text-[#3A6EA8]" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
       </svg>
@@ -53,10 +53,10 @@ interface Props {
 }
 
 const STATUS_OPTS = [
-  { value: "DRAFT",     label: "Taslak",    color: "text-slate-400" },
-  { value: "REVIEW",    label: "İnceleme",  color: "text-amber-400" },
-  { value: "PUBLISHED", label: "Yayınla",   color: "text-emerald-400" },
-  { value: "ARCHIVED",  label: "Arşiv",     color: "text-slate-500" },
+  { value: "DRAFT",     label: "Taslak",    color: "text-[#666666]" },
+  { value: "REVIEW",    label: "İnceleme",  color: "text-[#3A6EA8]" },
+  { value: "PUBLISHED", label: "Yayınla",   color: "text-emerald-600" },
+  { value: "ARCHIVED",  label: "Arşiv",     color: "text-[#666666]" },
 ];
 
 export default function PostEditor({ initial }: Props) {
@@ -172,22 +172,22 @@ export default function PostEditor({ initial }: Props) {
   const selectedCat = catOptions.find((c) => c.id === form.categoryId);
 
   return (
-    <div className="min-h-screen bg-[#0F172A]">
+    <div className="min-h-screen bg-white">
       {/* Top Bar */}
-      <div className="sticky top-0 z-40 bg-[#0F172A]/95 backdrop-blur border-b border-slate-700/50">
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-[#E7E2D8]">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
-          <Link href="/uygulama/yazilar" className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+          <Link href="/uygulama/yazilar" className="p-2 rounded-lg text-[#666666] hover:text-[#111111] hover:bg-[#EBF2FA] transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
             </svg>
           </Link>
-          <h1 className="text-sm font-semibold text-white flex-1 truncate">
+          <h1 className="text-sm font-semibold text-[#111111] flex-1 truncate">
             {isEdit ? form.title || "Yazıyı Düzenle" : "Yeni Yazı"}
           </h1>
 
           {/* Auto-save status */}
           {isEdit && saveStatus !== "idle" && (
-            <span className={`text-xs ${saveStatus === "saving" ? "text-slate-400" : saveStatus === "saved" ? "text-emerald-400" : "text-red-400"}`}>
+            <span className={`text-xs ${saveStatus === "saving" ? "text-[#666666]" : saveStatus === "saved" ? "text-emerald-600" : "text-red-600"}`}>
               {saveStatus === "saving" ? "Kaydediliyor..." : saveStatus === "saved" ? "✓ Otomatik kaydedildi" : "Kaydedilemedi"}
             </span>
           )}
@@ -199,7 +199,7 @@ export default function PostEditor({ initial }: Props) {
                 href={`/preview/${form.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-xs font-medium transition-colors"
+                className="px-3 py-2 bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#444444] rounded-xl text-xs font-medium transition-colors"
               >
                 👁 Önizle
               </a>
@@ -208,7 +208,7 @@ export default function PostEditor({ initial }: Props) {
             <select
               value={form.status}
               onChange={(e) => setField("status", e.target.value as PostData["status"])}
-              className="bg-slate-800 border border-slate-600 text-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 transition-colors"
+              className="bg-white border border-[#E7E2D8] text-[#444444] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#3A6EA8] transition-colors"
             >
               {STATUS_OPTS.map((s) => (
                 <option key={s.value} value={s.value}>{s.label}</option>
@@ -218,14 +218,14 @@ export default function PostEditor({ initial }: Props) {
             <button
               onClick={() => handleSave()}
               disabled={saving}
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-medium transition-colors disabled:opacity-50"
+              className="px-4 py-2 bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8] rounded-xl text-sm font-medium transition-colors disabled:opacity-50"
             >
               {saving ? "..." : "Kaydet"}
             </button>
             <button
               onClick={() => handleSave("PUBLISHED")}
               disabled={saving}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-xl text-sm font-semibold transition-colors disabled:opacity-50"
+              className="px-4 py-2 bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50"
             >
               {form.status === "PUBLISHED" ? "Güncelle" : "Yayınla"}
             </button>
@@ -237,7 +237,7 @@ export default function PostEditor({ initial }: Props) {
         {/* Main Content Area */}
         <div className="flex-1 min-w-0 space-y-4">
           {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">{error}</div>
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm">{error}</div>
           )}
 
           {/* Title */}
@@ -246,24 +246,24 @@ export default function PostEditor({ initial }: Props) {
             value={form.title}
             onChange={(e) => updateTitle(e.target.value)}
             placeholder="Yazı başlığı..."
-            className="w-full bg-transparent border-0 text-white text-3xl font-bold placeholder-slate-600 focus:outline-none"
+            className="w-full bg-transparent border-0 text-[#111111] text-3xl font-bold placeholder:text-[#666666] focus:outline-none"
           />
 
           {/* Slug */}
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-slate-500 font-mono">kurumsal.com/</span>
+            <span className="text-[#666666] font-mono">kurumsal.com/</span>
             <input
               type="text"
               value={form.slug}
               onChange={(e) => { setField("slug", slugify(e.target.value)); setSlugLocked(true); }}
-              className="flex-1 bg-transparent text-slate-400 font-mono focus:outline-none focus:text-amber-400 border-b border-transparent focus:border-amber-500/50 transition-colors"
+              className="flex-1 bg-transparent text-[#666666] font-mono focus:outline-none focus:text-[#3A6EA8] border-b border-transparent focus:border-[#3A6EA8]/50 transition-colors"
               placeholder="url-slug"
             />
             {slugLocked && (
               <button
                 onClick={() => { setSlugLocked(false); setField("slug", slugify(form.title)); }}
                 title="Otomatik slug'a dön"
-                className="text-slate-500 hover:text-amber-400 transition-colors"
+                className="text-[#666666] hover:text-[#3A6EA8] transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -273,15 +273,15 @@ export default function PostEditor({ initial }: Props) {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 border-b border-slate-700/50 mt-2">
+          <div className="flex gap-1 border-b border-[#E7E2D8] mt-2">
             {(["content", "seo", "settings"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === tab
-                    ? "border-amber-500 text-amber-400"
-                    : "border-transparent text-slate-400 hover:text-white"
+                    ? "border-[#3A6EA8] text-[#3A6EA8]"
+                    : "border-transparent text-[#666666] hover:text-[#111111]"
                 }`}
               >
                 {tab === "content" ? "İçerik" : tab === "seo" ? "SEO" : "Ayarlar"}
@@ -297,7 +297,7 @@ export default function PostEditor({ initial }: Props) {
                 onChange={(e) => setField("excerpt", e.target.value)}
                 placeholder="Kısa özet (liste görünümünde ve sosyal medyada kullanılır)..."
                 rows={2}
-                className="w-full bg-slate-800/40 border border-slate-700 text-slate-300 placeholder-slate-600 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors resize-none"
+                className="w-full bg-white border border-[#E7E2D8] text-[#444444] placeholder:text-[#666666] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#3A6EA8] transition-colors resize-none"
               />
 
               {/* Rich Editor */}
@@ -311,27 +311,27 @@ export default function PostEditor({ initial }: Props) {
 
           {activeTab === "seo" && (
             <div className="space-y-4">
-              <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-5 space-y-4">
-                <h3 className="text-sm font-semibold text-white mb-3">Arama Motoru Optimizasyonu</h3>
+              <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5 space-y-4">
+                <h3 className="text-sm font-semibold text-[#111111] mb-3">Arama Motoru Optimizasyonu</h3>
 
                 {/* Preview */}
-                <div className="p-4 bg-slate-900/60 rounded-xl border border-slate-700/50">
-                  <div className="text-xs text-slate-500 mb-2">Google Önizlemesi</div>
-                  <div className="text-blue-400 text-base hover:underline cursor-pointer truncate">
+                <div className="p-4 bg-[#F8F6F1] rounded-xl border border-[#E7E2D8]">
+                  <div className="text-xs text-[#666666] mb-2">Google Önizlemesi</div>
+                  <div className="text-blue-600 text-base hover:underline cursor-pointer truncate">
                     {form.metaTitle || form.title || "Sayfa başlığı"}
                   </div>
                   <div className="text-green-600 text-xs mt-0.5">
                     kurumsal.com/{form.slug || "url-slug"}
                   </div>
-                  <div className="text-slate-400 text-sm mt-1 line-clamp-2">
+                  <div className="text-[#666666] text-sm mt-1 line-clamp-2">
                     {form.metaDescription || form.excerpt || "Meta açıklama burada görünür..."}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">
                     SEO Başlığı
-                    <span className={`ml-2 font-normal ${(form.metaTitle || form.title).length > 60 ? "text-red-400" : "text-slate-500"}`}>
+                    <span className={`ml-2 font-normal ${(form.metaTitle || form.title).length > 60 ? "text-red-600" : "text-[#666666]"}`}>
                       {(form.metaTitle || form.title).length}/60
                     </span>
                   </label>
@@ -341,14 +341,14 @@ export default function PostEditor({ initial }: Props) {
                     onChange={(e) => setField("metaTitle", e.target.value)}
                     placeholder={form.title || "SEO başlığı"}
                     maxLength={80}
-                    className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+                    className="w-full bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8] transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">
                     Meta Açıklama
-                    <span className={`ml-2 font-normal ${form.metaDescription.length > 160 ? "text-red-400" : "text-slate-500"}`}>
+                    <span className={`ml-2 font-normal ${form.metaDescription.length > 160 ? "text-red-600" : "text-[#666666]"}`}>
                       {form.metaDescription.length}/160
                     </span>
                   </label>
@@ -358,7 +358,7 @@ export default function PostEditor({ initial }: Props) {
                     placeholder="Arama sonuçlarında görünecek açıklama..."
                     rows={3}
                     maxLength={200}
-                    className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 transition-colors resize-none"
+                    className="w-full bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8] transition-colors resize-none"
                   />
                 </div>
               </div>
@@ -367,18 +367,18 @@ export default function PostEditor({ initial }: Props) {
 
           {activeTab === "settings" && (
             <div className="space-y-4">
-              <div className="bg-slate-800/40 border border-slate-700 rounded-2xl p-5 space-y-4">
-                <h3 className="text-sm font-semibold text-white mb-3">Yazı Ayarları</h3>
+              <div className="bg-white border border-[#E7E2D8] rounded-2xl p-5 space-y-4">
+                <h3 className="text-sm font-semibold text-[#111111] mb-3">Yazı Ayarları</h3>
 
                 {/* Featured */}
                 <label className="flex items-center justify-between cursor-pointer">
                   <div>
-                    <div className="text-sm text-white">Öne Çıkan Yazı</div>
-                    <div className="text-xs text-slate-500">Ana sayfada öne çıkarılır</div>
+                    <div className="text-sm text-[#111111]">Öne Çıkan Yazı</div>
+                    <div className="text-xs text-[#666666]">Ana sayfada öne çıkarılır</div>
                   </div>
                   <div
                     onClick={() => setField("featured", !form.featured)}
-                    className={`relative w-10 h-5 rounded-full transition-colors cursor-pointer ${form.featured ? "bg-amber-500" : "bg-slate-600"}`}
+                    className={`relative w-10 h-5 rounded-full transition-colors cursor-pointer ${form.featured ? "bg-[#3A6EA8]" : "bg-[#E7E2D8]"}`}
                   >
                     <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.featured ? "translate-x-5" : ""}`} />
                   </div>
@@ -391,8 +391,8 @@ export default function PostEditor({ initial }: Props) {
         {/* Sidebar */}
         <div className="w-72 flex-shrink-0 space-y-4">
           {/* Cover Image */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-4">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Kapak Görseli</label>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-4">
+            <label className="block text-xs font-semibold text-[#666666] uppercase tracking-wider mb-3">Kapak Görseli</label>
             {form.coverImage ? (
               <div className="relative group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -412,8 +412,8 @@ export default function PostEditor({ initial }: Props) {
                 </button>
               </div>
             ) : (
-              <div className="w-full h-28 bg-slate-700/40 rounded-xl flex items-center justify-center border-2 border-dashed border-slate-600">
-                <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-full h-28 bg-[#EBF2FA] rounded-xl flex items-center justify-center border-2 border-dashed border-[#E7E2D8]">
+                <svg className="w-6 h-6 text-[#666666]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
               </div>
@@ -423,23 +423,23 @@ export default function PostEditor({ initial }: Props) {
               value={form.coverImage}
               onChange={(e) => setField("coverImage", e.target.value)}
               placeholder="https://..."
-              className="w-full mt-3 bg-slate-800 border border-slate-600 text-slate-300 placeholder-slate-500 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full mt-3 bg-white border border-[#E7E2D8] text-[#444444] placeholder:text-[#666666] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#3A6EA8] transition-colors"
             />
           </div>
 
           {/* Category */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-4">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Kategori</label>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-4">
+            <label className="block text-xs font-semibold text-[#666666] uppercase tracking-wider mb-3">Kategori</label>
             {selectedCat && (
-              <div className="flex items-center gap-2 mb-2 p-2 bg-slate-700/40 rounded-xl">
+              <div className="flex items-center gap-2 mb-2 p-2 bg-[#EBF2FA] rounded-xl">
                 <span className="text-base">{selectedCat.icon ?? ""}</span>
-                <span className="text-sm text-white font-medium">{selectedCat.name}</span>
+                <span className="text-sm text-[#111111] font-medium">{selectedCat.name}</span>
               </div>
             )}
             <select
               value={form.categoryId}
               onChange={(e) => setField("categoryId", e.target.value)}
-              className="w-full bg-slate-800 border border-slate-600 text-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full bg-white border border-[#E7E2D8] text-[#444444] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8] transition-colors"
             >
               <option value="">— Kategori seçin —</option>
               {catOptions.map((c) => (
@@ -451,16 +451,16 @@ export default function PostEditor({ initial }: Props) {
           </div>
 
           {/* Tags */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-4">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Etiketler</label>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-4">
+            <label className="block text-xs font-semibold text-[#666666] uppercase tracking-wider mb-3">Etiketler</label>
             <div className="flex flex-wrap gap-1.5 mb-3">
               {form.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="flex items-center gap-1 bg-slate-700/60 text-slate-300 text-xs px-2.5 py-1 rounded-full"
+                  className="flex items-center gap-1 bg-[#EBF2FA] text-[#444444] text-xs px-2.5 py-1 rounded-full"
                 >
                   #{tag}
-                  <button onClick={() => removeTag(tag)} className="text-slate-500 hover:text-red-400 transition-colors">
+                  <button onClick={() => removeTag(tag)} className="text-[#666666] hover:text-red-600 transition-colors">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
                     </svg>
@@ -475,11 +475,11 @@ export default function PostEditor({ initial }: Props) {
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag(); } }}
                 placeholder="Etiket ekle..."
-                className="flex-1 bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-500 transition-colors"
+                className="flex-1 bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#3A6EA8] transition-colors"
               />
               <button
                 onClick={addTag}
-                className="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-xs transition-colors"
+                className="px-3 py-2 bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#444444] rounded-xl text-xs transition-colors"
               >
                 Ekle
               </button>
@@ -487,28 +487,28 @@ export default function PostEditor({ initial }: Props) {
           </div>
 
           {/* Status info */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-4 space-y-2">
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Durum</label>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-4 space-y-2">
+            <label className="block text-xs font-semibold text-[#666666] uppercase tracking-wider mb-3">Durum</label>
             {STATUS_OPTS.map((s) => (
               <button
                 key={s.value}
                 onClick={() => setField("status", s.value as PostData["status"])}
                 className={`w-full flex items-center gap-2.5 p-2.5 rounded-xl border transition-colors text-sm ${
                   form.status === s.value
-                    ? "border-amber-500/50 bg-amber-500/10"
-                    : "border-transparent hover:bg-slate-700/40"
+                    ? "border-[#3A6EA8]/50 bg-[#EBF2FA]"
+                    : "border-transparent hover:bg-[#EBF2FA]"
                 }`}
               >
                 <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                  s.value === "DRAFT" ? "bg-slate-400" :
-                  s.value === "REVIEW" ? "bg-amber-400" :
-                  s.value === "PUBLISHED" ? "bg-emerald-400" : "bg-slate-600"
+                  s.value === "DRAFT" ? "bg-[#E7E2D8]" :
+                  s.value === "REVIEW" ? "bg-[#3A6EA8]" :
+                  s.value === "PUBLISHED" ? "bg-emerald-400" : "bg-[#E7E2D8]"
                 }`} />
-                <span className={form.status === s.value ? "text-white font-medium" : "text-slate-400"}>
+                <span className={form.status === s.value ? "text-[#111111] font-medium" : "text-[#666666]"}>
                   {s.label}
                 </span>
                 {form.status === s.value && (
-                  <svg className="w-3.5 h-3.5 text-amber-400 ml-auto" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-[#3A6EA8] ml-auto" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
                   </svg>
                 )}

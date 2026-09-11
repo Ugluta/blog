@@ -109,10 +109,10 @@ export default function VideoCreatorPage() {
               onClick={() => step > i + 1 && setStep(i + 1)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                 step === i + 1
-                  ? "bg-amber-500 text-slate-900"
+                  ? "bg-[#3A6EA8] text-white"
                   : step > i + 1
-                  ? "bg-green-500/20 text-green-400 cursor-pointer"
-                  : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                  ? "bg-green-500/20 text-green-600 cursor-pointer"
+                  : "bg-white text-[#666666] cursor-not-allowed"
               }`}
             >
               <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-black bg-current/20">
@@ -120,7 +120,7 @@ export default function VideoCreatorPage() {
               </span>
               <span className="hidden sm:block">{s}</span>
             </button>
-            {i < 3 && <span className="text-slate-700 text-xs">→</span>}
+            {i < 3 && <span className="text-[#444444] text-xs">→</span>}
           </div>
         ))}
       </div>
@@ -128,21 +128,21 @@ export default function VideoCreatorPage() {
       {/* Step 1: Basic Info */}
       {step === 1 && (
         <div className="space-y-6">
-          <h1 className="text-xl font-bold text-white">Temel Bilgiler</h1>
+          <h1 className="text-xl font-bold text-[#111111]">Temel Bilgiler</h1>
 
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-6 space-y-5">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 space-y-5">
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Video Başlığı</label>
+              <label className="block text-xs font-medium text-[#666666] mb-1.5">Video Başlığı</label>
               <input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Videona bir isim ver..."
-                className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#3A6EA8]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-3">En-Boy Oranı</label>
+              <label className="block text-xs font-medium text-[#666666] mb-3">En-Boy Oranı</label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {RATIOS.map((r) => (
                   <button
@@ -150,13 +150,13 @@ export default function VideoCreatorPage() {
                     onClick={() => setRatio(r.id)}
                     className={`p-3 rounded-xl border text-center transition-all ${
                       ratio === r.id
-                        ? "border-amber-500 bg-amber-500/10"
-                        : "border-slate-600 hover:border-slate-500 bg-slate-800/50"
+                        ? "border-[#3A6EA8] bg-[#EBF2FA]"
+                        : "border-[#E7E2D8] hover:border-[#B5CDE8] bg-white"
                     }`}
                   >
-                    <div className={`mx-auto bg-slate-600 rounded mb-2 ${ratioClass[r.id]}`} />
-                    <p className={`text-xs font-bold ${ratio === r.id ? "text-amber-400" : "text-slate-300"}`}>{r.label}</p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">{r.desc}</p>
+                    <div className={`mx-auto bg-[#E7E2D8] rounded mb-2 ${ratioClass[r.id]}`} />
+                    <p className={`text-xs font-bold ${ratio === r.id ? "text-[#3A6EA8]" : "text-[#444444]"}`}>{r.label}</p>
+                    <p className="text-[10px] text-[#666666] mt-0.5">{r.desc}</p>
                   </button>
                 ))}
               </div>
@@ -166,7 +166,7 @@ export default function VideoCreatorPage() {
           <button
             onClick={() => setStep(2)}
             disabled={!title}
-            className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-900 font-semibold transition-colors"
+            className="w-full py-3 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-40 text-white font-semibold transition-colors"
           >
             Devam Et →
           </button>
@@ -176,11 +176,11 @@ export default function VideoCreatorPage() {
       {/* Step 2: Scenes & Music */}
       {step === 2 && (
         <div className="space-y-6">
-          <h1 className="text-xl font-bold text-white">Sahneler &amp; Müzik</h1>
+          <h1 className="text-xl font-bold text-[#111111]">Sahneler &amp; Müzik</h1>
 
           {/* Music Upload */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-5">
-            <h2 className="text-sm font-bold text-slate-300 mb-3">🎵 Arka Plan Müziği</h2>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-5">
+            <h2 className="text-sm font-bold text-[#444444] mb-3">🎵 Arka Plan Müziği</h2>
             <label className="block cursor-pointer">
               <input
                 type="file"
@@ -189,19 +189,19 @@ export default function VideoCreatorPage() {
                 onChange={(e) => setMusicFile(e.target.files?.[0] ?? null)}
               />
               <div className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
-                musicFile ? "border-green-500/50 bg-green-500/5" : "border-slate-600 hover:border-amber-500/50"
+                musicFile ? "border-green-500/50 bg-green-500/5" : "border-[#E7E2D8] hover:border-[#3A6EA8]/50"
               }`}>
                 {musicFile ? (
                   <>
                     <span className="text-3xl block mb-2">🎵</span>
-                    <p className="text-sm font-semibold text-green-400">{musicFile.name}</p>
-                    <p className="text-xs text-slate-500 mt-1">{(musicFile.size / 1024 / 1024).toFixed(1)} MB</p>
+                    <p className="text-sm font-semibold text-green-600">{musicFile.name}</p>
+                    <p className="text-xs text-[#666666] mt-1">{(musicFile.size / 1024 / 1024).toFixed(1)} MB</p>
                   </>
                 ) : (
                   <>
                     <span className="text-3xl block mb-2">📁</span>
-                    <p className="text-sm text-slate-300">MP3, WAV, M4A yükleyin</p>
-                    <p className="text-xs text-slate-500 mt-1">Maks. 50 MB</p>
+                    <p className="text-sm text-[#444444]">MP3, WAV, M4A yükleyin</p>
+                    <p className="text-xs text-[#666666] mt-1">Maks. 50 MB</p>
                   </>
                 )}
               </div>
@@ -209,19 +209,19 @@ export default function VideoCreatorPage() {
           </div>
 
           {/* Scenes */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-5">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-bold text-slate-300">🖼️ Sahneler ({scenes.length})</h2>
+              <h2 className="text-sm font-bold text-[#444444]">🖼️ Sahneler ({scenes.length})</h2>
               <button
                 onClick={addScene}
-                className="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs font-semibold transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#444444] text-xs font-semibold transition-colors"
               >
                 + Sahne Ekle
               </button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {scenes.map((scene, i) => (
-                <div key={scene.id} className="relative group rounded-xl overflow-hidden bg-slate-800 border border-slate-700">
+                <div key={scene.id} className="relative group rounded-xl overflow-hidden bg-white border border-[#E7E2D8]">
                   <img src={scene.imageUrl} alt="" className="w-full aspect-square object-cover" />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button className="p-1.5 rounded-lg bg-white/20 text-white text-xs">✏️</button>
@@ -231,35 +231,35 @@ export default function VideoCreatorPage() {
                     <input
                       value={scene.text}
                       onChange={(e) => setScenes((prev) => prev.map((s) => s.id === scene.id ? { ...s, text: e.target.value } : s))}
-                      className="w-full text-xs bg-transparent text-slate-300 focus:outline-none"
+                      className="w-full text-xs bg-transparent text-[#444444] focus:outline-none"
                     />
                     <div className="flex items-center gap-1 mt-1">
-                      <span className="text-[10px] text-slate-500">#{i + 1}</span>
+                      <span className="text-[10px] text-[#666666]">#{i + 1}</span>
                       <input
                         type="number"
                         value={scene.duration}
                         min={1}
                         max={10}
                         onChange={(e) => setScenes((prev) => prev.map((s) => s.id === scene.id ? { ...s, duration: Number(e.target.value) } : s))}
-                        className="w-10 text-[10px] bg-slate-700 rounded px-1 text-slate-300 focus:outline-none text-center"
+                        className="w-10 text-[10px] bg-[#EBF2FA] rounded px-1 text-[#444444] focus:outline-none text-center"
                       />
-                      <span className="text-[10px] text-slate-500">sn</span>
+                      <span className="text-[10px] text-[#666666]">sn</span>
                     </div>
                   </div>
                 </div>
               ))}
               {/* Add scene placeholder */}
-              <button onClick={addScene} className="rounded-xl border-2 border-dashed border-slate-600 hover:border-amber-500/50 aspect-square flex items-center justify-center text-slate-500 hover:text-amber-400 transition-colors text-2xl">
+              <button onClick={addScene} className="rounded-xl border-2 border-dashed border-[#E7E2D8] hover:border-[#3A6EA8]/50 aspect-square flex items-center justify-center text-[#666666] hover:text-[#3A6EA8] transition-colors text-2xl">
                 +
               </button>
             </div>
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors">
+            <button onClick={() => setStep(1)} className="flex-1 py-3 rounded-xl bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8] font-semibold transition-colors">
               ← Geri
             </button>
-            <button onClick={() => setStep(3)} className="flex-2 flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition-colors">
+            <button onClick={() => setStep(3)} className="flex-2 flex-1 py-3 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold transition-colors">
               Devam Et →
             </button>
           </div>
@@ -269,34 +269,34 @@ export default function VideoCreatorPage() {
       {/* Step 3: Publish Settings */}
       {step === 3 && (
         <div className="space-y-6">
-          <h1 className="text-xl font-bold text-white">Yayın Ayarları</h1>
+          <h1 className="text-xl font-bold text-[#111111]">Yayın Ayarları</h1>
 
           {/* Caption */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-5 space-y-4">
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-5 space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Açıklama / Caption</label>
+              <label className="block text-xs font-medium text-[#666666] mb-1.5">Açıklama / Caption</label>
               <textarea
                 value={caption}
                 onChange={(e) => setCaption(e.target.value)}
                 rows={3}
                 placeholder="Video açıklaması..."
-                className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 resize-none"
+                className="w-full bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#3A6EA8] resize-none"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">Hashtagler</label>
+              <label className="block text-xs font-medium text-[#666666] mb-1.5">Hashtagler</label>
               <input
                 value={hashtags}
                 onChange={(e) => setHashtags(e.target.value)}
                 placeholder="#video #içerik #trend"
-                className="w-full bg-slate-800 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full bg-white border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#3A6EA8]"
               />
             </div>
           </div>
 
           {/* Platforms */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-5">
-            <h2 className="text-sm font-bold text-slate-300 mb-4">Paylaşım Platformları</h2>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-5">
+            <h2 className="text-sm font-bold text-[#444444] mb-4">Paylaşım Platformları</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {PLATFORMS.map((p) => {
                 const selected = selectedPlatforms.includes(p.id);
@@ -305,19 +305,19 @@ export default function VideoCreatorPage() {
                     key={p.id}
                     onClick={() => p.connected ? togglePlatform(p.id) : null}
                     className={`relative flex items-center gap-3 p-3 rounded-xl border transition-all text-left
-                      ${selected ? "border-amber-500 bg-amber-500/10" : "border-slate-600 bg-slate-800/50"}
-                      ${!p.connected ? "opacity-50 cursor-not-allowed" : "hover:border-slate-500 cursor-pointer"}`}
+                      ${selected ? "border-[#3A6EA8] bg-[#EBF2FA]" : "border-[#E7E2D8] bg-white"}
+                      ${!p.connected ? "opacity-50 cursor-not-allowed" : "hover:border-[#B5CDE8] cursor-pointer"}`}
                   >
                     <span className="text-xl">{p.icon}</span>
                     <div>
-                      <p className={`text-xs font-semibold ${selected ? "text-amber-400" : "text-slate-300"}`}>{p.label}</p>
-                      <p className="text-[10px] text-slate-500">{p.connected ? "Bağlı" : "Bağlı değil"}</p>
+                      <p className={`text-xs font-semibold ${selected ? "text-[#3A6EA8]" : "text-[#444444]"}`}>{p.label}</p>
+                      <p className="text-[10px] text-[#666666]">{p.connected ? "Bağlı" : "Bağlı değil"}</p>
                     </div>
                     {!p.connected && (
                       <a
                         href="/uygulama/sosyal-hesaplar"
                         onClick={(e) => e.stopPropagation()}
-                        className="absolute top-1.5 right-1.5 text-[9px] text-amber-400 hover:text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded"
+                        className="absolute top-1.5 right-1.5 text-[9px] text-[#3A6EA8] hover:text-[#2D5A8E] bg-[#EBF2FA] px-1.5 py-0.5 rounded"
                       >
                         Bağla
                       </a>
@@ -329,15 +329,15 @@ export default function VideoCreatorPage() {
           </div>
 
           {/* Schedule */}
-          <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-5">
-            <h2 className="text-sm font-bold text-slate-300 mb-4">Zamanlama</h2>
+          <div className="bg-white rounded-2xl border border-[#E7E2D8] p-5">
+            <h2 className="text-sm font-bold text-[#444444] mb-4">Zamanlama</h2>
             <div className="flex gap-3 mb-4">
               {(["now", "later"] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setScheduleMode(m)}
                   className={`flex-1 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
-                    scheduleMode === m ? "border-amber-500 bg-amber-500/10 text-amber-400" : "border-slate-600 text-slate-400"
+                    scheduleMode === m ? "border-[#3A6EA8] bg-[#EBF2FA] text-[#3A6EA8]" : "border-[#E7E2D8] text-[#666666]"
                   }`}
                 >
                   {m === "now" ? "🚀 Hemen Yayınla" : "🕐 Zamanla"}
@@ -349,25 +349,25 @@ export default function VideoCreatorPage() {
                 type="datetime-local"
                 value={scheduledAt}
                 onChange={(e) => setScheduledAt(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500"
+                className="w-full bg-white border border-[#E7E2D8] text-[#111111] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#3A6EA8]"
               />
             )}
           </div>
 
           {renderError && (
-            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-600 text-sm">
               {renderError}
             </div>
           )}
 
           <div className="flex gap-3">
-            <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors">
+            <button onClick={() => setStep(2)} className="flex-1 py-3 rounded-xl bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8] font-semibold transition-colors">
               ← Geri
             </button>
             <button
               onClick={startRender}
               disabled={rendering}
-              className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-slate-900 font-semibold transition-colors"
+              className="flex-1 py-3 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-60 text-white font-semibold transition-colors"
             >
               {rendering ? (
                 <span className="flex items-center justify-center gap-2">
@@ -387,21 +387,21 @@ export default function VideoCreatorPage() {
       {step === 4 && (
         <div className="text-center py-12">
           <span className="text-7xl block mb-6">🎉</span>
-          <h1 className="text-2xl font-bold text-white mb-2">Video Hazır!</h1>
-          <p className="text-slate-400 mb-8">Videonuz başarıyla oluşturuldu ve yayın kuyruğuna eklendi.</p>
+          <h1 className="text-2xl font-bold text-[#111111] mb-2">Video Hazır!</h1>
+          <p className="text-[#666666] mb-8">Videonuz başarıyla oluşturuldu ve yayın kuyruğuna eklendi.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             {outputUrl && (
               <a
                 href={outputUrl}
                 download
-                className="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-[#EBF2FA] hover:bg-[#B5CDE8] text-[#3A6EA8] font-semibold transition-colors flex items-center gap-2"
               >
                 ⬇️ İndir
               </a>
             )}
             <button
               onClick={() => { setStep(1); setTitle(""); setMusicFile(null); setScenes([{ id: "s1", imageUrl: "https://picsum.photos/400/700?random=1", text: "Sahne 1", duration: 3 }]); }}
-              className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold transition-colors"
+              className="px-6 py-3 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold transition-colors"
             >
               + Yeni Video Oluştur
             </button>

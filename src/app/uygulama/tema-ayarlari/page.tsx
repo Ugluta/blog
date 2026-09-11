@@ -40,12 +40,12 @@ function LayoutCard({
       onClick={() => onSelect(id)}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl border-2 transition-all ${
         selected
-          ? "border-amber-500 bg-amber-500/10"
-          : "border-slate-700/60 bg-slate-800/40 hover:border-slate-600"
+          ? "border-[#3A6EA8] bg-[#EBF2FA]"
+          : "border-[#E7E2D8] bg-white hover:border-[#B5CDE8]"
       }`}
     >
       <div className="w-full aspect-[4/3] rounded-lg overflow-hidden">{children}</div>
-      <span className={`text-xs font-medium ${selected ? "text-amber-400" : "text-slate-400"}`}>
+      <span className={`text-xs font-medium ${selected ? "text-[#3A6EA8]" : "text-[#666666]"}`}>
         {label}
       </span>
     </button>
@@ -94,18 +94,18 @@ function DraggableList({
           onDragEnd={onDragEnd}
           className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-grab active:cursor-grabbing transition-all ${
             over === i
-              ? "border-amber-500/60 bg-amber-500/10 scale-[1.01]"
-              : "border-slate-700/50 bg-slate-800/40 hover:border-slate-600"
+              ? "border-[#3A6EA8]/60 bg-[#EBF2FA] scale-[1.01]"
+              : "border-[#E7E2D8] bg-white hover:border-[#B5CDE8]"
           } ${!item.enabled ? "opacity-50" : ""}`}
         >
           {/* grip */}
-          <svg className="w-4 h-4 text-slate-600 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
+          <svg className="w-4 h-4 text-[#666666] flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
             <circle cx="5.5" cy="4" r="1.2" /><circle cx="10.5" cy="4" r="1.2" />
             <circle cx="5.5" cy="8" r="1.2" /><circle cx="10.5" cy="8" r="1.2" />
             <circle cx="5.5" cy="12" r="1.2" /><circle cx="10.5" cy="12" r="1.2" />
           </svg>
           <span className="text-lg">{item.icon}</span>
-          <span className="flex-1 text-sm text-slate-200">{item.label}</span>
+          <span className="flex-1 text-sm text-[#111111]">{item.label}</span>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -113,7 +113,7 @@ function DraggableList({
               checked={item.enabled}
               onChange={() => toggle(item.id)}
             />
-            <div className="w-9 h-5 bg-slate-700 rounded-full peer peer-checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500" />
+            <div className="w-9 h-5 bg-[#EBF2FA] rounded-full peer peer-checked:after:translate-x-4 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3A6EA8]" />
           </label>
         </div>
       ))}
@@ -134,19 +134,19 @@ function ColorField({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <label className="text-sm text-slate-300">{label}</label>
+      <label className="text-sm text-[#444444]">{label}</label>
       <div className="flex items-center gap-2">
         <input
           type="color"
           value={value || "#f59e0b"}
           onChange={(e) => onChange(e.target.value)}
-          className="w-8 h-8 rounded-lg border border-slate-700/50 cursor-pointer bg-transparent"
+          className="w-8 h-8 rounded-lg border border-[#E7E2D8] cursor-pointer bg-transparent"
         />
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-28 bg-slate-900/50 border border-slate-700/50 rounded-lg px-2.5 py-1.5 text-white text-sm font-mono focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+          className="w-28 bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-2.5 py-1.5 text-[#111111] text-sm font-mono focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
         />
       </div>
     </div>
@@ -166,9 +166,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-300 mb-1.5">{label}</label>
+      <label className="block text-sm font-medium text-[#444444] mb-1.5">{label}</label>
       {children}
-      {hint && <p className="text-[10px] text-slate-600 mt-1">{hint}</p>}
+      {hint && <p className="text-[10px] text-[#666666] mt-1">{hint}</p>}
     </div>
   );
 }
@@ -190,7 +190,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 placeholder:text-slate-500"
+      className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 placeholder:text-[#666666]"
     />
   );
 }
@@ -208,7 +208,7 @@ function Select({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+      className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
     >
       {options.map((o) => (
         <option key={o.value} value={o.value}>
@@ -238,7 +238,7 @@ function Textarea({
       onChange={(e) => onChange(e.target.value)}
       rows={rows}
       placeholder={placeholder}
-      className={`w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 resize-none placeholder:text-slate-500 ${mono ? "font-mono" : ""}`}
+      className={`w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 resize-none placeholder:text-[#666666] ${mono ? "font-mono" : ""}`}
     />
   );
 }
@@ -567,16 +567,16 @@ export default function TemaAyarlariPage() {
   if (loading) {
     return (
       <div className="p-6 flex items-center justify-center min-h-[400px]">
-        <div className="text-slate-400 text-sm">Yükleniyor…</div>
+        <div className="text-[#666666] text-sm">Yükleniyor…</div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0a0f1e]">
+    <div className="flex min-h-screen bg-[#F8F6F1]">
       {/* ── Sidebar nav ── */}
-      <aside className="w-52 flex-shrink-0 border-r border-slate-700/50 py-6 px-3 space-y-1">
-        <p className="text-[10px] uppercase tracking-widest text-slate-600 font-semibold px-3 mb-3">
+      <aside className="w-52 flex-shrink-0 border-r border-[#E7E2D8] py-6 px-3 space-y-1">
+        <p className="text-[10px] uppercase tracking-widest text-[#666666] font-semibold px-3 mb-3">
           Tema Ayarları
         </p>
         {NAV.map((n) => (
@@ -585,8 +585,8 @@ export default function TemaAyarlariPage() {
             onClick={() => setSection(n.key)}
             className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
               section === n.key
-                ? "bg-amber-500/15 text-amber-400 font-medium"
-                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                ? "bg-[#EBF2FA] text-[#3A6EA8] font-medium"
+                : "text-[#666666] hover:text-[#111111] hover:bg-[#EBF2FA]"
             }`}
           >
             <span className="text-base">{n.icon}</span>
@@ -598,23 +598,23 @@ export default function TemaAyarlariPage() {
       {/* ── Content ── */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700/50 bg-slate-900/30 sticky top-0 z-10">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E7E2D8] bg-[#F8F6F1] sticky top-0 z-10">
           <div>
-            <h1 className="text-lg font-bold text-white">
+            <h1 className="text-lg font-bold text-[#111111]">
               {NAV.find((n) => n.key === section)?.icon}{" "}
               {NAV.find((n) => n.key === section)?.label} Ayarları
             </h1>
           </div>
           <div className="flex items-center gap-3">
             {saved && (
-              <span className="text-xs text-green-400 flex items-center gap-1">
+              <span className="text-xs text-green-600 flex items-center gap-1">
                 <span>✓</span> Kaydedildi
               </span>
             )}
             <button
               onClick={save}
               disabled={saving}
-              className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm disabled:opacity-50 transition-colors"
+              className="px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm disabled:opacity-50 transition-colors"
             >
               {saving ? "Kaydediliyor…" : "Değişiklikleri Kaydet"}
             </button>
@@ -684,7 +684,7 @@ export default function TemaAyarlariPage() {
           {section === "duzen" && (
             <>
               <Card title="Site Düzeni">
-                <p className="text-xs text-slate-500 mb-4">Sitenin genel görünüm tipini seçin</p>
+                <p className="text-xs text-[#666666] mb-4">Sitenin genel görünüm tipini seçin</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {(["full","boxed","framed","bordered"] as const).map((l) => (
                     <LayoutCard key={l} id={l} label={{ full: "Tam", boxed: "Kutulu", framed: "Çerçeveli", bordered: "Kenarlıklı" }[l]} selected={settings.layout_type === l} onSelect={(v) => set("layout_type", v)}>
@@ -701,15 +701,15 @@ export default function TemaAyarlariPage() {
                       type="range" min="960" max="1920" step="40"
                       value={settings.site_width}
                       onChange={(e) => set("site_width", e.target.value)}
-                      className="flex-1 accent-amber-500"
+                      className="flex-1 accent-[#3A6EA8]"
                     />
-                    <span className="text-sm text-white w-16 text-right">{settings.site_width}px</span>
+                    <span className="text-sm text-[#111111] w-16 text-right">{settings.site_width}px</span>
                   </div>
                 </Field>
               </Card>
 
               <Card title="Yazı Sayfası Düzeni">
-                <p className="text-xs text-slate-500 mb-4">Yazı içerik sayfasının yerleşimi</p>
+                <p className="text-xs text-[#666666] mb-4">Yazı içerik sayfasının yerleşimi</p>
                 <div className="grid grid-cols-3 gap-3">
                   {(["content_sidebar","sidebar_content","fullwidth_content"] as const).map((l) => (
                     <LayoutCard key={l} id={l} label={{ content_sidebar: "İçerik + Kenar", sidebar_content: "Kenar + İçerik", fullwidth_content: "Tam Genişlik" }[l]} selected={settings.post_layout === l} onSelect={(v) => set("post_layout", v)}>
@@ -725,7 +725,7 @@ export default function TemaAyarlariPage() {
           {section === "baslik" && (
             <>
               <Card title="Başlık Düzeni">
-                <p className="text-xs text-slate-500 mb-4">Header bölümünün görünümünü seçin</p>
+                <p className="text-xs text-[#666666] mb-4">Header bölümünün görünümünü seçin</p>
                 <div className="grid grid-cols-2 gap-3">
                   {(["header_standard","header_centered","header_topbar","header_split"] as const).map((l) => (
                     <LayoutCard key={l} id={l} label={{ header_standard: "Standart", header_centered: "Ortalı Logo", header_topbar: "Üst Bar + Header", header_split: "Bölünmüş" }[l]} selected={settings.header_layout === l} onSelect={(v) => set("header_layout", v)}>
@@ -802,8 +802,8 @@ export default function TemaAyarlariPage() {
                       onClick={() => set("bg_type", b.id)}
                       className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
                         settings.bg_type === b.id
-                          ? "bg-amber-500/20 border-amber-500/60 text-amber-400"
-                          : "border-slate-700/50 text-slate-400 hover:border-slate-600"
+                          ? "bg-[#EBF2FA] border-[#3A6EA8]/60 text-[#3A6EA8]"
+                          : "border-[#E7E2D8] text-[#666666] hover:border-[#B5CDE8]"
                       }`}
                     >
                       {b.label}
@@ -838,8 +838,8 @@ export default function TemaAyarlariPage() {
                         onClick={() => set("bg_pattern", p)}
                         className={`aspect-square rounded-xl border-2 transition-colors flex items-center justify-center text-xs ${
                           settings.bg_pattern === p
-                            ? "border-amber-500 bg-amber-500/10 text-amber-400"
-                            : "border-slate-700/50 text-slate-500 hover:border-slate-600"
+                            ? "border-[#3A6EA8] bg-[#EBF2FA] text-[#3A6EA8]"
+                            : "border-[#E7E2D8] text-[#666666] hover:border-[#B5CDE8]"
                         }`}
                         style={{
                           backgroundImage:
@@ -896,15 +896,15 @@ export default function TemaAyarlariPage() {
                       }}
                       className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-colors ${
                         settings.primary_color === skin.primary && settings.secondary_color === skin.secondary
-                          ? "border-amber-500 bg-amber-500/10"
-                          : "border-slate-700/50 hover:border-slate-600"
+                          ? "border-[#3A6EA8] bg-[#EBF2FA]"
+                          : "border-[#E7E2D8] hover:border-[#B5CDE8]"
                       }`}
                     >
                       <div className="flex gap-1.5">
                         <div className="w-6 h-6 rounded-full" style={{ backgroundColor: skin.primary }} />
                         <div className="w-6 h-6 rounded-full" style={{ backgroundColor: skin.secondary }} />
                       </div>
-                      <span className="text-[10px] text-slate-400 text-center leading-tight">{skin.label}</span>
+                      <span className="text-[10px] text-[#666666] text-center leading-tight">{skin.label}</span>
                     </button>
                   ))}
                 </div>
@@ -964,9 +964,9 @@ export default function TemaAyarlariPage() {
                     type="range" min="12" max="20" step="1"
                     value={settings.font_size_base}
                     onChange={(e) => set("font_size_base", e.target.value)}
-                    className="flex-1 accent-amber-500"
+                    className="flex-1 accent-[#3A6EA8]"
                   />
-                  <span className="text-sm text-white w-16 text-right">{settings.font_size_base}px</span>
+                  <span className="text-sm text-[#111111] w-16 text-right">{settings.font_size_base}px</span>
                 </div>
               </Field>
               <Field label="Satır Yüksekliği">
@@ -992,12 +992,12 @@ export default function TemaAyarlariPage() {
               </Field>
 
               {/* Preview */}
-              <div className="mt-4 p-4 rounded-xl border border-slate-700/50 bg-slate-900/30">
-                <p className="text-[10px] text-slate-600 mb-2 uppercase tracking-widest">Önizleme</p>
-                <h3 style={{ fontFamily: settings.font_heading, fontWeight: settings.font_weight_heading, fontSize: "20px" }} className="text-white mb-1">
+              <div className="mt-4 p-4 rounded-xl border border-[#E7E2D8] bg-[#F8F6F1]">
+                <p className="text-[10px] text-[#666666] mb-2 uppercase tracking-widest">Önizleme</p>
+                <h3 style={{ fontFamily: settings.font_heading, fontWeight: settings.font_weight_heading, fontSize: "20px" }} className="text-[#111111] mb-1">
                   Örnek Başlık Metni
                 </h3>
-                <p style={{ fontFamily: settings.font_body, fontSize: `${settings.font_size_base}px`, lineHeight: settings.line_height }} className="text-slate-300 text-sm">
+                <p style={{ fontFamily: settings.font_body, fontSize: `${settings.font_size_base}px`, lineHeight: settings.line_height }} className="text-[#444444] text-sm">
                   Burası gövde metni örneğidir. Seçilen font ayarları bu alanda görüntülenmektedir.
                 </p>
               </div>
@@ -1008,7 +1008,7 @@ export default function TemaAyarlariPage() {
           {section === "bloklar" && (
             <>
               <Card title="Blok Başlık Stili">
-                <p className="text-xs text-slate-500 mb-4">Haber listesi bölümlerinin başlık görünümünü seçin</p>
+                <p className="text-xs text-[#666666] mb-4">Haber listesi bölümlerinin başlık görünümünü seçin</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {(["block_line","block_left_border","block_bg","block_double","block_slash","block_dot","block_icon","block_center"] as const).map((s) => (
                     <LayoutCard
@@ -1048,8 +1048,8 @@ export default function TemaAyarlariPage() {
                       onClick={() => set("block_style", s.id)}
                       className={`py-3 px-4 rounded-xl border-2 text-sm font-medium transition-colors ${
                         settings.block_style === s.id
-                          ? "border-amber-500 bg-amber-500/10 text-amber-400"
-                          : "border-slate-700/50 text-slate-400 hover:border-slate-600"
+                          ? "border-[#3A6EA8] bg-[#EBF2FA] text-[#3A6EA8]"
+                          : "border-[#E7E2D8] text-[#666666] hover:border-[#B5CDE8]"
                       }`}
                     >
                       {s.label}
@@ -1063,7 +1063,7 @@ export default function TemaAyarlariPage() {
           {/* ── ANASAYFA ── */}
           {section === "anasayfa" && (
             <Card title="Anasayfa Bölüm Sıralaması">
-              <p className="text-xs text-slate-500 mb-4">
+              <p className="text-xs text-[#666666] mb-4">
                 Bölümleri sürükleyerek sıralayın. Göstermek istemediklerinizi kapatın.
               </p>
               <DraggableList items={homeSections} onChange={setHomeSections} />
@@ -1073,7 +1073,7 @@ export default function TemaAyarlariPage() {
           {/* ── KENAR ÇUBUĞU ── */}
           {section === "kenarcubugu" && (
             <Card title="Kenar Çubuğu Widget Sıralaması">
-              <p className="text-xs text-slate-500 mb-4">
+              <p className="text-xs text-[#666666] mb-4">
                 Widget&apos;ları sürükleyerek sıralayın. Göstermek istemediklerinizi kapatın.
               </p>
               <DraggableList items={sidebarWidgets} onChange={setSidebarWidgets} />
@@ -1144,8 +1144,8 @@ export default function TemaAyarlariPage() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-6 space-y-4">
-      <h2 className="text-sm font-semibold text-white border-b border-slate-700/50 pb-3">{title}</h2>
+    <div className="bg-white rounded-2xl border border-[#E7E2D8] p-6 space-y-4">
+      <h2 className="text-sm font-semibold text-[#111111] border-b border-[#E7E2D8] pb-3">{title}</h2>
       {children}
     </div>
   );
@@ -1162,10 +1162,10 @@ function ToggleRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-sm text-slate-300">{label}</span>
+      <span className="text-sm text-[#444444]">{label}</span>
       <label className="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" className="sr-only peer" checked={value} onChange={(e) => onChange(e.target.checked)} />
-        <div className="w-10 h-5 bg-slate-700 rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500" />
+        <div className="w-10 h-5 bg-[#EBF2FA] rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#3A6EA8]" />
       </label>
     </div>
   );

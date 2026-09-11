@@ -51,9 +51,9 @@ const INTERVAL_PRESETS = [
 ];
 
 const STATUS_STYLE: Record<string, string> = {
-  active: "bg-green-500/20 text-green-400",
-  paused: "bg-yellow-500/20 text-yellow-400",
-  error: "bg-red-500/20 text-red-400",
+  active: "bg-green-500/20 text-green-600",
+  paused: "bg-yellow-500/20 text-yellow-600",
+  error: "bg-red-500/20 text-red-600",
 };
 const STATUS_LABEL: Record<string, string> = {
   active: "Aktif",
@@ -223,8 +223,8 @@ export default function ScraperPage() {
       {/* header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Scraper Kaynakları</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <h1 className="text-2xl font-bold text-[#111111]">Scraper Kaynakları</h1>
+          <p className="text-sm text-[#666666] mt-1">
             Web siteleri, RSS feed&apos;leri ve sosyal medya kanallarından otomatik içerik toplayın.
           </p>
         </div>
@@ -243,21 +243,21 @@ export default function ScraperPage() {
           { label: "Aktif", value: sources.filter((s) => s.status === "active").length },
           { label: "Toplam Makale", value: sources.reduce((a, s) => a + s.articlesFound, 0) },
         ].map((stat) => (
-          <div key={stat.label} className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-4 text-center">
-            <div className="text-2xl font-bold text-white">{stat.value}</div>
-            <div className="text-sm text-slate-400">{stat.label}</div>
+          <div key={stat.label} className="bg-white rounded-xl border border-[#E7E2D8] p-4 text-center">
+            <div className="text-2xl font-bold text-[#111111]">{stat.value}</div>
+            <div className="text-sm text-[#666666]">{stat.label}</div>
           </div>
         ))}
       </div>
 
       {/* source list */}
       {loading ? (
-        <div className="text-center py-16 text-slate-400">Yükleniyor…</div>
+        <div className="text-center py-16 text-[#666666]">Yükleniyor…</div>
       ) : sources.length === 0 ? (
-        <div className="bg-slate-800/40 rounded-xl border border-slate-700/50 border-dashed text-center py-16">
+        <div className="bg-white rounded-xl border border-[#E7E2D8] border-dashed text-center py-16">
           <div className="text-4xl mb-3">🕷️</div>
-          <p className="text-slate-300 font-medium">Henüz kaynak eklenmemiş</p>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="text-[#444444] font-medium">Henüz kaynak eklenmemiş</p>
+          <p className="text-[#666666] text-sm mt-1">
             İlk kaynağı ekleyerek otomatik içerik toplamaya başlayın.
           </p>
           <button
@@ -272,28 +272,28 @@ export default function ScraperPage() {
           {sources.map((s) => (
             <div
               key={s.id}
-              className="bg-[#1E293B] rounded-xl border border-slate-700/50 p-4 flex items-center gap-4"
+              className="bg-white rounded-xl border border-[#E7E2D8] p-4 flex items-center gap-4"
             >
               {/* type icon */}
-              <div className="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center text-xl flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-[#EBF2FA] flex items-center justify-center text-xl flex-shrink-0">
                 {s.type === "rss" ? "📡" : s.type === "youtube" ? "▶️" : s.type === "twitter" ? "🐦" : "📰"}
               </div>
 
               {/* main info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-semibold text-white truncate">{s.name}</span>
+                  <span className="font-semibold text-[#111111] truncate">{s.name}</span>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_STYLE[s.status] ?? "bg-slate-700/50 text-slate-400"}`}
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_STYLE[s.status] ?? "bg-[#EBF2FA] text-[#666666]"}`}
                   >
                     {STATUS_LABEL[s.status] ?? s.status}
                   </span>
-                  <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-blue-500/20 text-blue-600 px-2 py-0.5 rounded-full">
                     {SOURCE_TYPES.find((t) => t.value === s.type)?.label ?? s.type}
                   </span>
                 </div>
-                <div className="text-xs text-slate-400 mt-0.5 truncate">{s.url}</div>
-                <div className="flex items-center gap-4 mt-1 text-xs text-slate-500 flex-wrap">
+                <div className="text-xs text-[#666666] mt-0.5 truncate">{s.url}</div>
+                <div className="flex items-center gap-4 mt-1 text-xs text-[#666666] flex-wrap">
                   <span>⏱ {INTERVAL_PRESETS.find((p) => p.value === s.interval)?.label ?? `${s.interval} dk`}</span>
                   <span>🤖 {s.aiProvider} / {AI_TASKS.find((t) => t.value === s.aiTask)?.label}</span>
                   <span>📂 {categoryName(s.categoryId)}</span>
@@ -301,11 +301,11 @@ export default function ScraperPage() {
                   <span>🕒 Son çalışma: {formatTime(s.lastRunAt)}</span>
                 </div>
                 {s.status === "error" && s.errorMessage && (
-                  <div className="mt-1 text-xs text-red-500 truncate">⚠ {s.errorMessage}</div>
+                  <div className="mt-1 text-xs text-red-600 truncate">⚠ {s.errorMessage}</div>
                 )}
                 {runResult?.id === s.id && (
                   <div
-                    className={`mt-1 text-xs font-medium ${runResult.error ? "text-red-500" : "text-green-600"}`}
+                    className={`mt-1 text-xs font-medium ${runResult.error ? "text-red-600" : "text-green-600"}`}
                   >
                     {runResult.error ? `Hata: ${runResult.error}` : `✓ ${runResult.count} yeni içerik eklendi`}
                   </div>
@@ -318,28 +318,28 @@ export default function ScraperPage() {
                   onClick={() => runNow(s.id)}
                   disabled={runningId === s.id}
                   title="Şimdi Çalıştır"
-                  className="p-2 rounded-lg hover:bg-green-500/10 text-green-500 disabled:opacity-40 text-sm"
+                  className="p-2 rounded-lg hover:bg-green-500/10 text-green-600 disabled:opacity-40 text-sm"
                 >
                   {runningId === s.id ? "⏳" : "▶"}
                 </button>
                 <button
                   onClick={() => toggleStatus(s)}
                   title={s.status === "active" ? "Duraklat" : "Devam Et"}
-                  className="p-2 rounded-lg hover:bg-yellow-500/10 text-yellow-500 text-sm"
+                  className="p-2 rounded-lg hover:bg-yellow-500/10 text-yellow-600 text-sm"
                 >
                   {s.status === "active" ? "⏸" : "⏵"}
                 </button>
                 <button
                   onClick={() => openEdit(s)}
                   title="Düzenle"
-                  className="p-2 rounded-lg hover:bg-blue-500/10 text-blue-400 text-sm"
+                  className="p-2 rounded-lg hover:bg-blue-500/10 text-blue-600 text-sm"
                 >
                   ✏️
                 </button>
                 <button
                   onClick={() => setDeleteId(s.id)}
                   title="Sil"
-                  className="p-2 rounded-lg hover:bg-red-500/10 text-red-400 text-sm"
+                  className="p-2 rounded-lg hover:bg-red-500/10 text-red-600 text-sm"
                 >
                   🗑️
                 </button>
@@ -352,12 +352,12 @@ export default function ScraperPage() {
       {/* ── Add / Edit Modal ── */}
       {showForm && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1E293B] border border-slate-700/50 rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
-              <h2 className="text-lg font-bold text-white">
+          <div className="bg-white border border-[#E7E2D8] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-[#E7E2D8]">
+              <h2 className="text-lg font-bold text-[#111111]">
                 {editId ? "Kaynağı Düzenle" : "Yeni Kaynak Ekle"}
               </h2>
-              <button onClick={closeForm} className="text-slate-400 hover:text-slate-200 text-xl">
+              <button onClick={closeForm} className="text-[#666666] hover:text-[#111111] text-xl">
                 ✕
               </button>
             </div>
@@ -365,36 +365,36 @@ export default function ScraperPage() {
             <div className="p-6 space-y-5">
               {/* name */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Kaynak Adı *</label>
+                <label className="block text-sm font-medium text-[#444444] mb-1">Kaynak Adı *</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                   placeholder="ör. TechCrunch TR"
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 />
               </div>
 
               {/* url */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">URL *</label>
+                <label className="block text-sm font-medium text-[#444444] mb-1">URL *</label>
                 <input
                   type="url"
                   value={form.url}
                   onChange={(e) => setForm((f) => ({ ...f, url: e.target.value }))}
                   placeholder="https://..."
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 />
               </div>
 
               {/* type + interval */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Kaynak Tipi *</label>
+                  <label className="block text-sm font-medium text-[#444444] mb-1">Kaynak Tipi *</label>
                   <select
                     value={form.type}
                     onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   >
                     {SOURCE_TYPES.map((t) => (
                       <option key={t.value} value={t.value}>{t.label}</option>
@@ -402,11 +402,11 @@ export default function ScraperPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">Kontrol Sıklığı</label>
+                  <label className="block text-sm font-medium text-[#444444] mb-1">Kontrol Sıklığı</label>
                   <select
                     value={form.interval}
                     onChange={(e) => setForm((f) => ({ ...f, interval: Number(e.target.value) }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   >
                     {INTERVAL_PRESETS.map((p) => (
                       <option key={p.value} value={p.value}>{p.label}</option>
@@ -418,11 +418,11 @@ export default function ScraperPage() {
               {/* AI provider + task */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">AI Sağlayıcı</label>
+                  <label className="block text-sm font-medium text-[#444444] mb-1">AI Sağlayıcı</label>
                   <select
                     value={form.aiProvider}
                     onChange={(e) => setForm((f) => ({ ...f, aiProvider: e.target.value }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   >
                     {AI_PROVIDERS.map((p) => (
                       <option key={p} value={p}>{p}</option>
@@ -430,11 +430,11 @@ export default function ScraperPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">AI Görevi</label>
+                  <label className="block text-sm font-medium text-[#444444] mb-1">AI Görevi</label>
                   <select
                     value={form.aiTask}
                     onChange={(e) => setForm((f) => ({ ...f, aiTask: e.target.value }))}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                   >
                     {AI_TASKS.map((t) => (
                       <option key={t.value} value={t.value}>{t.label}</option>
@@ -445,11 +445,11 @@ export default function ScraperPage() {
 
               {/* category */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Kategori</label>
+                <label className="block text-sm font-medium text-[#444444] mb-1">Kategori</label>
                 <select
                   value={form.categoryId}
                   onChange={(e) => setForm((f) => ({ ...f, categoryId: e.target.value }))}
-                  className="w-full bg-slate-900/50 border border-slate-700/50 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                 >
                   <option value="">Seçilmedi</option>
                   {categories.map((c) => (
@@ -463,41 +463,41 @@ export default function ScraperPage() {
               {/* CSS selectors (advanced, shown only for news_site/blog) */}
               {(form.type === "news_site" || form.type === "blog") && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-[#444444] mb-1">
                     CSS Seçiciler{" "}
-                    <span className="text-slate-500 font-normal">(isteğe bağlı, JSON)</span>
+                    <span className="text-[#666666] font-normal">(isteğe bağlı, JSON)</span>
                   </label>
                   <textarea
                     value={form.selectors}
                     onChange={(e) => setForm((f) => ({ ...f, selectors: e.target.value }))}
                     rows={3}
                     placeholder={'{"title": "h1.post-title", "content": "div.post-body", "image": "img.cover"}'}
-                    className="w-full bg-slate-900/50 border border-slate-700/50 text-white placeholder:text-slate-500 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+                    className="w-full bg-[#F8F6F1] border border-[#E7E2D8] text-[#111111] placeholder:text-[#666666] rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
                   />
                 </div>
               )}
 
               {/* auto publish */}
-              <div className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+              <div className="flex items-center gap-3 bg-[#EBF2FA] border border-[#3A6EA8]/30 rounded-lg p-3">
                 <input
                   type="checkbox"
                   id="autoPublish"
                   checked={form.autoPublish}
                   onChange={(e) => setForm((f) => ({ ...f, autoPublish: e.target.checked }))}
-                  className="w-4 h-4 rounded accent-amber-500"
+                  className="w-4 h-4 rounded accent-[#3A6EA8]"
                 />
-                <label htmlFor="autoPublish" className="text-sm text-amber-300 cursor-pointer">
+                <label htmlFor="autoPublish" className="text-sm text-[#2D5A8E] cursor-pointer">
                   <span className="font-medium">Otomatik yayınla</span>
-                  <span className="text-amber-300/70 ml-1">— İçerikleri onay beklemeden doğrudan yayınla</span>
+                  <span className="text-[#2D5A8E]/70 ml-1">— İçerikleri onay beklemeden doğrudan yayınla</span>
                 </label>
               </div>
             </div>
 
             {/* footer */}
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-700/50">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#E7E2D8]">
               <button
                 onClick={closeForm}
-                className="px-4 py-2 text-sm text-slate-400 hover:text-slate-200"
+                className="px-4 py-2 text-sm text-[#666666] hover:text-[#111111]"
               >
                 İptal
               </button>
@@ -516,16 +516,16 @@ export default function ScraperPage() {
       {/* ── Delete Confirm Modal ── */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1E293B] border border-slate-700/50 rounded-2xl shadow-xl w-full max-w-sm p-6">
+          <div className="bg-white border border-[#E7E2D8] rounded-2xl shadow-xl w-full max-w-sm p-6">
             <div className="text-3xl mb-3">🗑️</div>
-            <h3 className="font-bold text-white text-lg mb-2">Kaynağı Sil?</h3>
-            <p className="text-sm text-slate-400 mb-5">
+            <h3 className="font-bold text-[#111111] text-lg mb-2">Kaynağı Sil?</h3>
+            <p className="text-sm text-[#666666] mb-5">
               Bu kaynak silinecek. Daha önce toplanmış içerikler korunur.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 border border-slate-700/50 text-slate-400 hover:text-slate-200 py-2 rounded-lg text-sm hover:bg-slate-700/30"
+                className="flex-1 border border-[#E7E2D8] text-[#666666] hover:text-[#111111] py-2 rounded-lg text-sm hover:bg-[#EBF2FA]"
               >
                 İptal
               </button>
