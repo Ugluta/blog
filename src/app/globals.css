@@ -17,7 +17,7 @@
   --border:      #DDD8CF;
 }
 
-* { box-sizing: border-box; padding: 0; margin: 0; }
+* { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
@@ -36,12 +36,14 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--saks-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--saks); }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text-1);
-  letter-spacing: -0.025em;
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-1);
+    letter-spacing: -0.025em;
+  }
 }
 
 img { max-width: 100%; height: auto; }
