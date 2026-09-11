@@ -82,21 +82,21 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#0B1829" }}>
+    <footer style={{ background: "#F8F6F1", borderTop: "1px solid #E7E2D8" }}>
 
       {/* ── Brand + social strip ── */}
-      <div style={{ background: "#112240", borderBottom: "1px solid rgba(181,205,232,0.10)" }}>
+      <div style={{ background: "#FFFFFF", borderBottom: "1px solid #E7E2D8" }}>
         <div className="max-w-screen-xl mx-auto px-8 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
             <Link href="/" className="flex items-center gap-3 mb-3 w-fit group">
               <div className="w-8 h-8 rounded-lg bg-[#3A6EA8] flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-black text-sm">K</span>
               </div>
-              <span className="text-white font-extrabold text-base tracking-tight group-hover:text-[#B5CDE8] transition-colors">
+              <span className="text-[#111111] font-extrabold text-base tracking-tight group-hover:text-[#3A6EA8] transition-colors">
                 Kurumsal
               </span>
             </Link>
-            <p className="text-[#7A9AB8] text-sm leading-relaxed" style={{ maxWidth: "38ch" }}>
+            <p className="text-[#666666] text-sm leading-relaxed" style={{ maxWidth: "38ch" }}>
               Yapay zeka destekli içerik üretimi, sosyal medya yönetimi ve otomatik yayıncılık platformu.
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="social-icon-btn w-9 h-9 rounded-lg flex items-center justify-center text-[#7A9AB8] hover:text-white transition-colors"
+                className="social-icon-btn w-9 h-9 rounded-lg flex items-center justify-center text-[#3A6EA8] hover:text-white transition-colors"
               >
                 {s.icon}
               </a>
@@ -123,7 +123,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
           {COLS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#B5CDE8] mb-6">
+              <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#111111] mb-6">
                 {col.title}
               </h3>
               <ul className="space-y-4">
@@ -131,7 +131,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-[#5C7E9C] hover:text-white transition-colors"
+                      className="text-sm text-[#666666] hover:text-[#3A6EA8] transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -144,9 +144,9 @@ export default function Footer() {
       </div>
 
       {/* ── Bottom bar ── */}
-      <div style={{ borderTop: "1px solid rgba(181,205,232,0.08)" }}>
+      <div style={{ borderTop: "1px solid #E7E2D8" }}>
         <div className="max-w-screen-xl mx-auto px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs text-[#3D5A73]">
+          <span className="text-xs text-[#999999]">
             © {new Date().getFullYear()} Kurumsal. Tüm hakları saklıdır.
           </span>
           <div className="flex items-center gap-6">
@@ -158,7 +158,7 @@ export default function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-xs text-[#3D5A73] hover:text-[#7A9AB8] transition-colors"
+                className="text-xs text-[#999999] hover:text-[#3A6EA8] transition-colors"
               >
                 {link.label}
               </Link>
