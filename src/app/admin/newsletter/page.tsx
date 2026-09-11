@@ -20,16 +20,16 @@ const STATUS_LABELS: Record<string, string> = {
   DRAFT: "Taslak", SCHEDULED: "Planlandı", SENDING: "Gönderiliyor", SENT: "Gönderildi",
 };
 const STATUS_COLORS: Record<string, string> = {
-  ACTIVE: "bg-green-500/20 text-green-400",
-  UNSUBSCRIBED: "bg-slate-600/40 text-slate-500",
-  BOUNCED: "bg-red-500/20 text-red-400",
-  DRAFT: "bg-slate-600/40 text-slate-400",
-  SCHEDULED: "bg-blue-500/20 text-blue-400",
-  SENDING: "bg-amber-500/20 text-amber-400",
-  SENT: "bg-green-500/20 text-green-400",
+  ACTIVE: "bg-green-100 text-green-700",
+  UNSUBSCRIBED: "bg-[#EBF2FA] text-[#666666]",
+  BOUNCED: "bg-red-100 text-red-700",
+  DRAFT: "bg-[#EBF2FA] text-[#666666]",
+  SCHEDULED: "bg-blue-100 text-blue-700",
+  SENDING: "bg-amber-100 text-amber-700",
+  SENT: "bg-green-100 text-green-700",
 };
 
-const INPUT = "w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500";
+const INPUT = "w-full bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]";
 
 // ─── Subscribers Tab ──────────────────────────────────────────────────────────
 
@@ -73,7 +73,7 @@ function SubscribersTab() {
 
   return (
     <div className="space-y-4">
-      {toast && <div className="fixed top-4 right-4 z-50 bg-slate-800 border border-amber-500/40 text-amber-400 px-4 py-2.5 rounded-xl text-sm shadow-xl">{toast}</div>}
+      {toast && <div className="fixed top-4 right-4 z-50 bg-[#FFFFFF] border border-[#3A6EA8]/40 text-[#3A6EA8] px-4 py-2.5 rounded-xl text-sm shadow-xl">{toast}</div>}
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
@@ -82,9 +82,9 @@ function SubscribersTab() {
           { label: "Aktif", value: activeCount },
           { label: "İptal", value: stats.find(s => s.status === "UNSUBSCRIBED")?._count ?? 0 },
         ].map(s => (
-          <div key={s.label} className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 text-center">
-            <p className="text-2xl font-black text-white">{s.value}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+          <div key={s.label} className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-xl p-4 text-center">
+            <p className="text-2xl font-black text-[#111111]">{s.value}</p>
+            <p className="text-xs text-[#666666] mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
@@ -93,9 +93,9 @@ function SubscribersTab() {
       <div className="flex gap-3">
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder="E-posta veya isim ara…"
-          className="flex-1 bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500" />
+          className="flex-1 bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]" />
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          className="bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+          className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]">
           <option value="">Tüm Durumlar</option>
           <option value="ACTIVE">Aktif</option>
           <option value="UNSUBSCRIBED">İptal</option>
@@ -105,32 +105,32 @@ function SubscribersTab() {
 
       {/* Table */}
       {loading ? (
-        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 rounded-xl bg-slate-800/40 animate-pulse" />)}</div>
+        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-12 rounded-xl bg-[#FFFFFF] animate-pulse" />)}</div>
       ) : subscribers.length === 0 ? (
-        <div className="text-center py-12 bg-slate-800/40 rounded-2xl border border-slate-700/50">
+        <div className="text-center py-12 bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8]">
           <p className="text-3xl mb-2">📧</p>
-          <p className="text-slate-400">Abone bulunamadı</p>
+          <p className="text-[#666666]">Abone bulunamadı</p>
         </div>
       ) : (
-        <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden">
+        <div className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-2xl overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-700/50">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">E-posta</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase hidden sm:table-cell">Kayıt</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Durum</th>
+              <tr className="border-b border-[#E7E2D8]">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-[#666666] uppercase">E-posta</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-[#666666] uppercase hidden sm:table-cell">Kayıt</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-[#666666] uppercase">Durum</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/30">
+            <tbody className="divide-y divide-[#E7E2D8]">
               {subscribers.map(sub => (
-                <tr key={sub.id} className="hover:bg-slate-700/20 transition-colors">
+                <tr key={sub.id} className="hover:bg-[#EBF2FA] transition-colors">
                   <td className="px-4 py-3">
-                    <p className="text-sm text-white">{sub.email}</p>
-                    {sub.name && <p className="text-xs text-slate-500">{sub.name}</p>}
+                    <p className="text-sm text-[#111111]">{sub.email}</p>
+                    {sub.name && <p className="text-xs text-[#666666]">{sub.name}</p>}
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell">
-                    <span className="text-xs text-slate-500">{new Date(sub.createdAt).toLocaleDateString("tr-TR")}</span>
+                    <span className="text-xs text-[#666666]">{new Date(sub.createdAt).toLocaleDateString("tr-TR")}</span>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_COLORS[sub.status] ?? STATUS_COLORS.ACTIVE}`}>
@@ -139,7 +139,7 @@ function SubscribersTab() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => deleteSubscriber(sub.id)}
-                      className="text-xs text-slate-500 hover:text-red-400 transition-colors">Sil</button>
+                      className="text-xs text-[#666666] hover:text-red-700 transition-colors">Sil</button>
                   </td>
                 </tr>
               ))}
@@ -224,26 +224,26 @@ function CampaignsTab() {
 
   return (
     <div className="space-y-4">
-      {toast && <div className="fixed top-4 right-4 z-50 bg-slate-800 border border-amber-500/40 text-amber-400 px-4 py-2.5 rounded-xl text-sm shadow-xl">{toast}</div>}
+      {toast && <div className="fixed top-4 right-4 z-50 bg-[#FFFFFF] border border-[#3A6EA8]/40 text-[#3A6EA8] px-4 py-2.5 rounded-xl text-sm shadow-xl">{toast}</div>}
 
       <div className="flex justify-end">
         <button onClick={openNew}
-          className="px-4 py-2 text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-lg transition-colors flex items-center gap-1.5">
+          className="px-4 py-2 text-sm font-semibold bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white rounded-lg transition-colors flex items-center gap-1.5">
           + Yeni Kampanya
         </button>
       </div>
 
       {loading ? (
-        <div className="space-y-3">{[1,2].map(i => <div key={i} className="h-20 rounded-xl bg-slate-800/40 animate-pulse" />)}</div>
+        <div className="space-y-3">{[1,2].map(i => <div key={i} className="h-20 rounded-xl bg-[#FFFFFF] animate-pulse" />)}</div>
       ) : campaigns.length === 0 ? (
-        <div className="text-center py-12 bg-slate-800/40 rounded-2xl border border-slate-700/50">
+        <div className="text-center py-12 bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8]">
           <p className="text-3xl mb-2">📮</p>
-          <p className="text-slate-400">Henüz kampanya yok</p>
+          <p className="text-[#666666]">Henüz kampanya yok</p>
         </div>
       ) : (
         <div className="space-y-3">
           {campaigns.map(c => (
-            <div key={c.id} className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4">
+            <div key={c.id} className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-xl p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -251,27 +251,27 @@ function CampaignsTab() {
                       {STATUS_LABELS[c.status] ?? c.status}
                     </span>
                     {c.status === "SENT" && (
-                      <span className="text-xs text-slate-500">{c.sentCount} gönderildi</span>
+                      <span className="text-xs text-[#666666]">{c.sentCount} gönderildi</span>
                     )}
                   </div>
-                  <h3 className="font-bold text-white text-sm">{c.title}</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">{c.subject}</p>
+                  <h3 className="font-bold text-[#111111] text-sm">{c.title}</h3>
+                  <p className="text-xs text-[#666666] mt-0.5">{c.subject}</p>
                 </div>
                 <div className="flex gap-2 flex-shrink-0">
                   {c.status === "DRAFT" && (
                     <>
                       <button onClick={() => openEdit(c)}
-                        className="px-2.5 py-1 text-xs rounded-lg bg-slate-700 hover:bg-amber-500/20 text-slate-400 hover:text-amber-400 transition-colors">
+                        className="px-2.5 py-1 text-xs rounded-lg bg-[#EBF2FA] hover:bg-[#EBF2FA] text-[#666666] hover:text-[#3A6EA8] transition-colors">
                         Düzenle
                       </button>
                       <button onClick={() => send(c.id)} disabled={sending === c.id}
-                        className="px-2.5 py-1 text-xs rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-semibold transition-colors">
+                        className="px-2.5 py-1 text-xs rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-50 text-white font-semibold transition-colors">
                         {sending === c.id ? "Gönderiliyor…" : "Gönder"}
                       </button>
                     </>
                   )}
                   <button onClick={() => deleteCampaign(c.id)}
-                    className="px-2.5 py-1 text-xs rounded-lg bg-slate-700 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-colors">
+                    className="px-2.5 py-1 text-xs rounded-lg bg-[#EBF2FA] hover:bg-red-100 text-[#666666] hover:text-red-700 transition-colors">
                     Sil
                   </button>
                 </div>
@@ -285,35 +285,35 @@ function CampaignsTab() {
       {showForm && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowForm(false)} />
-          <div className="relative w-full max-w-xl bg-[#0F172A] border-l border-slate-700/50 h-full overflow-y-auto flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
-              <h2 className="font-bold text-white text-sm">{editing ? "Kampanyayı Düzenle" : "Yeni Kampanya"}</h2>
-              <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-white text-xl">×</button>
+          <div className="relative w-full max-w-xl bg-[#FFFFFF] border-l border-[#E7E2D8] h-full overflow-y-auto flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E7E2D8]">
+              <h2 className="font-bold text-[#111111] text-sm">{editing ? "Kampanyayı Düzenle" : "Yeni Kampanya"}</h2>
+              <button onClick={() => setShowForm(false)} className="text-[#666666] hover:text-[#111111] text-xl">×</button>
             </div>
             <div className="flex-1 px-5 py-4 space-y-4 overflow-y-auto">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Başlık (dahili) *</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Başlık (dahili) *</label>
                 <input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} className={INPUT} />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">E-posta Konusu *</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">E-posta Konusu *</label>
                 <input value={form.subject} onChange={e => setForm(p => ({ ...p, subject: e.target.value }))} className={INPUT} />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Preheader</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Preheader</label>
                 <input value={form.preheader} onChange={e => setForm(p => ({ ...p, preheader: e.target.value }))}
                   placeholder="Kısa önizleme metni…" className={INPUT} />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">İçerik (HTML) *</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">İçerik (HTML) *</label>
                 <textarea value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))}
                   rows={14} className={`${INPUT} resize-none font-mono text-xs`}
                   placeholder="<h1>Merhaba!</h1><p>İçerik buraya gelecek.</p>" />
               </div>
             </div>
-            <div className="px-5 py-4 border-t border-slate-700/50">
+            <div className="px-5 py-4 border-t border-[#E7E2D8]">
               <button onClick={save} disabled={saving || !form.title || !form.subject || !form.content}
-                className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-bold text-sm transition-colors">
+                className="w-full py-2.5 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-50 text-white font-bold text-sm transition-colors">
                 {saving ? "Kaydediliyor…" : editing ? "Kaydet" : "Oluştur"}
               </button>
             </div>
@@ -332,15 +332,15 @@ export default function AdminNewsletterPage() {
   return (
     <div className="space-y-5 max-w-4xl">
       <div>
-        <h1 className="text-xl font-bold text-white">Newsletter</h1>
-        <p className="text-sm text-slate-400 mt-0.5">Abone yönetimi ve kampanyalar</p>
+        <h1 className="text-xl font-bold text-[#111111]">Newsletter</h1>
+        <p className="text-sm text-[#666666] mt-0.5">Abone yönetimi ve kampanyalar</p>
       </div>
 
-      <div className="flex gap-1 bg-slate-800/60 rounded-xl p-1 border border-slate-700/50 w-fit">
+      <div className="flex gap-1 bg-[#FFFFFF] rounded-xl p-1 border border-[#E7E2D8] w-fit">
         {(["subscribers", "campaigns"] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-colors ${
-              tab === t ? "bg-amber-500 text-slate-900" : "text-slate-400 hover:text-white"
+              tab === t ? "bg-[#3A6EA8] text-white" : "text-[#666666] hover:text-[#111111]"
             }`}>
             {t === "subscribers" ? "Aboneler" : "Kampanyalar"}
           </button>

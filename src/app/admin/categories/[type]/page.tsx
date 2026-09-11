@@ -33,7 +33,7 @@ const TYPE_LABELS: Record<string, { label: string; icon: string; apiType: string
 const PRESET_ICONS = ["📰", "✍️", "💻", "🛍️", "🖼️", "📂", "🏷️", "⭐"];
 const PRESET_COLORS = ["#f59e0b", "#3b82f6", "#10b981", "#ef4444", "#8b5cf6", "#ec4899", "#6b7280"];
 
-const INPUT_CLS = "w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500";
+const INPUT_CLS = "w-full bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]";
 
 // ─── Slug helper ──────────────────────────────────────────────────────────────
 
@@ -97,7 +97,7 @@ function CategoryRow({
   return (
     <>
       <div
-        className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-slate-700/30 group"
+        className="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-[#EBF2FA] group"
         style={{ paddingLeft: `${12 + depth * 24}px` }}
         draggable
         onDragStart={() => onDragStart(cat.id)}
@@ -105,12 +105,12 @@ function CategoryRow({
         onDrop={() => onDrop(cat.id)}
       >
         {/* Drag handle */}
-        <span className="cursor-grab text-slate-600 select-none text-lg leading-none">⠿</span>
+        <span className="cursor-grab text-[#666666] select-none text-lg leading-none">⠿</span>
 
         {/* Expand toggle */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-5 h-5 flex items-center justify-center text-slate-500 hover:text-slate-300 text-xs flex-shrink-0"
+          className="w-5 h-5 flex items-center justify-center text-[#666666] hover:text-[#444444] text-xs flex-shrink-0"
         >
           {hasChildren ? (expanded ? "▼" : "▶") : <span className="w-3" />}
         </button>
@@ -120,17 +120,17 @@ function CategoryRow({
 
         {/* Name + slug */}
         <div className="flex-1 min-w-0">
-          <span className="font-semibold text-white text-sm">{cat.name}</span>
-          <span className="ml-2 text-slate-500 text-xs">{cat.slug}</span>
+          <span className="font-semibold text-[#111111] text-sm">{cat.name}</span>
+          <span className="ml-2 text-[#666666] text-xs">{cat.slug}</span>
           {cat.description && (
-            <span className="ml-2 text-slate-600 text-xs truncate hidden sm:inline">
+            <span className="ml-2 text-[#666666] text-xs truncate hidden sm:inline">
               — {cat.description.substring(0, 60)}{cat.description.length > 60 ? "…" : ""}
             </span>
           )}
         </div>
 
         {/* Order badge */}
-        <span className="text-xs bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded font-mono">{cat.order}</span>
+        <span className="text-xs bg-[#EBF2FA] text-[#666666] px-1.5 py-0.5 rounded font-mono">{cat.order}</span>
 
         {/* Color swatch */}
         {cat.color && (
@@ -138,7 +138,7 @@ function CategoryRow({
         )}
 
         {/* Active badge */}
-        <span className={`text-xs px-1.5 py-0.5 rounded ${cat.isActive ? "bg-green-500/20 text-green-400" : "bg-slate-700 text-slate-500"}`}>
+        <span className={`text-xs px-1.5 py-0.5 rounded ${cat.isActive ? "bg-green-100 text-green-700" : "bg-[#EBF2FA] text-[#666666]"}`}>
           {cat.isActive ? "Aktif" : "Pasif"}
         </span>
 
@@ -146,19 +146,19 @@ function CategoryRow({
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(cat)}
-            className="text-xs px-2 py-1 bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 rounded"
+            className="text-xs px-2 py-1 bg-[#EBF2FA] text-[#3A6EA8] hover:bg-[#EBF2FA] rounded"
           >
             Düzenle
           </button>
           <button
             onClick={() => onAddChild(cat.id)}
-            className="text-xs px-2 py-1 bg-slate-700 text-slate-300 hover:bg-slate-600 rounded"
+            className="text-xs px-2 py-1 bg-[#EBF2FA] text-[#444444] hover:bg-[#E7E2D8] rounded"
           >
             +Alt
           </button>
           <button
             onClick={() => onDelete(cat)}
-            className="text-xs px-2 py-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded"
+            className="text-xs px-2 py-1 bg-red-100 text-red-700 hover:bg-red-200 rounded"
           >
             Sil
           </button>
@@ -218,12 +218,12 @@ function SidePanel({
 
   return (
     <div
-      className={`fixed inset-y-0 right-0 z-50 w-96 bg-[#0F172A] border-l border-slate-700/50 flex flex-col shadow-2xl transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
+      className={`fixed inset-y-0 right-0 z-50 w-96 bg-[#FFFFFF] border-l border-[#E7E2D8] flex flex-col shadow-2xl transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
-        <h3 className="font-bold text-white">{isEdit ? "Kategoriyi Düzenle" : "Yeni Kategori"}</h3>
-        <button onClick={onClose} className="text-slate-400 hover:text-white">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#E7E2D8]">
+        <h3 className="font-bold text-[#111111]">{isEdit ? "Kategoriyi Düzenle" : "Yeni Kategori"}</h3>
+        <button onClick={onClose} className="text-[#666666] hover:text-[#111111]">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -234,7 +234,7 @@ function SidePanel({
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
         {/* Name */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Ad *</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Ad *</label>
           <input
             type="text"
             value={form.name || ""}
@@ -246,7 +246,7 @@ function SidePanel({
 
         {/* Slug */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Slug</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Slug</label>
           <input
             type="text"
             value={form.slug || ""}
@@ -258,7 +258,7 @@ function SidePanel({
 
         {/* Icon */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">İkon (emoji)</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">İkon (emoji)</label>
           <input
             type="text"
             value={form.icon || ""}
@@ -271,7 +271,7 @@ function SidePanel({
               <button
                 key={emoji}
                 onClick={() => set("icon", emoji)}
-                className={`w-8 h-8 rounded flex items-center justify-center text-lg transition-colors ${form.icon === emoji ? "bg-amber-500/30 ring-1 ring-amber-500" : "bg-slate-800 hover:bg-slate-700"}`}
+                className={`w-8 h-8 rounded flex items-center justify-center text-lg transition-colors ${form.icon === emoji ? "bg-[#EBF2FA] ring-1 ring-[#3A6EA8]" : "bg-[#FFFFFF] hover:bg-[#EBF2FA]"}`}
               >
                 {emoji}
               </button>
@@ -281,7 +281,7 @@ function SidePanel({
 
         {/* Color */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Renk</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Renk</label>
           <div className="flex gap-2 flex-wrap">
             {PRESET_COLORS.map((c) => (
               <button
@@ -296,7 +296,7 @@ function SidePanel({
               type="text"
               value={form.color || ""}
               onChange={(e) => set("color", e.target.value)}
-              className="flex-1 min-w-[80px] bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-amber-500"
+              className="flex-1 min-w-[80px] bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-[#3A6EA8]"
               placeholder="#hex"
             />
           </div>
@@ -304,7 +304,7 @@ function SidePanel({
 
         {/* Image URL */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Görsel URL</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Görsel URL</label>
           <input
             type="text"
             value={form.image || ""}
@@ -316,7 +316,7 @@ function SidePanel({
 
         {/* Description */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Açıklama</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Açıklama</label>
           <textarea
             rows={3}
             value={form.description || ""}
@@ -328,7 +328,7 @@ function SidePanel({
 
         {/* Parent */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Üst Kategori</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Üst Kategori</label>
           <select
             value={form.parentId || ""}
             onChange={(e) => set("parentId", e.target.value || null)}
@@ -345,7 +345,7 @@ function SidePanel({
 
         {/* Order */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Sıra</label>
+          <label className="block text-xs font-medium text-[#666666] mb-1.5">Sıra</label>
           <input
             type="number"
             value={form.order ?? 0}
@@ -356,10 +356,10 @@ function SidePanel({
 
         {/* Active toggle */}
         <div className="flex items-center justify-between">
-          <label className="text-xs font-medium text-slate-400">Aktif</label>
+          <label className="text-xs font-medium text-[#666666]">Aktif</label>
           <button
             onClick={() => set("isActive", !form.isActive)}
-            className={`relative w-10 h-5 rounded-full transition-colors ${form.isActive ? "bg-amber-500" : "bg-slate-600"}`}
+            className={`relative w-10 h-5 rounded-full transition-colors ${form.isActive ? "bg-[#3A6EA8]" : "bg-[#E7E2D8]"}`}
           >
             <span
               className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform shadow ${form.isActive ? "translate-x-5" : "translate-x-0.5"}`}
@@ -372,17 +372,17 @@ function SidePanel({
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-4 border-t border-slate-700/50 flex gap-3">
+      <div className="px-5 py-4 border-t border-[#E7E2D8] flex gap-3">
         <button
           onClick={onSave}
           disabled={isSaving}
-          className="flex-1 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-900 font-semibold rounded-lg text-sm transition-colors"
+          className="flex-1 py-2 bg-[#3A6EA8] hover:bg-[#2D5A8E] disabled:opacity-50 text-white font-semibold rounded-lg text-sm transition-colors"
         >
           {isSaving ? "Kaydediliyor…" : "Kaydet"}
         </button>
         <button
           onClick={onClose}
-          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-sm transition-colors"
+          className="px-4 py-2 bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#111111] rounded-lg text-sm transition-colors"
         >
           İptal
         </button>
@@ -498,36 +498,36 @@ export default function CategoryTypePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-xl font-bold text-[#111111] flex items-center gap-2">
             <span>{meta.icon}</span>
             {meta.label}
-            <span className="text-sm font-normal bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full ml-1">
+            <span className="text-sm font-normal bg-[#EBF2FA] text-[#444444] px-2 py-0.5 rounded-full ml-1">
               {flatList.length}
             </span>
           </h1>
-          <p className="text-sm text-slate-400 mt-0.5">Sürükleyerek yeniden sıralayın, düzenle/sil için satırın üzerine gelin.</p>
+          <p className="text-sm text-[#666666] mt-0.5">Sürükleyerek yeniden sıralayın, düzenle/sil için satırın üzerine gelin.</p>
         </div>
         <button
           onClick={() => openNew()}
-          className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold rounded-lg text-sm transition-colors flex items-center gap-1.5"
+          className="px-4 py-2 bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-1.5"
         >
           <span className="text-base">+</span> Yeni Kök Kategori Ekle
         </button>
       </div>
 
       {/* Tree */}
-      <div className="bg-slate-800/40 rounded-xl border border-slate-700/50 overflow-hidden">
+      <div className="bg-[#FFFFFF] rounded-xl border border-[#E7E2D8] overflow-hidden">
         {loading ? (
           <div className="p-4 space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-10 bg-slate-700/50 rounded-lg animate-pulse" />
+              <div key={i} className="h-10 bg-[#EBF2FA] rounded-lg animate-pulse" />
             ))}
           </div>
         ) : flatList.length === 0 ? (
           <div className="py-16 text-center">
             <div className="text-5xl mb-4">{meta.icon}</div>
-            <p className="text-slate-400 font-medium">Henüz kategori yok</p>
-            <p className="text-slate-600 text-sm mt-1">Yukarıdaki butona tıklayarak ilk kategoriyi oluşturun.</p>
+            <p className="text-[#666666] font-medium">Henüz kategori yok</p>
+            <p className="text-[#666666] text-sm mt-1">Yukarıdaki butona tıklayarak ilk kategoriyi oluşturun.</p>
           </div>
         ) : (
           <div className="py-2">

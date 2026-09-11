@@ -44,9 +44,9 @@ const TYPE_ICONS: Record<SourceType, string> = {
 };
 
 const STATUS_COLORS: Record<SourceStatus, string> = {
-  active: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
-  paused: "text-amber-400 bg-amber-400/10 border-amber-400/20",
-  error: "text-red-400 bg-red-400/10 border-red-400/20",
+  active: "text-emerald-700 bg-emerald-50 border-emerald-200",
+  paused: "text-amber-700 bg-amber-100 border-amber-200",
+  error: "text-red-700 bg-red-50 border-red-200",
 };
 
 const AI_PROVIDERS = ["Claude", "Gemini", "GPT-4", "Grok", "DeepSeek"];
@@ -135,11 +135,11 @@ export default function ScraperPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Scraper Kaynakları</h1>
-          <p className="text-slate-400 text-sm mt-1">Haber siteleri, bloglar, Twitter ve RSS beslemeleri</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Scraper Kaynakları</h1>
+          <p className="text-[#666666] text-sm mt-1">Haber siteleri, bloglar, Twitter ve RSS beslemeleri</p>
         </div>
         <button onClick={openAdd}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors whitespace-nowrap">
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors whitespace-nowrap">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
@@ -155,12 +155,12 @@ export default function ScraperPage() {
           { label: "Toplam Makale", value: totalArticles.toLocaleString("tr"), icon: "📰" },
           { label: "Hata", value: sources.filter((s) => s.status === "error").length, icon: "⚠️" },
         ].map((stat) => (
-          <div key={stat.label} className="bg-slate-800 rounded-xl p-4 border border-slate-700/50">
+          <div key={stat.label} className="bg-[#FFFFFF] rounded-xl p-4 border border-[#E7E2D8]">
             <div className="flex items-center gap-2 mb-1">
               <span>{stat.icon}</span>
-              <span className="text-xs text-slate-400">{stat.label}</span>
+              <span className="text-xs text-[#666666]">{stat.label}</span>
             </div>
-            <p className="text-2xl font-black text-white">{stat.value}</p>
+            <p className="text-2xl font-black text-[#111111]">{stat.value}</p>
           </div>
         ))}
       </div>
@@ -170,7 +170,7 @@ export default function ScraperPage() {
         {(["all", "news_site", "blog", "twitter", "rss", "youtube"] as const).map((t) => (
           <button key={t} onClick={() => setFilter(t)}
             className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-              filter === t ? "bg-amber-500 text-slate-900" : "bg-slate-800 text-slate-400 hover:text-white border border-slate-700"
+              filter === t ? "bg-[#3A6EA8] text-white" : "bg-[#FFFFFF] text-[#666666] hover:text-[#111111] border border-[#E7E2D8]"
             }`}>
             {t === "all" ? "Tümü" : `${TYPE_ICONS[t]} ${TYPE_LABELS[t]}`}
           </button>
@@ -180,40 +180,40 @@ export default function ScraperPage() {
       {/* Source List */}
       <div className="space-y-3">
         {filtered.map((source) => (
-          <div key={source.id} className="bg-slate-800 rounded-2xl border border-slate-700/50 p-5">
+          <div key={source.id} className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] p-5">
             <div className="flex items-start gap-4">
               {/* Icon */}
-              <div className="w-10 h-10 rounded-xl bg-slate-700 flex items-center justify-center text-xl flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#EBF2FA] flex items-center justify-center text-xl flex-shrink-0">
                 {TYPE_ICONS[source.type]}
               </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-sm font-bold text-white">{source.name}</h3>
+                  <h3 className="text-sm font-bold text-[#111111]">{source.name}</h3>
                   <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${STATUS_COLORS[source.status]}`}>
                     {source.status === "active" ? "Aktif" : source.status === "paused" ? "Duraklatıldı" : "Hata"}
                   </span>
-                  <span className="text-[10px] text-slate-500 bg-slate-700 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] text-[#666666] bg-[#EBF2FA] px-2 py-0.5 rounded-full">
                     {TYPE_LABELS[source.type]}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 font-mono mt-0.5 truncate">{source.url}</p>
+                <p className="text-xs text-[#666666] font-mono mt-0.5 truncate">{source.url}</p>
 
-                <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-slate-400">
+                <div className="flex flex-wrap items-center gap-4 mt-2 text-xs text-[#666666]">
                   <span>⏱ {source.interval} dk&apos;da bir</span>
                   <span>🕐 {source.lastRun}</span>
                   <span>📝 {source.articlesFound} makale</span>
                   <span>🤖 {source.aiProvider} → {source.aiTask}</span>
                   <span>📂 {source.targetCategory}</span>
-                  {source.autoPublish && <span className="text-emerald-400">✓ Otomatik yayın</span>}
+                  {source.autoPublish && <span className="text-emerald-700">✓ Otomatik yayın</span>}
                 </div>
               </div>
 
               {/* Actions */}
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button onClick={() => runNow(source.id)} disabled={running === source.id}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-blue-500/20 hover:text-blue-400 text-slate-300 text-xs font-medium transition-colors disabled:opacity-50">
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EBF2FA] hover:bg-blue-100 hover:text-blue-700 text-[#444444] text-xs font-medium transition-colors disabled:opacity-50">
                   {running === source.id ? (
                     <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -230,19 +230,19 @@ export default function ScraperPage() {
                 <button onClick={() => toggleStatus(source.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     source.status === "active"
-                      ? "bg-amber-500/10 text-amber-400 hover:bg-amber-500/20"
-                      : "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+                      ? "bg-[#EBF2FA] text-[#3A6EA8] hover:bg-[#EBF2FA]"
+                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                   }`}>
                   {source.status === "active" ? "Duraklat" : "Başlat"}
                 </button>
                 <button onClick={() => openEdit(source)}
-                  className="p-2 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-slate-700 transition-colors">
+                  className="p-2 rounded-lg text-[#666666] hover:text-blue-700 hover:bg-[#EBF2FA] transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 </button>
                 <button onClick={() => deleteSource(source.id)}
-                  className="p-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-700 transition-colors">
+                  className="p-2 rounded-lg text-[#666666] hover:text-red-700 hover:bg-[#EBF2FA] transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -252,7 +252,7 @@ export default function ScraperPage() {
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-slate-500">
+          <div className="text-center py-12 text-[#666666]">
             <p className="text-4xl mb-3">📡</p>
             <p>Bu türde kaynak bulunamadı</p>
           </div>
@@ -262,45 +262,45 @@ export default function ScraperPage() {
       {/* Add/Edit Modal */}
       {modal !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 py-6 overflow-y-auto">
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 w-full max-w-lg shadow-2xl my-auto">
-            <h3 className="text-lg font-bold text-white mb-5">
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] p-6 w-full max-w-lg shadow-2xl my-auto">
+            <h3 className="text-lg font-bold text-[#111111] mb-5">
               {modal === "add" ? "Yeni Kaynak Ekle" : `Düzenle: ${(modal as ScraperSource).name}`}
             </h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2">
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Kaynak Adı</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Kaynak Adı</label>
                   <input value={form.name ?? ""} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                    placeholder="örn. TechCrunch" className="w-full bg-slate-700 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500" />
+                    placeholder="örn. TechCrunch" className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] placeholder-[#999999] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]" />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">URL</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">URL</label>
                   <input value={form.url ?? ""} onChange={(e) => setForm((p) => ({ ...p, url: e.target.value }))}
-                    placeholder="https://..." className="w-full bg-slate-700 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 font-mono" />
+                    placeholder="https://..." className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] placeholder-[#999999] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8] font-mono" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Tür</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Tür</label>
                   <select value={form.type ?? "news_site"} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value as SourceType }))}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500">
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]">
                     {Object.entries(TYPE_LABELS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Kontrol Aralığı (dk)</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Kontrol Aralığı (dk)</label>
                   <input type="number" value={form.interval ?? 60} onChange={(e) => setForm((p) => ({ ...p, interval: Number(e.target.value) }))}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500" />
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">AI Sağlayıcı</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">AI Sağlayıcı</label>
                   <select value={form.aiProvider ?? "Claude"} onChange={(e) => setForm((p) => ({ ...p, aiProvider: e.target.value }))}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500">
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]">
                     {AI_PROVIDERS.map((a) => <option key={a} value={a}>{a}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">AI Görevi</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">AI Görevi</label>
                   <select value={form.aiTask ?? "rewrite"} onChange={(e) => setForm((p) => ({ ...p, aiTask: e.target.value }))}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500">
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]">
                     <option value="rewrite">Yeniden Yaz</option>
                     <option value="summary">Özetle</option>
                     <option value="seo">SEO Optimize Et</option>
@@ -310,26 +310,26 @@ export default function ScraperPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Hedef Kategori</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Hedef Kategori</label>
                   <select value={form.targetCategory ?? "Genel"} onChange={(e) => setForm((p) => ({ ...p, targetCategory: e.target.value }))}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500">
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]">
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="col-span-2">
                   <label className="flex items-center gap-3 cursor-pointer">
-                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${form.autoPublish ? "bg-amber-500 border-amber-500" : "border-slate-500"}`}
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${form.autoPublish ? "bg-[#3A6EA8] border-[#3A6EA8]" : "border-[#E7E2D8]"}`}
                       onClick={() => setForm((p) => ({ ...p, autoPublish: !p.autoPublish }))}>
-                      {form.autoPublish && <svg className="w-2.5 h-2.5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                      {form.autoPublish && <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                     </div>
-                    <span className="text-sm text-slate-300">AI işledikten sonra otomatik yayımla</span>
+                    <span className="text-sm text-[#444444]">AI işledikten sonra otomatik yayımla</span>
                   </label>
                 </div>
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => setModal(null)} className="flex-1 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:text-white text-sm font-medium transition-colors">İptal</button>
-              <button onClick={saveForm} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-semibold transition-colors">Kaydet</button>
+              <button onClick={() => setModal(null)} className="flex-1 py-2.5 rounded-xl border border-[#E7E2D8] text-[#444444] hover:text-[#111111] text-sm font-medium transition-colors">İptal</button>
+              <button onClick={saveForm} className="flex-1 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white text-sm font-semibold transition-colors">Kaydet</button>
             </div>
           </div>
         </div>

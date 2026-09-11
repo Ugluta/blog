@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const INPUT_CLS = "w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500";
+const INPUT_CLS = "w-full bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]";
 const TEXTAREA_CLS = `${INPUT_CLS} font-mono resize-y`;
 
 const DANGEROUS_PATTERNS = [
@@ -29,7 +29,7 @@ function Toggle({ enabled, onChange }: { enabled: boolean; onChange: (v: boolean
   return (
     <button
       onClick={() => onChange(!enabled)}
-      className={`relative w-10 h-5 rounded-full transition-colors ${enabled ? "bg-amber-500" : "bg-slate-600"}`}
+      className={`relative w-10 h-5 rounded-full transition-colors ${enabled ? "bg-[#3A6EA8]" : "bg-[#E7E2D8]"}`}
     >
       <span
         className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform shadow ${enabled ? "translate-x-5" : "translate-x-0.5"}`}
@@ -55,8 +55,8 @@ function CodeTextarea({
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="text-xs font-medium text-slate-400">{label}</label>
-        <span className="text-xs text-slate-600">{value.length} karakter</span>
+        <label className="text-xs font-medium text-[#666666]">{label}</label>
+        <span className="text-xs text-[#666666]">{value.length} karakter</span>
       </div>
       <textarea
         rows={rows}
@@ -95,11 +95,11 @@ function SectionSaveButton({ fields }: { fields: Record<string, string> }) {
   }
 
   return (
-    <div className="flex justify-end pt-2 border-t border-slate-700/30 mt-4">
+    <div className="flex justify-end pt-2 border-t border-[#E7E2D8] mt-4">
       <button
         onClick={save}
         disabled={saving}
-        className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-amber-500 hover:bg-amber-400 text-slate-900 disabled:opacity-50"}`}
+        className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white disabled:opacity-50"}`}
       >
         {saving ? "Kaydediliyor…" : saved ? "✓ Kaydedildi" : "Kaydet"}
       </button>
@@ -127,17 +127,17 @@ function AnalyticsItem({
   onToggle: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-center gap-4 py-3 border-b border-slate-700/30 last:border-0">
+    <div className="flex items-center gap-4 py-3 border-b border-[#E7E2D8] last:border-0">
       <div className="flex-1">
-        <p className="text-sm font-medium text-white">{label}</p>
+        <p className="text-sm font-medium text-[#111111]">{label}</p>
         <div className="mt-2 flex items-center gap-2">
-          <label className="text-xs text-slate-500 flex-shrink-0">{idLabel}</label>
+          <label className="text-xs text-[#666666] flex-shrink-0">{idLabel}</label>
           <input
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-amber-500"
+            className="flex-1 bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-[#3A6EA8]"
           />
         </div>
       </div>
@@ -168,14 +168,14 @@ export default function CodeInjectionPage() {
   const [customCss, setCustomCss] = useState("");
   const [customJs, setCustomJs] = useState("");
 
-  const sectionCls = "bg-slate-800/40 rounded-xl border border-slate-700/50 p-5 space-y-4";
-  const sectionTitle = "text-sm font-bold uppercase tracking-wider text-slate-300";
+  const sectionCls = "bg-[#FFFFFF] rounded-xl border border-[#E7E2D8] p-5 space-y-4";
+  const sectionTitle = "text-sm font-bold uppercase tracking-wider text-[#444444]";
 
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-xl font-bold text-white">Kod Enjeksiyonu</h1>
-        <p className="text-sm text-slate-400 mt-0.5">Analitik araçları ve özel kod parçacıkları</p>
+        <h1 className="text-xl font-bold text-[#111111]">Kod Enjeksiyonu</h1>
+        <p className="text-sm text-[#666666] mt-0.5">Analitik araçları ve özel kod parçacıkları</p>
       </div>
 
       {/* Analytics */}

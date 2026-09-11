@@ -133,13 +133,13 @@ export default function FooterMenuPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Footer Menüsü</h1>
-          <p className="text-slate-400 text-sm mt-1">4 sütunlu alt navigasyon bağlantılarını yönetin</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Footer Menüsü</h1>
+          <p className="text-[#666666] text-sm mt-1">4 sütunlu alt navigasyon bağlantılarını yönetin</p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setAdding({ column: 1, target: "_self" })}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#111111] text-sm font-medium transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -150,8 +150,8 @@ export default function FooterMenuPage() {
             onClick={handleSave}
             className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all ${
               saved
-                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : "bg-amber-500 text-slate-900 hover:bg-amber-400"
+                ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                : "bg-[#3A6EA8] text-white hover:bg-[#2D5A8E]"
             }`}
           >
             {saved ? "✓ Kaydedildi" : "Kaydet"}
@@ -162,15 +162,15 @@ export default function FooterMenuPage() {
       {/* Columns Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {([1, 2, 3, 4] as const).map((col) => (
-          <div key={col} className="bg-slate-800 rounded-2xl border border-slate-700/50 overflow-hidden">
-            <div className="px-4 py-3 border-b border-slate-700/50 flex items-center justify-between">
+          <div key={col} className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] overflow-hidden">
+            <div className="px-4 py-3 border-b border-[#E7E2D8] flex items-center justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-amber-400">Sütun {col}</p>
-                <p className="text-sm font-semibold text-white">{COLUMN_LABELS[col]}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#3A6EA8]">Sütun {col}</p>
+                <p className="text-sm font-semibold text-[#111111]">{COLUMN_LABELS[col]}</p>
               </div>
               <button
                 onClick={() => setAdding({ column: col, target: "_self" })}
-                className="w-7 h-7 rounded-lg bg-slate-700 hover:bg-amber-500 hover:text-slate-900 text-slate-400 flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-lg bg-[#EBF2FA] hover:bg-[#3A6EA8] hover:text-white text-[#666666] flex items-center justify-center transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
@@ -185,22 +185,22 @@ export default function FooterMenuPage() {
                   onDragStart={() => handleDragStart(item.id)}
                   onDragOver={(e) => handleDragOver(e, item.id)}
                   onDrop={() => handleDrop(item.id)}
-                  className={`group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-700/50 border transition-all cursor-grab active:cursor-grabbing ${
-                    dragOverId === item.id ? "border-amber-500/50 bg-amber-500/10" : "border-transparent hover:border-slate-600"
+                  className={`group flex items-center gap-2 px-3 py-2 rounded-lg bg-[#EBF2FA] border transition-all cursor-grab active:cursor-grabbing ${
+                    dragOverId === item.id ? "border-[#3A6EA8]/50 bg-[#EBF2FA]" : "border-transparent hover:border-[#E7E2D8]"
                   }`}
                 >
-                  <svg className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-[#666666] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-200 truncate">{item.label}</p>
-                    <p className="text-[10px] text-slate-500 truncate font-mono">{item.href}</p>
+                    <p className="text-sm font-medium text-[#111111] truncate">{item.label}</p>
+                    <p className="text-[10px] text-[#666666] truncate font-mono">{item.href}</p>
                   </div>
                   <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => moveUp(item)}
                       disabled={idx === 0}
-                      className="p-1 rounded text-slate-400 hover:text-amber-400 disabled:opacity-30 transition-colors"
+                      className="p-1 rounded text-[#666666] hover:text-[#3A6EA8] disabled:opacity-30 transition-colors"
                     >
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
@@ -209,7 +209,7 @@ export default function FooterMenuPage() {
                     <button
                       onClick={() => moveDown(item)}
                       disabled={idx === arr.length - 1}
-                      className="p-1 rounded text-slate-400 hover:text-amber-400 disabled:opacity-30 transition-colors"
+                      className="p-1 rounded text-[#666666] hover:text-[#3A6EA8] disabled:opacity-30 transition-colors"
                     >
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -217,7 +217,7 @@ export default function FooterMenuPage() {
                     </button>
                     <button
                       onClick={() => setEditing({ ...item })}
-                      className="p-1 rounded text-slate-400 hover:text-blue-400 transition-colors"
+                      className="p-1 rounded text-[#666666] hover:text-blue-700 transition-colors"
                     >
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -225,7 +225,7 @@ export default function FooterMenuPage() {
                     </button>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="p-1 rounded text-slate-400 hover:text-red-400 transition-colors"
+                      className="p-1 rounded text-[#666666] hover:text-red-700 transition-colors"
                     >
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -235,7 +235,7 @@ export default function FooterMenuPage() {
                 </div>
               ))}
               {byColumn(col).length === 0 && (
-                <p className="text-center text-xs text-slate-600 py-4">Henüz bağlantı yok</p>
+                <p className="text-center text-xs text-[#666666] py-4">Henüz bağlantı yok</p>
               )}
             </div>
           </div>
@@ -245,42 +245,42 @@ export default function FooterMenuPage() {
       {/* Edit Modal */}
       {editing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-lg font-bold text-white mb-5">Bağlantıyı Düzenle</h3>
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] p-6 w-full max-w-md shadow-2xl">
+            <h3 className="text-lg font-bold text-[#111111] mb-5">Bağlantıyı Düzenle</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Etiket</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Etiket</label>
                 <input
                   value={editing.label}
                   onChange={(e) => setEditing({ ...editing, label: e.target.value })}
-                  className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">URL</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">URL</label>
                 <input
                   value={editing.href}
                   onChange={(e) => setEditing({ ...editing, href: e.target.value })}
-                  className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8] font-mono"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Sütun</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Sütun</label>
                   <select
                     value={editing.column}
                     onChange={(e) => setEditing({ ...editing, column: Number(e.target.value) as 1 | 2 | 3 | 4 })}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                   >
                     {[1, 2, 3, 4].map((c) => <option key={c} value={c}>Sütun {c} – {COLUMN_LABELS[c]}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Açılış</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Açılış</label>
                   <select
                     value={editing.target}
                     onChange={(e) => setEditing({ ...editing, target: e.target.value as "_self" | "_blank" })}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                   >
                     <option value="_self">Aynı Sekme</option>
                     <option value="_blank">Yeni Sekme</option>
@@ -289,8 +289,8 @@ export default function FooterMenuPage() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => setEditing(null)} className="flex-1 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:text-white text-sm font-medium transition-colors">İptal</button>
-              <button onClick={saveEdit} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-semibold transition-colors">Kaydet</button>
+              <button onClick={() => setEditing(null)} className="flex-1 py-2.5 rounded-xl border border-[#E7E2D8] text-[#444444] hover:text-[#111111] text-sm font-medium transition-colors">İptal</button>
+              <button onClick={saveEdit} className="flex-1 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white text-sm font-semibold transition-colors">Kaydet</button>
             </div>
           </div>
         </div>
@@ -299,44 +299,44 @@ export default function FooterMenuPage() {
       {/* Add Modal */}
       {adding !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-lg font-bold text-white mb-5">Yeni Bağlantı Ekle</h3>
+          <div className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] p-6 w-full max-w-md shadow-2xl">
+            <h3 className="text-lg font-bold text-[#111111] mb-5">Yeni Bağlantı Ekle</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">Etiket</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">Etiket</label>
                 <input
                   value={adding.label ?? ""}
                   onChange={(e) => setAdding({ ...adding, label: e.target.value })}
                   placeholder="örn. Hakkımızda"
-                  className="w-full bg-slate-700 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] placeholder-[#999999] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1.5">URL</label>
+                <label className="block text-xs font-medium text-[#666666] mb-1.5">URL</label>
                 <input
                   value={adding.href ?? ""}
                   onChange={(e) => setAdding({ ...adding, href: e.target.value })}
                   placeholder="/hakkimizda"
-                  className="w-full bg-slate-700 border border-slate-600 text-slate-200 placeholder-slate-500 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] placeholder-[#999999] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8] font-mono"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Sütun</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Sütun</label>
                   <select
                     value={adding.column ?? 1}
                     onChange={(e) => setAdding({ ...adding, column: Number(e.target.value) as 1 | 2 | 3 | 4 })}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                   >
                     {[1, 2, 3, 4].map((c) => <option key={c} value={c}>Sütun {c} – {COLUMN_LABELS[c]}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1.5">Açılış</label>
+                  <label className="block text-xs font-medium text-[#666666] mb-1.5">Açılış</label>
                   <select
                     value={adding.target ?? "_self"}
                     onChange={(e) => setAdding({ ...adding, target: e.target.value as "_self" | "_blank" })}
-                    className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
                   >
                     <option value="_self">Aynı Sekme</option>
                     <option value="_blank">Yeni Sekme</option>
@@ -345,8 +345,8 @@ export default function FooterMenuPage() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => setAdding(null)} className="flex-1 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:text-white text-sm font-medium transition-colors">İptal</button>
-              <button onClick={saveAdd} className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 text-sm font-semibold transition-colors">Ekle</button>
+              <button onClick={() => setAdding(null)} className="flex-1 py-2.5 rounded-xl border border-[#E7E2D8] text-[#444444] hover:text-[#111111] text-sm font-medium transition-colors">İptal</button>
+              <button onClick={saveAdd} className="flex-1 py-2.5 rounded-xl bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white text-sm font-semibold transition-colors">Ekle</button>
             </div>
           </div>
         </div>

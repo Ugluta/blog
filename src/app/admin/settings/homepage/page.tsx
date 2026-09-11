@@ -176,13 +176,13 @@ export default function HomepageSectionsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Ana Sayfa Bölümleri</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-[#111111]">Ana Sayfa Bölümleri</h1>
+          <p className="text-[#666666] text-sm mt-1">
             Sürükle-bırak ile sıralayın, göster/gizle ile kontrol edin
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span className="text-xs text-[#666666] bg-[#FFFFFF] px-3 py-1.5 rounded-lg border border-[#E7E2D8]">
             {activeCount} / {sections.length} aktif
           </span>
           <button
@@ -190,10 +190,10 @@ export default function HomepageSectionsPage() {
             disabled={saveStatus === "saving"}
             className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-60 ${
               saveStatus === "saved"
-                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                 : saveStatus === "error"
-                ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                : "bg-amber-500 text-slate-900 hover:bg-amber-400"
+                ? "bg-red-100 text-red-700 border border-red-200"
+                : "bg-[#3A6EA8] text-white hover:bg-[#2D5A8E]"
             }`}
           >
             {saveStatus === "saving"
@@ -209,15 +209,15 @@ export default function HomepageSectionsPage() {
 
       {/* Error message */}
       {saveStatus === "error" && saveError && (
-        <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/20 rounded-xl p-4">
-          <p className="text-sm text-red-300">{saveError}</p>
+        <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl p-4">
+          <p className="text-sm text-red-700">{saveError}</p>
         </div>
       )}
 
       {/* Tip */}
-      <div className="flex items-start gap-3 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
-        <span className="text-blue-400 text-lg flex-shrink-0">💡</span>
-        <p className="text-sm text-blue-300">
+      <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <span className="text-blue-700 text-lg flex-shrink-0">💡</span>
+        <p className="text-sm text-blue-700">
           Bölümleri sürükleyerek yeniden sıralayabilir, yanındaki oklar ile tek adım hareket ettirebilirsiniz.
           Aktif olmayan bölümler ana sayfada gösterilmez.
         </p>
@@ -234,19 +234,19 @@ export default function HomepageSectionsPage() {
             onDrop={() => handleDrop(section.id)}
             className={`group flex items-center gap-4 px-4 py-3 rounded-xl border transition-all cursor-grab active:cursor-grabbing ${
               dragOverId === section.id
-                ? "border-amber-500/50 bg-amber-500/5"
+                ? "border-[#3A6EA8]/50 bg-[#EBF2FA]"
                 : section.active
-                ? "bg-slate-800 border-slate-700/50 hover:border-slate-600"
-                : "bg-slate-800/40 border-slate-700/30 opacity-60 hover:opacity-80"
+                ? "bg-[#FFFFFF] border-[#E7E2D8] hover:border-[#E7E2D8]"
+                : "bg-[#FFFFFF] border-[#E7E2D8] opacity-60 hover:opacity-80"
             }`}
           >
             {/* Drag handle */}
-            <svg className="w-4 h-4 text-slate-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-[#666666] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
 
             {/* Order badge */}
-            <div className="w-7 h-7 rounded-lg bg-slate-700 text-slate-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-[#EBF2FA] text-[#666666] text-xs font-bold flex items-center justify-center flex-shrink-0">
               {idx + 1}
             </div>
 
@@ -255,8 +255,8 @@ export default function HomepageSectionsPage() {
 
             {/* Label + description */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-200">{section.label}</p>
-              <p className="text-xs text-slate-500">{section.description}</p>
+              <p className="text-sm font-semibold text-[#111111]">{section.label}</p>
+              <p className="text-xs text-[#666666]">{section.description}</p>
             </div>
 
             {/* Column selector (only for grid sections) */}
@@ -267,7 +267,7 @@ export default function HomepageSectionsPage() {
                   setGridCols((prev) => ({ ...prev, [section.id]: e.target.value }))
                 }
                 onClick={(e) => e.stopPropagation()}
-                className="bg-slate-700 border border-slate-600 text-slate-200 text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-amber-500 flex-shrink-0"
+                className="bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#3A6EA8] flex-shrink-0"
               >
                 {COLUMN_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -282,7 +282,7 @@ export default function HomepageSectionsPage() {
               <button
                 onClick={() => moveUp(section)}
                 disabled={idx === 0}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 disabled:opacity-20 hover:bg-slate-700 transition-colors"
+                className="p-1.5 rounded-lg text-[#666666] hover:text-[#3A6EA8] disabled:opacity-20 hover:bg-[#EBF2FA] transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
@@ -291,7 +291,7 @@ export default function HomepageSectionsPage() {
               <button
                 onClick={() => moveDown(section)}
                 disabled={idx === ordered.length - 1}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 disabled:opacity-20 hover:bg-slate-700 transition-colors"
+                className="p-1.5 rounded-lg text-[#666666] hover:text-[#3A6EA8] disabled:opacity-20 hover:bg-[#EBF2FA] transition-colors"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -303,7 +303,7 @@ export default function HomepageSectionsPage() {
             <button
               onClick={() => toggle(section.id)}
               className={`relative w-11 h-6 rounded-full transition-colors flex-shrink-0 ${
-                section.active ? "bg-amber-500" : "bg-slate-600"
+                section.active ? "bg-[#3A6EA8]" : "bg-[#E7E2D8]"
               }`}
             >
               <span

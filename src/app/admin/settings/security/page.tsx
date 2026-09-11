@@ -26,8 +26,8 @@ export default function SecurityPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-xl font-bold text-white">Güvenlik Ayarları</h1>
-        <p className="text-sm text-slate-400 mt-1">Oturum, erişim ve koruma seçenekleri</p>
+        <h1 className="text-xl font-bold text-[#111111]">Güvenlik Ayarları</h1>
+        <p className="text-sm text-[#666666] mt-1">Oturum, erişim ve koruma seçenekleri</p>
       </div>
 
       {/* Auth */}
@@ -40,11 +40,11 @@ export default function SecurityPage() {
       {/* Session */}
       <Card title="Oturum Yönetimi">
         <div>
-          <label className="block text-sm text-slate-300 mb-1.5">Oturum zaman aşımı (dakika)</label>
+          <label className="block text-sm text-[#444444] mb-1.5">Oturum zaman aşımı (dakika)</label>
           <select
             value={s.sessionTimeout}
             onChange={(e) => set("sessionTimeout", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {["15","30","60","120","240","480","1440"].map((v) => (
               <option key={v} value={v}>{v} dakika</option>
@@ -52,11 +52,11 @@ export default function SecurityPage() {
           </select>
         </div>
         <div>
-          <label className="block text-sm text-slate-300 mb-1.5">Maksimum hatalı giriş denemesi</label>
+          <label className="block text-sm text-[#444444] mb-1.5">Maksimum hatalı giriş denemesi</label>
           <select
             value={s.maxLoginAttempts}
             onChange={(e) => set("maxLoginAttempts", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {["3","5","10","20"].map((v) => (
               <option key={v} value={v}>{v} deneme</option>
@@ -68,22 +68,22 @@ export default function SecurityPage() {
       {/* API */}
       <Card title="API Güvenliği">
         <div>
-          <label className="block text-sm text-slate-300 mb-1.5">API Rate Limit (istek/dakika)</label>
+          <label className="block text-sm text-[#444444] mb-1.5">API Rate Limit (istek/dakika)</label>
           <input
             type="number"
             value={s.apiRateLimit}
             onChange={(e) => set("apiRateLimit", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-300 mb-1.5">IP Beyaz Listesi</label>
+          <label className="block text-sm text-[#444444] mb-1.5">IP Beyaz Listesi</label>
           <textarea
             value={s.ipWhitelist}
             onChange={(e) => set("ipWhitelist", e.target.value)}
             rows={3}
             placeholder="Her satıra bir IP adresi (boş = herkese açık)"
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50 resize-none font-mono placeholder:text-slate-500"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50 resize-none font-mono placeholder:text-[#999999]"
           />
         </div>
       </Card>
@@ -100,10 +100,10 @@ export default function SecurityPage() {
       </Card>
 
       <div className="flex items-center gap-3">
-        <button onClick={save} className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors">
+        <button onClick={save} className="px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors">
           Kaydet
         </button>
-        {saved && <span className="text-xs text-green-400">✓ Kaydedildi</span>}
+        {saved && <span className="text-xs text-green-700">✓ Kaydedildi</span>}
       </div>
     </div>
   );
@@ -111,8 +111,8 @@ export default function SecurityPage() {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 space-y-4">
-      <h2 className="text-sm font-semibold text-white border-b border-slate-700/50 pb-3">{title}</h2>
+    <div className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-2xl p-6 space-y-4">
+      <h2 className="text-sm font-semibold text-[#111111] border-b border-[#E7E2D8] pb-3">{title}</h2>
       {children}
     </div>
   );
@@ -122,12 +122,12 @@ function Toggle({ label, desc, value, onChange, danger }: { label: string; desc?
   return (
     <div className="flex items-start justify-between gap-4">
       <div>
-        <p className={`text-sm font-medium ${danger ? "text-red-400" : "text-slate-200"}`}>{label}</p>
-        {desc && <p className="text-xs text-slate-500 mt-0.5">{desc}</p>}
+        <p className={`text-sm font-medium ${danger ? "text-red-700" : "text-[#111111]"}`}>{label}</p>
+        {desc && <p className="text-xs text-[#666666] mt-0.5">{desc}</p>}
       </div>
       <label className="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-0.5">
         <input type="checkbox" className="sr-only peer" checked={value} onChange={(e) => onChange(e.target.checked)} />
-        <div className={`w-10 h-5 bg-slate-700 rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all ${danger ? "peer-checked:bg-red-500" : "peer-checked:bg-amber-500"}`} />
+        <div className={`w-10 h-5 bg-[#EBF2FA] rounded-full peer peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all ${danger ? "peer-checked:bg-red-500" : "peer-checked:bg-[#3A6EA8]"}`} />
       </label>
     </div>
   );

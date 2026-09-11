@@ -35,13 +35,13 @@ const PLATFORM_COLORS: Record<Platform, string> = {
 };
 
 const STATUS_STYLES: Record<JobStatus, { label: string; cls: string }> = {
-  PENDING:    { label: "Bekliyor",     cls: "text-slate-400 bg-slate-400/10 border-slate-400/20" },
-  QUEUED:     { label: "Kuyrukta",     cls: "text-blue-400 bg-blue-400/10 border-blue-400/20" },
-  PROCESSING: { label: "İşleniyor",   cls: "text-amber-400 bg-amber-400/10 border-amber-400/20" },
-  SUCCESS:    { label: "Yayımlandı",  cls: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20" },
-  FAILED:     { label: "Başarısız",   cls: "text-red-400 bg-red-400/10 border-red-400/20" },
-  SCHEDULED:  { label: "Zamanlandı", cls: "text-purple-400 bg-purple-400/10 border-purple-400/20" },
-  CANCELED:   { label: "İptal",       cls: "text-slate-500 bg-slate-500/10 border-slate-500/20" },
+  PENDING:    { label: "Bekliyor",     cls: "text-[#666666] bg-[#EBF2FA] border-[#E7E2D8]" },
+  QUEUED:     { label: "Kuyrukta",     cls: "text-blue-700 bg-blue-50 border-blue-200" },
+  PROCESSING: { label: "İşleniyor",   cls: "text-amber-700 bg-amber-100 border-amber-200" },
+  SUCCESS:    { label: "Yayımlandı",  cls: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  FAILED:     { label: "Başarısız",   cls: "text-red-700 bg-red-50 border-red-200" },
+  SCHEDULED:  { label: "Zamanlandı", cls: "text-purple-700 bg-purple-50 border-purple-200" },
+  CANCELED:   { label: "İptal",       cls: "text-[#666666] bg-[#EBF2FA] border-[#E7E2D8]" },
 };
 
 const mockJobs: PublishJob[] = [
@@ -145,12 +145,12 @@ export default function PublisherPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Yayın Kuyruğu</h1>
-          <p className="text-slate-400 text-sm mt-1">Tüm sosyal medya yayın işlerini izleyin</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Yayın Kuyruğu</h1>
+          <p className="text-[#666666] text-sm mt-1">Tüm sosyal medya yayın işlerini izleyin</p>
         </div>
         {selected.size > 0 && (
           <button onClick={bulkCancel}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-sm font-medium transition-colors">
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-sm font-medium transition-colors">
             {selected.size} işi iptal et
           </button>
         )}
@@ -159,15 +159,15 @@ export default function PublisherPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {[
-          { label: "Toplam", value: stats.total, color: "text-slate-200" },
-          { label: "Başarılı", value: stats.success, color: "text-emerald-400" },
-          { label: "Başarısız", value: stats.failed, color: "text-red-400" },
-          { label: "Bekleyen", value: stats.pending, color: "text-amber-400" },
-          { label: "Zamanlanmış", value: stats.scheduled, color: "text-purple-400" },
+          { label: "Toplam", value: stats.total, color: "text-[#111111]" },
+          { label: "Başarılı", value: stats.success, color: "text-emerald-700" },
+          { label: "Başarısız", value: stats.failed, color: "text-red-700" },
+          { label: "Bekleyen", value: stats.pending, color: "text-amber-700" },
+          { label: "Zamanlanmış", value: stats.scheduled, color: "text-purple-700" },
         ].map((s) => (
-          <div key={s.label} className="bg-slate-800 rounded-xl p-3 border border-slate-700/50 text-center">
+          <div key={s.label} className="bg-[#FFFFFF] rounded-xl p-3 border border-[#E7E2D8] text-center">
             <p className={`text-2xl font-black ${s.color}`}>{s.value}</p>
-            <p className="text-xs text-slate-400 mt-0.5">{s.label}</p>
+            <p className="text-xs text-[#666666] mt-0.5">{s.label}</p>
           </div>
         ))}
       </div>
@@ -175,25 +175,25 @@ export default function PublisherPage() {
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as JobStatus | "ALL")}
-          className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500">
+          className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] text-sm rounded-xl px-3 py-2 focus:outline-none focus:border-[#3A6EA8]">
           <option value="ALL">Tüm Durumlar</option>
           {Object.entries(STATUS_STYLES).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
         <select value={platformFilter} onChange={(e) => setPlatformFilter(e.target.value as Platform | "ALL")}
-          className="bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500">
+          className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] text-sm rounded-xl px-3 py-2 focus:outline-none focus:border-[#3A6EA8]">
           <option value="ALL">Tüm Platformlar</option>
           {Object.entries(PLATFORM_ICONS).map(([k, v]) => <option key={k} value={k}>{v} {k}</option>)}
         </select>
       </div>
 
       {/* Jobs Table */}
-      <div className="bg-slate-800 rounded-2xl border border-slate-700/50 overflow-hidden">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-700/50 text-xs text-slate-500 uppercase tracking-wider">
+              <tr className="border-b border-[#E7E2D8] text-xs text-[#666666] uppercase tracking-wider">
                 <th className="px-4 py-3 text-left w-8">
-                  <input type="checkbox" className="rounded accent-amber-500"
+                  <input type="checkbox" className="rounded accent-[#3A6EA8]"
                     onChange={(e) => setSelected(e.target.checked ? new Set(filtered.map((j) => j.id)) : new Set())} />
                 </th>
                 <th className="px-4 py-3 text-left">İçerik</th>
@@ -203,26 +203,26 @@ export default function PublisherPage() {
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/30">
+            <tbody className="divide-y divide-[#E7E2D8]">
               {filtered.map((job) => (
-                <tr key={job.id} className={`hover:bg-slate-700/20 transition-colors ${selected.has(job.id) ? "bg-amber-500/5" : ""}`}>
+                <tr key={job.id} className={`hover:bg-[#EBF2FA] transition-colors ${selected.has(job.id) ? "bg-[#EBF2FA]" : ""}`}>
                   <td className="px-4 py-3">
                     <input type="checkbox" checked={selected.has(job.id)} onChange={() => toggleSelect(job.id)}
-                      className="rounded accent-amber-500" />
+                      className="rounded accent-[#3A6EA8]" />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-700 flex-shrink-0">
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#EBF2FA] flex-shrink-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={job.thumbnail} alt="" className="w-full h-full object-cover" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-medium text-slate-200 truncate max-w-[200px]">{job.title}</p>
-                        <p className="text-xs text-slate-500 truncate max-w-[200px]">{job.caption}</p>
+                        <p className="font-medium text-[#111111] truncate max-w-[200px]">{job.title}</p>
+                        <p className="text-xs text-[#666666] truncate max-w-[200px]">{job.caption}</p>
                         {job.hashtags.length > 0 && (
                           <div className="flex gap-1 mt-0.5 flex-wrap">
                             {job.hashtags.slice(0, 2).map((h) => (
-                              <span key={h} className="text-[10px] text-amber-400/70">{h}</span>
+                              <span key={h} className="text-[10px] text-[#3A6EA8]/70">{h}</span>
                             ))}
                           </div>
                         )}
@@ -236,8 +236,8 @@ export default function PublisherPage() {
                         {PLATFORM_ICONS[job.platform]}
                       </div>
                       <div>
-                        <p className="text-xs font-medium text-slate-300">{job.platform.replace("_", " ")}</p>
-                        <p className="text-[10px] text-slate-500">{job.account}</p>
+                        <p className="text-xs font-medium text-[#444444]">{job.platform.replace("_", " ")}</p>
+                        <p className="text-[10px] text-[#666666]">{job.account}</p>
                       </div>
                     </div>
                   </td>
@@ -250,25 +250,25 @@ export default function PublisherPage() {
                         )}
                       </span>
                       {job.error && (
-                        <p className="text-[10px] text-red-400 mt-0.5 max-w-[180px] truncate" title={job.error}>
+                        <p className="text-[10px] text-red-700 mt-0.5 max-w-[180px] truncate" title={job.error}>
                           {job.error}
                         </p>
                       )}
                       {job.retryCount > 0 && (
-                        <p className="text-[10px] text-slate-500">{job.retryCount}× denendi</p>
+                        <p className="text-[10px] text-[#666666]">{job.retryCount}× denendi</p>
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-xs text-slate-400">
+                  <td className="px-4 py-3 text-xs text-[#666666]">
                     {job.publishedAt ? (
                       <div>
-                        <p className="text-emerald-400">{job.publishedAt}</p>
-                        <p className="text-slate-500">yayımlandı</p>
+                        <p className="text-emerald-700">{job.publishedAt}</p>
+                        <p className="text-[#666666]">yayımlandı</p>
                       </div>
                     ) : job.scheduledAt ? (
                       <div>
-                        <p className="text-purple-400">{job.scheduledAt}</p>
-                        <p className="text-slate-500">zamanlandı</p>
+                        <p className="text-purple-700">{job.scheduledAt}</p>
+                        <p className="text-[#666666]">zamanlandı</p>
                       </div>
                     ) : (
                       <p>{job.createdAt}</p>
@@ -278,13 +278,13 @@ export default function PublisherPage() {
                     <div className="flex items-center justify-end gap-1">
                       {job.status === "FAILED" && (
                         <button onClick={() => retry(job.id)} disabled={retrying === job.id}
-                          className="px-2.5 py-1.5 rounded-lg text-xs bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors disabled:opacity-50">
+                          className="px-2.5 py-1.5 rounded-lg text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors disabled:opacity-50">
                           {retrying === job.id ? "..." : "Tekrar"}
                         </button>
                       )}
                       {job.platformUrl && (
                         <a href={job.platformUrl} target="_blank" rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-amber-400 hover:bg-slate-700 transition-colors">
+                          className="p-1.5 rounded-lg text-[#666666] hover:text-[#3A6EA8] hover:bg-[#EBF2FA] transition-colors">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                           </svg>
@@ -292,7 +292,7 @@ export default function PublisherPage() {
                       )}
                       {["PENDING", "SCHEDULED"].includes(job.status) && (
                         <button onClick={() => cancelJob(job.id)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-slate-700 transition-colors">
+                          className="p-1.5 rounded-lg text-[#666666] hover:text-red-700 hover:bg-[#EBF2FA] transition-colors">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
@@ -306,7 +306,7 @@ export default function PublisherPage() {
           </table>
         </div>
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-slate-500">
+          <div className="text-center py-12 text-[#666666]">
             <p className="text-4xl mb-3">📭</p>
             <p>Bu filtreyle eşleşen iş bulunamadı</p>
           </div>

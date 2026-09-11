@@ -40,22 +40,22 @@ export default function HeaderMenuManager() {
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Header Menü Yönetimi</h1>
-          <p className="text-sm text-slate-400 mt-0.5">Sürükle-bırak ile sıralayın, düzenleyin veya silin</p>
+          <h1 className="text-xl font-bold text-[#111111]">Header Menü Yönetimi</h1>
+          <p className="text-sm text-[#666666] mt-0.5">Sürükle-bırak ile sıralayın, düzenleyin veya silin</p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={addItem} className="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 hover:bg-slate-600 text-white transition-colors">
+          <button onClick={addItem} className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#111111] transition-colors">
             + Öğe Ekle
           </button>
-          <button onClick={save} className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-amber-500 hover:bg-amber-400 text-slate-900"}`}>
+          <button onClick={save} className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white"}`}>
             {saved ? "✓ Kaydedildi" : "Kaydet"}
           </button>
         </div>
       </div>
 
-      <section className="bg-[#1E293B] rounded-xl border border-slate-700/50 overflow-hidden">
-        <div className="px-5 py-3 border-b border-slate-700/50 bg-slate-800/50">
-          <div className="grid grid-cols-[32px_1fr_1fr_100px_80px] gap-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+      <section className="bg-[#FFFFFF] rounded-xl border border-[#E7E2D8] overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#E7E2D8] bg-[#FFFFFF]">
+          <div className="grid grid-cols-[32px_1fr_1fr_100px_80px] gap-3 text-[10px] font-bold uppercase tracking-wider text-[#666666]">
             <span></span>
             <span>Başlık</span>
             <span>URL / Hedef</span>
@@ -63,7 +63,7 @@ export default function HeaderMenuManager() {
             <span className="text-right">İşlem</span>
           </div>
         </div>
-        <div className="divide-y divide-slate-700/30">
+        <div className="divide-y divide-[#E7E2D8]">
           {items.map((item, idx) => (
             <div
               key={item.id}
@@ -78,12 +78,12 @@ export default function HeaderMenuManager() {
                 setItems(next);
                 setDragIdx(null);
               }}
-              className="grid grid-cols-[32px_1fr_1fr_100px_80px] gap-3 items-center px-5 py-3 hover:bg-slate-700/20 transition-colors"
+              className="grid grid-cols-[32px_1fr_1fr_100px_80px] gap-3 items-center px-5 py-3 hover:bg-[#EBF2FA] transition-colors"
             >
               {/* Drag handle */}
               <div className="flex flex-col gap-0.5 cursor-grab active:cursor-grabbing items-center">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-4 h-0.5 bg-slate-600 rounded" />
+                  <div key={i} className="w-4 h-0.5 bg-[#E7E2D8] rounded" />
                 ))}
               </div>
 
@@ -91,21 +91,21 @@ export default function HeaderMenuManager() {
               <input
                 value={item.label}
                 onChange={(e) => update(item.id, "label", e.target.value)}
-                className="bg-slate-800 border border-slate-600 text-slate-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-amber-500"
+                className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded px-2 py-1.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
               />
 
               {/* Href */}
               <input
                 value={item.href}
                 onChange={(e) => update(item.id, "href", e.target.value)}
-                className="bg-slate-800 border border-slate-600 text-slate-200 rounded px-2 py-1.5 text-sm font-mono focus:outline-none focus:border-amber-500"
+                className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded px-2 py-1.5 text-sm font-mono focus:outline-none focus:border-[#3A6EA8]"
               />
 
               {/* Target */}
               <select
                 value={item.target || "_self"}
                 onChange={(e) => update(item.id, "target", e.target.value)}
-                className="bg-slate-800 border border-slate-600 text-slate-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-amber-500"
+                className="bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded px-2 py-1.5 text-sm focus:outline-none focus:border-[#3A6EA8]"
               >
                 <option value="_self">Aynı Sayfa</option>
                 <option value="_blank">Yeni Sekme</option>
@@ -113,24 +113,24 @@ export default function HeaderMenuManager() {
 
               {/* Actions */}
               <div className="flex items-center justify-end gap-1">
-                <button onClick={() => moveUp(idx)} disabled={idx === 0} className="w-6 h-6 rounded hover:bg-slate-600 disabled:opacity-30 text-slate-400 flex items-center justify-center text-xs">↑</button>
-                <button onClick={() => moveDown(idx)} disabled={idx === items.length - 1} className="w-6 h-6 rounded hover:bg-slate-600 disabled:opacity-30 text-slate-400 flex items-center justify-center text-xs">↓</button>
-                <button onClick={() => remove(item.id)} className="w-6 h-6 rounded hover:bg-red-500/20 text-slate-500 hover:text-red-400 flex items-center justify-center text-xs">✕</button>
+                <button onClick={() => moveUp(idx)} disabled={idx === 0} className="w-6 h-6 rounded hover:bg-[#E7E2D8] disabled:opacity-30 text-[#666666] flex items-center justify-center text-xs">↑</button>
+                <button onClick={() => moveDown(idx)} disabled={idx === items.length - 1} className="w-6 h-6 rounded hover:bg-[#E7E2D8] disabled:opacity-30 text-[#666666] flex items-center justify-center text-xs">↓</button>
+                <button onClick={() => remove(item.id)} className="w-6 h-6 rounded hover:bg-red-100 text-[#666666] hover:text-red-700 flex items-center justify-center text-xs">✕</button>
               </div>
             </div>
           ))}
         </div>
 
         {items.length === 0 && (
-          <div className="py-12 text-center text-slate-500 text-sm">
+          <div className="py-12 text-center text-[#666666] text-sm">
             Menü öğesi yok. &quot;+ Öğe Ekle&quot; ile başlayın.
           </div>
         )}
       </section>
 
-      <div className="bg-slate-800/50 rounded-xl border border-slate-700/30 p-4">
-        <p className="text-xs text-slate-500">
-          <span className="text-amber-400 font-semibold">İpucu:</span> Satırları sürükleyerek sıralayabilirsiniz. Mega menü (dropdown) özelliği için kod düzenleyicide <code className="text-amber-400 bg-slate-800 px-1 rounded">megaColumns</code> alanını kullanın.
+      <div className="bg-[#FFFFFF] rounded-xl border border-[#E7E2D8] p-4">
+        <p className="text-xs text-[#666666]">
+          <span className="text-[#3A6EA8] font-semibold">İpucu:</span> Satırları sürükleyerek sıralayabilirsiniz. Mega menü (dropdown) özelliği için kod düzenleyicide <code className="text-[#3A6EA8] bg-[#FFFFFF] px-1 rounded">megaColumns</code> alanını kullanın.
         </p>
       </div>
     </div>

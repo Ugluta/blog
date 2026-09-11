@@ -78,15 +78,15 @@ export default function AppearancePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Görünüm Ayarları</h1>
-          <p className="text-slate-400 text-sm mt-1">Renkler, yazı tipleri, düzen ve bileşen stili</p>
+          <h1 className="text-2xl font-bold text-[#111111]">Görünüm Ayarları</h1>
+          <p className="text-[#666666] text-sm mt-1">Renkler, yazı tipleri, düzen ve bileşen stili</p>
         </div>
         <button
           onClick={handleSave}
           className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all ${
             saved
-              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-              : "bg-amber-500 text-slate-900 hover:bg-amber-400"
+              ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+              : "bg-[#3A6EA8] text-white hover:bg-[#2D5A8E]"
           }`}
         >
           {saved ? "✓ Kaydedildi" : "Kaydet"}
@@ -94,9 +94,9 @@ export default function AppearancePage() {
       </div>
 
       {/* Theme Presets */}
-      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-white mb-1">Hazır Temalar</h2>
-        <p className="text-slate-400 text-sm mb-5">Bir tema seçin — renkleri aşağıdan özelleştirebilirsiniz.</p>
+      <div className="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E7E2D8]">
+        <h2 className="text-lg font-bold text-[#111111] mb-1">Hazır Temalar</h2>
+        <p className="text-[#666666] text-sm mb-5">Bir tema seçin — renkleri aşağıdan özelleştirebilirsiniz.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {PRESET_THEMES.map((theme, idx) => (
             <button
@@ -104,8 +104,8 @@ export default function AppearancePage() {
               onClick={() => applyTheme(idx)}
               className={`relative rounded-xl p-4 border-2 transition-all text-left ${
                 selectedTheme === idx
-                  ? "border-amber-500 ring-1 ring-amber-500/30"
-                  : "border-slate-700 hover:border-slate-500"
+                  ? "border-[#3A6EA8] ring-1 ring-[#3A6EA8]/30"
+                  : "border-[#E7E2D8] hover:border-[#E7E2D8]"
               }`}
               style={{ backgroundColor: theme.primary }}
             >
@@ -127,8 +127,8 @@ export default function AppearancePage() {
                 </span>
               )}
               {selectedTheme === idx && (
-                <div className="absolute top-2 left-2 w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center">
-                  <svg className="w-2.5 h-2.5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-2 left-2 w-4 h-4 rounded-full bg-[#3A6EA8] flex items-center justify-center">
+                  <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -139,9 +139,9 @@ export default function AppearancePage() {
       </div>
 
       {/* Color Customizer */}
-      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-white mb-1">Renk Paleti</h2>
-        <p className="text-slate-400 text-sm mb-5">Site genelinde kullanılan renkleri özelleştirin.</p>
+      <div className="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E7E2D8]">
+        <h2 className="text-lg font-bold text-[#111111] mb-1">Renk Paleti</h2>
+        <p className="text-[#666666] text-sm mb-5">Site genelinde kullanılan renkleri özelleştirin.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {(Object.entries(colors) as [keyof ColorState, string][]).map(([key, value]) => {
             const labels: Record<keyof ColorState, string> = {
@@ -154,7 +154,7 @@ export default function AppearancePage() {
               linkColor: "Bağlantı Rengi",
             };
             return (
-              <label key={key} className="flex items-center gap-4 p-3 rounded-xl bg-slate-700/40 hover:bg-slate-700/60 transition-colors cursor-pointer">
+              <label key={key} className="flex items-center gap-4 p-3 rounded-xl bg-[#EBF2FA] hover:bg-[#EBF2FA] transition-colors cursor-pointer">
                 <input
                   type="color"
                   value={value}
@@ -162,10 +162,10 @@ export default function AppearancePage() {
                   className="w-10 h-10 rounded-lg border-0 cursor-pointer bg-transparent p-0.5"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-200">{labels[key]}</p>
-                  <p className="text-xs text-slate-500 font-mono">{value}</p>
+                  <p className="text-sm font-medium text-[#111111]">{labels[key]}</p>
+                  <p className="text-xs text-[#666666] font-mono">{value}</p>
                 </div>
-                <div className="w-6 h-6 rounded-md border border-slate-600" style={{ backgroundColor: value }} />
+                <div className="w-6 h-6 rounded-md border border-[#E7E2D8]" style={{ backgroundColor: value }} />
               </label>
             );
           })}
@@ -173,9 +173,9 @@ export default function AppearancePage() {
       </div>
 
       {/* Font Pairs */}
-      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-white mb-1">Yazı Tipi Çiftleri</h2>
-        <p className="text-slate-400 text-sm mb-5">Başlık ve gövde metni için yazı tipi kombinasyonu.</p>
+      <div className="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E7E2D8]">
+        <h2 className="text-lg font-bold text-[#111111] mb-1">Yazı Tipi Çiftleri</h2>
+        <p className="text-[#666666] text-sm mb-5">Başlık ve gövde metni için yazı tipi kombinasyonu.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
           {FONT_PAIRS.map((pair, idx) => (
             <button
@@ -183,17 +183,17 @@ export default function AppearancePage() {
               onClick={() => setSelectedFont(idx)}
               className={`rounded-xl p-4 border-2 text-left transition-all ${
                 selectedFont === idx
-                  ? "border-amber-500 bg-amber-500/5"
-                  : "border-slate-700 hover:border-slate-500"
+                  ? "border-[#3A6EA8] bg-[#EBF2FA]"
+                  : "border-[#E7E2D8] hover:border-[#E7E2D8]"
               }`}
             >
-              <p className="text-lg font-bold text-slate-100" style={{ fontFamily: pair.heading }}>
+              <p className="text-lg font-bold text-[#111111]" style={{ fontFamily: pair.heading }}>
                 Aa Başlık
               </p>
-              <p className="text-sm text-slate-400 mt-1" style={{ fontFamily: pair.body }}>
+              <p className="text-sm text-[#666666] mt-1" style={{ fontFamily: pair.body }}>
                 Gövde metni örneği
               </p>
-              <p className="text-[11px] text-amber-400 mt-2 font-medium">{pair.label}</p>
+              <p className="text-[11px] text-[#3A6EA8] mt-2 font-medium">{pair.label}</p>
             </button>
           ))}
         </div>
@@ -207,10 +207,10 @@ export default function AppearancePage() {
             { key: "bodyWeight", label: "Gövde Font Ağırlığı", type: "select", options: ["300", "400", "500"] },
           ].map((field) => (
             <div key={field.key}>
-              <label className="block text-xs font-medium text-slate-400 mb-1.5">
+              <label className="block text-xs font-medium text-[#666666] mb-1.5">
                 {field.label}
                 {field.type === "range" && (
-                  <span className="ml-2 text-amber-400 font-mono">
+                  <span className="ml-2 text-[#3A6EA8] font-mono">
                     {typography[field.key as keyof typeof typography]}
                     {field.key === "baseFontSize" ? "px" : ""}
                   </span>
@@ -224,13 +224,13 @@ export default function AppearancePage() {
                   step={field.step ?? 1}
                   value={typography[field.key as keyof typeof typography]}
                   onChange={(e) => setTypography((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                  className="w-full accent-amber-500"
+                  className="w-full accent-[#3A6EA8]"
                 />
               ) : (
                 <select
                   value={typography[field.key as keyof typeof typography]}
                   onChange={(e) => setTypography((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                  className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
                 >
                   {field.options?.map((o) => <option key={o} value={o}>{o}</option>)}
                 </select>
@@ -241,38 +241,38 @@ export default function AppearancePage() {
       </div>
 
       {/* Layout Settings */}
-      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-white mb-1">Düzen</h2>
-        <p className="text-slate-400 text-sm mb-5">Sayfa genişliği, kenar yuvarlaklığı ve gölge seçenekleri.</p>
+      <div className="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E7E2D8]">
+        <h2 className="text-lg font-bold text-[#111111] mb-1">Düzen</h2>
+        <p className="text-[#666666] text-sm mb-5">Sayfa genişliği, kenar yuvarlaklığı ve gölge seçenekleri.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">
               Maks. Container Genişliği
-              <span className="ml-2 text-amber-400 font-mono">{layout.containerMaxWidth}px</span>
+              <span className="ml-2 text-[#3A6EA8] font-mono">{layout.containerMaxWidth}px</span>
             </label>
             <input type="range" min={960} max={1536} step={64}
               value={layout.containerMaxWidth}
               onChange={(e) => setLayout((p) => ({ ...p, containerMaxWidth: e.target.value }))}
-              className="w-full accent-amber-500"
+              className="w-full accent-[#3A6EA8]"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">
               Kenar Yuvarlaklığı
-              <span className="ml-2 text-amber-400 font-mono">{layout.borderRadius}px</span>
+              <span className="ml-2 text-[#3A6EA8] font-mono">{layout.borderRadius}px</span>
             </label>
             <input type="range" min={0} max={24} step={2}
               value={layout.borderRadius}
               onChange={(e) => setLayout((p) => ({ ...p, borderRadius: e.target.value }))}
-              className="w-full accent-amber-500"
+              className="w-full accent-[#3A6EA8]"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Kart Gölgesi</label>
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">Kart Gölgesi</label>
             <select
               value={layout.cardShadow}
               onChange={(e) => setLayout((p) => ({ ...p, cardShadow: e.target.value }))}
-              className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+              className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
             >
               <option value="none">Yok</option>
               <option value="soft">Hafif</option>
@@ -281,11 +281,11 @@ export default function AppearancePage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Navigasyon Stili</label>
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">Navigasyon Stili</label>
             <select
               value={layout.navStyle}
               onChange={(e) => setLayout((p) => ({ ...p, navStyle: e.target.value }))}
-              className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+              className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
             >
               <option value="dark">Koyu</option>
               <option value="light">Açık</option>
@@ -294,11 +294,11 @@ export default function AppearancePage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Logo Stili</label>
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">Logo Stili</label>
             <select
               value={layout.logoStyle}
               onChange={(e) => setLayout((p) => ({ ...p, logoStyle: e.target.value }))}
-              className="w-full bg-slate-700 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
+              className="w-full bg-[#EBF2FA] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]"
             >
               <option value="text">Metin</option>
               <option value="image">Resim</option>
@@ -306,24 +306,24 @@ export default function AppearancePage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <label className="block text-xs font-medium text-[#666666] mb-1.5">
               Header Yüksekliği
-              <span className="ml-2 text-amber-400 font-mono">{layout.headerHeight}px</span>
+              <span className="ml-2 text-[#3A6EA8] font-mono">{layout.headerHeight}px</span>
             </label>
             <input type="range" min={48} max={96} step={4}
               value={layout.headerHeight}
               onChange={(e) => setLayout((p) => ({ ...p, headerHeight: e.target.value }))}
-              className="w-full accent-amber-500"
+              className="w-full accent-[#3A6EA8]"
             />
           </div>
         </div>
       </div>
 
       {/* Preview Bar */}
-      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-white mb-4">Önizleme</h2>
-        <div className="rounded-xl overflow-hidden border border-slate-700" style={{ backgroundColor: colors.primary }}>
-          <div className="px-4 py-3 border-b border-slate-700/50 flex items-center justify-between" style={{ backgroundColor: colors.cardBg }}>
+      <div className="bg-[#FFFFFF] rounded-2xl p-6 border border-[#E7E2D8]">
+        <h2 className="text-lg font-bold text-[#111111] mb-4">Önizleme</h2>
+        <div className="rounded-xl overflow-hidden border border-[#E7E2D8]" style={{ backgroundColor: colors.primary }}>
+          <div className="px-4 py-3 border-b border-[#E7E2D8] flex items-center justify-between" style={{ backgroundColor: colors.cardBg }}>
             <span className="font-black text-sm tracking-widest uppercase" style={{ color: colors.accent }}>
               KURUMSAL
             </span>

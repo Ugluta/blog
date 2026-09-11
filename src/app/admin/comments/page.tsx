@@ -20,10 +20,10 @@ const STATUS_OPTS = [
 ];
 
 const STATUS_COLORS: Record<string, string> = {
-  PENDING: "bg-amber-500/20 text-amber-400",
-  APPROVED: "bg-green-500/20 text-green-400",
-  REJECTED: "bg-slate-600/40 text-slate-400",
-  SPAM: "bg-red-500/20 text-red-400",
+  PENDING: "bg-amber-100 text-amber-700",
+  APPROVED: "bg-green-100 text-green-700",
+  REJECTED: "bg-[#EBF2FA] text-[#666666]",
+  SPAM: "bg-red-100 text-red-700",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -77,24 +77,24 @@ export default function AdminCommentsPage() {
   return (
     <div className="space-y-5 max-w-5xl">
       {toast && (
-        <div className="fixed top-4 right-4 z-50 bg-slate-800 border border-amber-500/40 text-amber-400 px-4 py-2.5 rounded-xl text-sm shadow-xl">
+        <div className="fixed top-4 right-4 z-50 bg-[#FFFFFF] border border-[#3A6EA8]/40 text-[#3A6EA8] px-4 py-2.5 rounded-xl text-sm shadow-xl">
           {toast}
         </div>
       )}
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Yorum Moderasyonu</h1>
-          <p className="text-sm text-slate-400 mt-0.5">{total} yorum</p>
+          <h1 className="text-xl font-bold text-[#111111]">Yorum Moderasyonu</h1>
+          <p className="text-sm text-[#666666] mt-0.5">{total} yorum</p>
         </div>
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 bg-slate-800/60 rounded-xl p-1 border border-slate-700/50 w-fit">
+      <div className="flex gap-1 bg-[#FFFFFF] rounded-xl p-1 border border-[#E7E2D8] w-fit">
         {STATUS_OPTS.map(opt => (
           <button key={opt.key} onClick={() => { setStatusFilter(opt.key); setPage(1); }}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
-              statusFilter === opt.key ? "bg-amber-500 text-slate-900" : "text-slate-400 hover:text-white"
+              statusFilter === opt.key ? "bg-[#3A6EA8] text-white" : "text-[#666666] hover:text-[#111111]"
             }`}>
             {opt.label}
           </button>
@@ -103,12 +103,12 @@ export default function AdminCommentsPage() {
 
       {loading ? (
         <div className="space-y-3">
-          {[1,2,3].map(i => <div key={i} className="h-24 rounded-xl bg-slate-800/40 animate-pulse" />)}
+          {[1,2,3].map(i => <div key={i} className="h-24 rounded-xl bg-[#FFFFFF] animate-pulse" />)}
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-16 bg-slate-800/40 rounded-2xl border border-slate-700/50">
+        <div className="text-center py-16 bg-[#FFFFFF] rounded-2xl border border-[#E7E2D8]">
           <p className="text-3xl mb-2">💬</p>
-          <p className="text-slate-400">Bu kategoride yorum yok</p>
+          <p className="text-[#666666]">Bu kategoride yorum yok</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -116,46 +116,46 @@ export default function AdminCommentsPage() {
             const author = comment.user?.name ?? comment.guestName ?? "Misafir";
             const email = comment.user?.email ?? comment.guestEmail;
             return (
-              <div key={comment.id} className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4">
+              <div key={comment.id} className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-xl p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="text-sm font-semibold text-white">{author}</span>
-                      {email && <span className="text-xs text-slate-500">{email}</span>}
+                      <span className="text-sm font-semibold text-[#111111]">{author}</span>
+                      {email && <span className="text-xs text-[#666666]">{email}</span>}
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${STATUS_COLORS[comment.status] ?? STATUS_COLORS.PENDING}`}>
                         {STATUS_LABELS[comment.status] ?? comment.status}
                       </span>
-                      <span className="text-xs text-slate-600">
+                      <span className="text-xs text-[#666666]">
                         {new Date(comment.createdAt).toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </span>
                     </div>
-                    <p className="text-sm text-slate-300 leading-relaxed line-clamp-3">{comment.content}</p>
+                    <p className="text-sm text-[#444444] leading-relaxed line-clamp-3">{comment.content}</p>
                     <Link href={`/haberler/${comment.post.slug}`} target="_blank"
-                      className="text-xs text-amber-500/70 hover:text-amber-400 mt-1 inline-block transition-colors">
+                      className="text-xs text-[#3A6EA8]/70 hover:text-[#3A6EA8] mt-1 inline-block transition-colors">
                       {comment.post.title} ↗
                     </Link>
                   </div>
                   <div className="flex flex-col gap-1.5 flex-shrink-0">
                     {comment.status !== "APPROVED" && (
                       <button onClick={() => updateStatus(comment.id, "APPROVED")}
-                        className="px-2.5 py-1 text-xs rounded-lg bg-green-500/20 hover:bg-green-500/30 text-green-400 transition-colors">
+                        className="px-2.5 py-1 text-xs rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition-colors">
                         Onayla
                       </button>
                     )}
                     {comment.status !== "REJECTED" && (
                       <button onClick={() => updateStatus(comment.id, "REJECTED")}
-                        className="px-2.5 py-1 text-xs rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-400 transition-colors">
+                        className="px-2.5 py-1 text-xs rounded-lg bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#666666] transition-colors">
                         Reddet
                       </button>
                     )}
                     {comment.status !== "SPAM" && (
                       <button onClick={() => updateStatus(comment.id, "SPAM")}
-                        className="px-2.5 py-1 text-xs rounded-lg bg-slate-700 hover:bg-orange-500/20 text-slate-400 hover:text-orange-400 transition-colors">
+                        className="px-2.5 py-1 text-xs rounded-lg bg-[#EBF2FA] hover:bg-orange-500/20 text-[#666666] hover:text-orange-400 transition-colors">
                         Spam
                       </button>
                     )}
                     <button onClick={() => deleteComment(comment.id)}
-                      className="px-2.5 py-1 text-xs rounded-lg bg-slate-700 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-colors">
+                      className="px-2.5 py-1 text-xs rounded-lg bg-[#EBF2FA] hover:bg-red-100 text-[#666666] hover:text-red-700 transition-colors">
                       Sil
                     </button>
                   </div>
@@ -169,12 +169,12 @@ export default function AdminCommentsPage() {
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-            className="px-3 py-1.5 text-xs rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 disabled:opacity-40 transition-colors">
+            className="px-3 py-1.5 text-xs rounded-lg bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#444444] disabled:opacity-40 transition-colors">
             ← Önceki
           </button>
-          <span className="text-xs text-slate-500">{page} / {totalPages}</span>
+          <span className="text-xs text-[#666666]">{page} / {totalPages}</span>
           <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-            className="px-3 py-1.5 text-xs rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 disabled:opacity-40 transition-colors">
+            className="px-3 py-1.5 text-xs rounded-lg bg-[#EBF2FA] hover:bg-[#E7E2D8] text-[#444444] disabled:opacity-40 transition-colors">
             Sonraki →
           </button>
         </div>

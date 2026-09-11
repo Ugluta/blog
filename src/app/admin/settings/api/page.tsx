@@ -19,7 +19,7 @@ function EyeIcon({ open }: { open: boolean }) {
 
 // ─── Components ───────────────────────────────────────────────────────────────
 
-const INPUT_CLS = "w-full bg-slate-800 border border-slate-600 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500";
+const INPUT_CLS = "w-full bg-[#FFFFFF] border border-[#E7E2D8] text-[#111111] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#3A6EA8]";
 
 function SecretInput({
   label,
@@ -37,7 +37,7 @@ function SecretInput({
   const [show, setShow] = useState(false);
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-400 mb-1.5">{label}</label>
+      <label className="block text-xs font-medium text-[#666666] mb-1.5">{label}</label>
       <div className="relative">
         <input
           type={show ? "text" : "password"}
@@ -50,7 +50,7 @@ function SecretInput({
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#666666] hover:text-[#444444] transition-colors"
         >
           <EyeIcon open={show} />
         </button>
@@ -72,7 +72,7 @@ function TextInput({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-400 mb-1.5">{label}</label>
+      <label className="block text-xs font-medium text-[#666666] mb-1.5">{label}</label>
       <input
         type="text"
         value={value}
@@ -97,7 +97,7 @@ function SelectInput({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-400 mb-1.5">{label}</label>
+      <label className="block text-xs font-medium text-[#666666] mb-1.5">{label}</label>
       <select value={value} onChange={(e) => onChange(e.target.value)} className={INPUT_CLS}>
         {options.map((o) => <option key={o} value={o}>{o}</option>)}
       </select>
@@ -125,11 +125,11 @@ function SectionSaveButton({ sectionKey, fields }: { sectionKey: string; fields:
   }
 
   return (
-    <div className="flex justify-end pt-2 border-t border-slate-700/30 mt-4">
+    <div className="flex justify-end pt-2 border-t border-[#E7E2D8] mt-4">
       <button
         onClick={save}
         disabled={saving}
-        className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-amber-500 hover:bg-amber-400 text-slate-900 disabled:opacity-50"}`}
+        className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${saved ? "bg-green-500 text-white" : "bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white disabled:opacity-50"}`}
         data-key={sectionKey}
       >
         {saving ? "Kaydediliyor…" : saved ? "✓ Kaydedildi" : "Kaydet"}
@@ -195,22 +195,22 @@ export default function APISettingsPage() {
   const [s3Secret, setS3Secret] = useState("");
   const [s3Region, setS3Region] = useState("");
 
-  const sectionCls = "bg-slate-800/40 rounded-xl border border-slate-700/50 p-5 space-y-4";
-  const sectionTitle = "text-sm font-bold uppercase tracking-wider text-slate-300 mb-1";
+  const sectionCls = "bg-[#FFFFFF] rounded-xl border border-[#E7E2D8] p-5 space-y-4";
+  const sectionTitle = "text-sm font-bold uppercase tracking-wider text-[#444444] mb-1";
 
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-xl font-bold text-white">API Ayarları</h1>
-        <p className="text-sm text-slate-400 mt-0.5">Üçüncü taraf entegrasyon anahtarları</p>
+        <h1 className="text-xl font-bold text-[#111111]">API Ayarları</h1>
+        <p className="text-sm text-[#666666] mt-0.5">Üçüncü taraf entegrasyon anahtarları</p>
       </div>
 
       {/* Section 1: AI */}
       <section className={sectionCls}>
         <h2 className={sectionTitle}>AI Sağlayıcılar</h2>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">🟢 OpenAI</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">🟢 OpenAI</p>
           <div className="space-y-3">
             <SecretInput label="API Key" id="openai-key" value={openaiKey} onChange={setOpenaiKey} placeholder="sk-..." />
             <TextInput label="Organization ID" value={openaiOrg} onChange={setOpenaiOrg} placeholder="org-..." />
@@ -218,29 +218,29 @@ export default function APISettingsPage() {
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">🟠 Anthropic Claude</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">🟠 Anthropic Claude</p>
           <div className="space-y-3">
             <SecretInput label="API Key" id="anthropic-key" value={anthropicKey} onChange={setAnthropicKey} placeholder="sk-ant-..." />
             <SelectInput label="Default Model" value={anthropicModel} onChange={setAnthropicModel} options={["claude-opus-4-8", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"]} />
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">🔵 Google Gemini</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">🔵 Google Gemini</p>
           <div className="space-y-3">
             <SecretInput label="API Key" id="gemini-key" value={geminiKey} onChange={setGeminiKey} placeholder="AIza..." />
             <SelectInput label="Model" value={geminiModel} onChange={setGeminiModel} options={["gemini-2.0-flash", "gemini-1.5-pro"]} />
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">⚫ Grok (xAI)</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">⚫ Grok (xAI)</p>
           <SecretInput label="API Key" id="grok-key" value={grokKey} onChange={setGrokKey} placeholder="xai-..." />
         </div>
 
         <div>
-          <p className="text-xs font-semibold text-slate-400 mb-3">🟣 DeepSeek</p>
+          <p className="text-xs font-semibold text-[#666666] mb-3">🟣 DeepSeek</p>
           <SecretInput label="API Key" id="deepseek-key" value={deepseekKey} onChange={setDeepseekKey} placeholder="sk-..." />
         </div>
 
@@ -273,8 +273,8 @@ export default function APISettingsPage() {
           { label: "Pinterest", id1: pinterestId, set1: setPinterestId, id2: pinterestSecret, set2: setPinterestSecret, l1: "App ID", l2: "App Secret" },
           { label: "Reddit", id1: redditId, set1: setRedditId, id2: redditSecret, set2: setRedditSecret, l1: "Client ID", l2: "Client Secret" },
         ].map(({ label, id1, set1, id2, set2, l1, l2 }) => (
-          <div key={label} className="border-b border-slate-700/30 pb-4 last:border-0 last:pb-0">
-            <p className="text-xs font-semibold text-slate-400 mb-3">{label}</p>
+          <div key={label} className="border-b border-[#E7E2D8] pb-4 last:border-0 last:pb-0">
+            <p className="text-xs font-semibold text-[#666666] mb-3">{label}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <TextInput label={l1} value={id1} onChange={set1} />
               <SecretInput label={l2} id={`${label}-secret`} value={id2} onChange={set2} />
@@ -307,8 +307,8 @@ export default function APISettingsPage() {
       <section className={sectionCls}>
         <h2 className={sectionTitle}>Ödeme</h2>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">Stripe</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">Stripe</p>
           <div className="space-y-3">
             <TextInput label="Publishable Key" value={stripePublic} onChange={setStripePublic} placeholder="pk_..." />
             <SecretInput label="Secret Key" id="stripe-secret" value={stripeSecret} onChange={setStripeSecret} placeholder="sk_..." />
@@ -316,8 +316,8 @@ export default function APISettingsPage() {
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">PayTR</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">PayTR</p>
           <div className="space-y-3">
             <TextInput label="Merchant ID" value={paytrMerchantId} onChange={setPaytrMerchantId} />
             <SecretInput label="Merchant Key" id="paytr-key" value={paytrKey} onChange={setPaytrKey} />
@@ -326,7 +326,7 @@ export default function APISettingsPage() {
         </div>
 
         <div>
-          <p className="text-xs font-semibold text-slate-400 mb-3">İyzico</p>
+          <p className="text-xs font-semibold text-[#666666] mb-3">İyzico</p>
           <div className="space-y-3">
             <SecretInput label="API Key" id="iyzico-key" value={iyzicoKey} onChange={setIyzicoKey} />
             <SecretInput label="Secret Key" id="iyzico-secret" value={iyzicoSecret} onChange={setIyzicoSecret} />
@@ -354,8 +354,8 @@ export default function APISettingsPage() {
       <section className={sectionCls}>
         <h2 className={sectionTitle}>Diğer Servisler</h2>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">SMTP</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">SMTP</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <TextInput label="Host" value={smtpHost} onChange={setSmtpHost} placeholder="smtp.example.com" />
             <TextInput label="Port" value={smtpPort} onChange={setSmtpPort} placeholder="587" />
@@ -367,16 +367,16 @@ export default function APISettingsPage() {
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">Google reCAPTCHA v3</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">Google reCAPTCHA v3</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <TextInput label="Site Key" value={recaptchaSite} onChange={setRecaptchaSite} />
             <SecretInput label="Secret Key" id="recaptcha-secret" value={recaptchaSecret} onChange={setRecaptchaSecret} />
           </div>
         </div>
 
-        <div className="border-b border-slate-700/30 pb-4">
-          <p className="text-xs font-semibold text-slate-400 mb-3">Cloudflare</p>
+        <div className="border-b border-[#E7E2D8] pb-4">
+          <p className="text-xs font-semibold text-[#666666] mb-3">Cloudflare</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <TextInput label="Zone ID" value={cfZone} onChange={setCfZone} />
             <SecretInput label="API Token" id="cf-token" value={cfToken} onChange={setCfToken} />
@@ -384,7 +384,7 @@ export default function APISettingsPage() {
         </div>
 
         <div>
-          <p className="text-xs font-semibold text-slate-400 mb-3">S3 / Depolama</p>
+          <p className="text-xs font-semibold text-[#666666] mb-3">S3 / Depolama</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <TextInput label="Endpoint" value={s3Endpoint} onChange={setS3Endpoint} placeholder="https://s3.amazonaws.com" />
             <TextInput label="Bucket" value={s3Bucket} onChange={setS3Bucket} />

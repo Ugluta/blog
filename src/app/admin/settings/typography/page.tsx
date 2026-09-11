@@ -42,62 +42,62 @@ export default function TypographyPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-xl font-bold text-white">Tipografi</h1>
-        <p className="text-sm text-slate-400 mt-1">Yazı tipi ve boyut ayarları</p>
+        <h1 className="text-xl font-bold text-[#111111]">Tipografi</h1>
+        <p className="text-sm text-[#666666] mt-1">Yazı tipi ve boyut ayarları</p>
       </div>
 
-      <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 space-y-5">
+      <div className="bg-[#FFFFFF] border border-[#E7E2D8] rounded-2xl p-6 space-y-5">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Gövde Fontu</label>
+          <label className="block text-sm font-medium text-[#444444] mb-1.5">Gövde Fontu</label>
           <select
             value={settings.fontBody}
             onChange={(e) => set("fontBody", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {FONT_OPTIONS.map((f) => <option key={f}>{f}</option>)}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Başlık Fontu</label>
+          <label className="block text-sm font-medium text-[#444444] mb-1.5">Başlık Fontu</label>
           <select
             value={settings.fontHeading}
             onChange={(e) => set("fontHeading", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {FONT_OPTIONS.map((f) => <option key={f}>{f}</option>)}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
-            Temel Font Boyutu — <span className="text-amber-400">{settings.baseFontSize}px</span>
+          <label className="block text-sm font-medium text-[#444444] mb-1.5">
+            Temel Font Boyutu — <span className="text-[#3A6EA8]">{settings.baseFontSize}px</span>
           </label>
           <input
             type="range" min="12" max="20" step="1"
             value={settings.baseFontSize}
             onChange={(e) => set("baseFontSize", e.target.value)}
-            className="w-full accent-amber-500"
+            className="w-full accent-[#3A6EA8]"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Satır Yüksekliği</label>
+          <label className="block text-sm font-medium text-[#444444] mb-1.5">Satır Yüksekliği</label>
           <select
             value={settings.lineHeight}
             onChange={(e) => set("lineHeight", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {["1.4","1.5","1.6","1.7","1.8","2.0"].map((v) => <option key={v}>{v}</option>)}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">Başlık Kalınlığı</label>
+          <label className="block text-sm font-medium text-[#444444] mb-1.5">Başlık Kalınlığı</label>
           <select
             value={settings.headingWeight}
             onChange={(e) => set("headingWeight", e.target.value)}
-            className="w-full bg-slate-900/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:ring-1 focus:ring-amber-500/50"
+            className="w-full bg-[#F8F6F1] border border-[#E7E2D8] rounded-lg px-3 py-2.5 text-[#111111] text-sm focus:outline-none focus:ring-1 focus:ring-[#3A6EA8]/50"
           >
             {[["400","Normal"],["500","Medium"],["600","SemiBold"],["700","Bold"],["800","ExtraBold"],["900","Black"]].map(([v,l]) => (
               <option key={v} value={v}>{l} ({v})</option>
@@ -106,12 +106,12 @@ export default function TypographyPage() {
         </div>
 
         {/* Preview */}
-        <div className="mt-2 p-4 rounded-xl border border-slate-700/30 bg-slate-900/30">
-          <p className="text-[10px] text-slate-600 uppercase tracking-widest mb-3">Önizleme</p>
-          <h3 style={{ fontFamily: settings.fontHeading, fontWeight: settings.headingWeight, fontSize: "20px" }} className="text-white mb-2">
+        <div className="mt-2 p-4 rounded-xl border border-[#E7E2D8] bg-[#F8F6F1]">
+          <p className="text-[10px] text-[#666666] uppercase tracking-widest mb-3">Önizleme</p>
+          <h3 style={{ fontFamily: settings.fontHeading, fontWeight: settings.headingWeight, fontSize: "20px" }} className="text-[#111111] mb-2">
             Örnek Başlık Metni
           </h3>
-          <p style={{ fontFamily: settings.fontBody, fontSize: `${settings.baseFontSize}px`, lineHeight: settings.lineHeight }} className="text-slate-300">
+          <p style={{ fontFamily: settings.fontBody, fontSize: `${settings.baseFontSize}px`, lineHeight: settings.lineHeight }} className="text-[#444444]">
             Türkiye&apos;nin öncü kurumsal içerik platformu. Yapay zeka destekli içerik üretimi ve otomasyon çözümleri.
           </p>
         </div>
@@ -120,11 +120,11 @@ export default function TypographyPage() {
       <div className="flex items-center gap-3">
         <button
           onClick={save}
-          className="px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm transition-colors"
+          className="px-5 py-2 rounded-lg bg-[#3A6EA8] hover:bg-[#2D5A8E] text-white font-semibold text-sm transition-colors"
         >
           Kaydet
         </button>
-        {saved && <span className="text-xs text-green-400">✓ Kaydedildi</span>}
+        {saved && <span className="text-xs text-green-700">✓ Kaydedildi</span>}
       </div>
     </div>
   );
