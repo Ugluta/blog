@@ -39,6 +39,17 @@ Script Redis'i kurar, kodu çeker, `.env` şablonunu oluşturur (siz gerçek de�
 doldurursunuz: `DATABASE_URL`, `ANTHROPIC_API_KEY`, `AUTH_SECRET`, admin bilgileri),
 `prisma db push` + seed + build çalıştırır ve PM2'ye `blog` + `blog-worker` süreçlerini ekler.
 
+## Kurumsal mimari, güvenlik ve mobil planı
+
+Web + mobil'i milyon ziyaret ölçeğine taşıma planı, dört sabit öncelik (tasarım/hız/SEO/güvenlik)
+etrafında `docs/` altında detaylandırıldı:
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — üst düzey mimari, ölçekleme mantığı, mobil yaklaşımı
+- [`docs/SECURITY.md`](docs/SECURITY.md) — OWASP Top 10 üzerinden gerçek durum + öncelikli düzeltmeler
+- [`docs/DATABASE.md`](docs/DATABASE.md) — eklenmesi gereken modeller, indeksler, ölçekleme sırası
+- [`docs/FILE_STRUCTURE.md`](docs/FILE_STRUCTURE.md) — bugünkü ve mobil-sonrası hedef monorepo yapısı
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — 8 modül + güvenlik/SEO/mobil birleşik fazlı yol haritası
+
 ## Yol haritası (8 modül)
 
 1. ✅ (iskelet) AI destekli scraper — RSS/HTML → havuz → AI revize
