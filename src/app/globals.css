@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --saks:        #3A6EA8;
+  --saks-hover:  #2D5A8E;
+  --saks-light:  #EBF2FA;
+  --saks-border: #B5CDE8;
+  --saks-dark:   #1A3A5C;
+  --cream:       #F8F6F1;
+  --cream-dark:  #EDE9E0;
+  --white:       #FFFFFF;
+  --text-1:      #111111;
+  --text-2:      #444444;
+  --text-3:      #777777;
+  --border:      #DDD8CF;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background-color: var(--cream);
+  color: var(--text-1);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream-dark); }
+::-webkit-scrollbar-thumb { background: var(--saks-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--saks); }
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-1);
+    letter-spacing: -0.025em;
+  }
+}
+
+img { max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--saks); }
+::selection { background-color: rgba(58,110,168,0.15); }
+:focus-visible { outline: 2px solid var(--saks); outline-offset: 2px; }
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-fade-up    { animation: fadeUp    0.5s ease-out both; }
+.anim-fade-in    { animation: fadeIn    0.4s ease-out both; }
+.anim-slide-down { animation: slideDown 0.25s ease-out both; }
+.anim-delay-100  { animation-delay: 100ms; }
+.anim-delay-200  { animation-delay: 200ms; }
+.anim-delay-300  { animation-delay: 300ms; }
+.anim-delay-400  { animation-delay: 400ms; }
+
+/* ── Section label ──────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--saks);
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  background: var(--saks);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.card:hover {
+  border-color: var(--saks-border);
+  box-shadow: 0 6px 24px rgba(58,110,168,0.10);
+  transform: translateY(-2px);
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn-saks {
+  background: var(--saks);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-saks:hover {
+  background: var(--saks-hover);
+  box-shadow: 0 4px 18px rgba(58,110,168,0.30);
+  color: #fff;
+}
+.btn-outline {
+  color: var(--saks);
+  border: 1.5px solid rgba(58,110,168,0.35);
+  border-radius: 999px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-outline:hover {
+  background: var(--saks-light);
+  border-color: var(--saks-border);
+  color: var(--saks);
+}
+
+/* ── Ticker ─────────────────────────────────────────────────── */
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-inner { display: inline-flex; animation: ticker-scroll 60s linear infinite; }
+.ticker-inner:hover { animation-play-state: paused; }
+
+/* ── Code blocks ────────────────────────────────────────────── */
+.card-lift {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+.card-lift:hover {
+  box-shadow: 0 6px 24px rgba(58,110,168,0.10);
+}
+.social-icon-btn {
+  background: rgba(58,110,168,0.15);
+  transition: background 0.2s;
+}
+.social-icon-btn:hover {
+  background: rgba(58,110,168,0.35);
+}
+
+.code-block { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; overflow: auto; }
+.code-block pre { padding: 1.25rem; font-size: 0.8125rem; line-height: 1.6; }
+.code-block code { font-family: 'Fira Code','JetBrains Mono',Consolas,monospace; color: #e6edf3; }
+.token-keyword  { color: #ff7b72; }
+.token-string   { color: #a5d6ff; }
+.token-comment  { color: #8b949e; font-style: italic; }
+.token-function { color: #d2a8ff; }
+.token-number   { color: #79c0ff; }
